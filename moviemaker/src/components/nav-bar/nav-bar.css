@@ -1,0 +1,9 @@
+.nav-bar {
+    position: sticky;
+    border: 3px solid red;
+    height: 75px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
