@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/cm44-4/MovieMatcher/issues"
   },
-  "homepage": "https://github.com/cm44-4/MovieMatcher#readme"
+  "homepage": "https://github.com/cm44-4/MovieMatcher#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
