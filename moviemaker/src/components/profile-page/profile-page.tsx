@@ -7,7 +7,7 @@ const ProfilePage = () => {
     return (
         <div>
             <ProfileInfo />
-            <MovieList />
+            <MovieList movieList={[]} />
             <RecentActivity />
         </div>
     )

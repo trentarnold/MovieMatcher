@@ -7,6 +7,8 @@ import ProfilePage from './components/profile-page/profile-page';
 import MoviePage from './components/movie-page/movie-page';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import LoginForm from './forms/LoginForm';
+import CreateAccountForm from './forms/CreateAccountForm';
+
 function App() {
   return (
     <div className="App">
@@ -20,6 +22,7 @@ function App() {
       </Routes>
       <Outlet />
       <LoginForm />
+      <CreateAccountForm />
     </div>
   );
 }

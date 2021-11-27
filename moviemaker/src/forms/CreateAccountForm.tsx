@@ -1,3 +1,4 @@
+import React from 'react'
 import {useState, useEffect} from 'react';
 import {
   Button,
@@ -14,16 +15,17 @@ import {
   ModalHeader,
   Avatar } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/hooks';
-import { FaLock, FaUserAlt} from 'react-icons/fa';
-import { selectLogin, turnOffLogin } from '../redux/features/modals/loginSlice';
-import { turnOnCreateAccount } from '../redux/features/modals/createAccountSlice';
+import { FaLock, FaUserAlt, FaUserTag} from 'react-icons/fa';
+import { selectCreateAccount, turnOffCreateAccount } from '../redux/features/modals/createAccountSlice';
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
+import { turnOnLogin } from '../redux/features/modals/loginSlice';
 
- const LoginForm = () => {
+const CreateAccountForm = () => {
+  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const open = useAppSelector(selectLogin)
+  const open = useAppSelector(selectCreateAccount);
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -34,28 +36,24 @@ import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleClose();
+    handleClose()
+    setUserName('');
     setEmail('');
     setPassword('');
     }
 
   const handleClose = () => {
-    dispatch(turnOffLogin());
-    onClose();
+    dispatch(turnOffCreateAccount());
+    onClose()
   }
 
-  const handleCreateAccount = () => {
-    dispatch(turnOnCreateAccount());
-    handleClose();
-  }
-
-  return (
-    <Modal isOpen={isOpen}  onClose = {handleClose} isCentered>
+    return (
+      <Modal isOpen={isOpen}  onClose = {handleClose} isCentered>
       <ModalOverlay/>
       <ModalContent>
       <ModalHeader >
               <Avatar />
-              <div> Log In! </div>
+              <div> Create your account! </div>
       </ModalHeader >
       <form onSubmit = {(e:React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
         <ModalBody pb={6}>
@@ -73,6 +71,23 @@ import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
                     placeholder='Enter your email' 
                     value = {email} 
                     onChange = {(e:React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}>
+                  </Input>
+                </InputGroup> 
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel forhtml='userName'>User Name </FormLabel>
+                <InputGroup>
+                  <InputLeftElement
+                      pointerEvents="none"
+                      children={<FaUserTag color="gray.300" />}
+                    />
+                  <Input 
+                    type='text'
+                    errorBorderColor="red.300"  
+                    name='userName' 
+                    placeholder='Enter your username ...' 
+                    value = {userName} 
+                    onChange = {(e:React.ChangeEvent<HTMLInputElement>) => setUserName(e.target.value)}>
                   </Input>
                 </InputGroup> 
               </FormControl>
@@ -95,13 +110,16 @@ import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
               </FormControl>
             </ ModalBody>
             <ModalFooter>
-              <Button mr={3} onClick={handleCreateAccount}> Create Account </Button>
-              <Button mr={3} type='submit'> Log In </Button>
+              <Button mr={3} onClick={() => {
+                  handleClose();
+                  dispatch(turnOnLogin())
+                }}> Log in </Button>
+              <Button mr={3} type='submit' > Create!  </Button>
             </ModalFooter>
           </form>
         </ModalContent>
     </Modal>
-  )
+    )
 }
 
-export default LoginForm
+export default CreateAccountForm
