@@ -1,7 +1,5 @@
 moviemaker/node_modules/@babel/code-frame/lib/index.js
-<<<<<<< HEAD
 node_modules/
-=======
 
 .DS_Store
 
@@ -38,4 +36,3 @@ dist
 .env.development.local
 .env.test.local
 .env.production.local
->>>>>>> 4264c72d656cb50070f741a25c994ad6db86dd7b

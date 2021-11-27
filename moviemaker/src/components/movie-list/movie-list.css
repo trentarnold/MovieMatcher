@@ -1,0 +1,10 @@
+.movie-list-container {
+    align-items: left;
+    margin-left: 15px;
+}
+
+.movie-list {
+    display: flex;
+    justify-content:space-between;
+    overflow: auto;
+}
