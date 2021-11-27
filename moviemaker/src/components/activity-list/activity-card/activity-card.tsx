@@ -5,7 +5,7 @@ const ActivityCard = () => {
     return (
         <div>
             activity card
-            <MovieThumb />
+            {/* <MovieThumb /> */}
         </div>
     )
 }

@@ -6,5 +6,8 @@
 .movie-list {
     display: flex;
     justify-content:space-between;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 85vw;
+    height: 35vh;
 }
