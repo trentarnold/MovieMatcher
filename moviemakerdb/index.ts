@@ -1,10 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const router;
+const Router = require('./Router');
 const port = 3001;
+const DB = require('./DB');
 
-app.use(cors())
+const corsConfig = {
+  origin: 'http://localhost:3000',
+  credentials: true
+};
+
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(router);
 app.get('*', (req,res) => {
