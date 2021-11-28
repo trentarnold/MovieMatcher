@@ -2,7 +2,7 @@ export interface Movie {
     adult: Boolean,
     backdrop_path: String,
     genre_ids: Array<Number>,
-    id: Number,
+    id: number,
     original_language: String,
     original_title: String,
     overview: String,
@@ -11,8 +11,8 @@ export interface Movie {
     release_date: String,
     title: String,
     video: Boolean,
-    vote_average: Number,
-    vote_count: Number
+    vote_average: number,
+    vote_count: number
 }
 
 export interface Results {
@@ -21,3 +21,4 @@ export interface Results {
   total_pages?:Number,
   total_results?:Number
 }
+

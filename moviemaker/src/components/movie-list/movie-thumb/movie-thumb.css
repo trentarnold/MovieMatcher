@@ -30,7 +30,7 @@
   position: relative;
   min-height: 30vh;
   min-width: 21vh;
-  background: linear-gradient(0.25turn, rgba(24, 24, 24, 0.95), rgba(235, 248, 225, .5), rgba(24, 24, 24, 0.95));;
+  background: linear-gradient(0.25turn, rgba(24, 24, 24, 0.95), rgba(235, 248, 225, .6), rgba(24, 24, 24, 0.95));;
   z-index: 10;
   opacity: 0;
   text-align: center;
