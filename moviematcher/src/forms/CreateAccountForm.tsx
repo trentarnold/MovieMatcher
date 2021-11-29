@@ -50,10 +50,11 @@ const CreateAccountForm = () => {
     return (
       <Modal isOpen={isOpen}  onClose = {handleClose} isCentered>
       <ModalOverlay/>
-      <ModalContent>
-      <ModalHeader >
-              <Avatar />
-              <div> Create your account! </div>
+      <ModalContent style={{borderRadius:'2rem'}}>
+      <ModalHeader bgColor='navy' color='white'  style={{display:'flex', flexDirection:'column', 
+                    justifyContent:'center', alignItems:'center', borderTopLeftRadius:'2rem', borderTopRightRadius:'2rem'}}>
+              <Avatar size='lg' bg='navy'/>
+              <div> Create Account! </div>
       </ModalHeader >
       <form onSubmit = {(e:React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
         <ModalBody pb={6}>

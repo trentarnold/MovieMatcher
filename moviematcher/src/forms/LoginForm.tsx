@@ -18,7 +18,7 @@ import { FaLock, FaUserAlt} from 'react-icons/fa';
 import { selectLogin, turnOffLogin } from '../redux/features/modals/loginSlice';
 import { turnOnCreateAccount } from '../redux/features/modals/createAccountSlice';
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
-
+import './LoginForm.css'
  const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -52,15 +52,16 @@ import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
   return (
     <Modal isOpen={isOpen}  onClose = {handleClose} isCentered>
       <ModalOverlay/>
-      <ModalContent>
-      <ModalHeader >
-              <Avatar />
+      <ModalContent style={{borderRadius:'2rem'}}>
+      <ModalHeader bgColor='navy' color='white'  style={{display:'flex', flexDirection:'column', 
+                    justifyContent:'center', alignItems:'center', borderTopLeftRadius:'2rem', borderTopRightRadius:'2rem'}}>
+              <Avatar size='lg' bg='navy'/>
               <div> Log In! </div>
       </ModalHeader >
       <form onSubmit = {(e:React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
         <ModalBody pb={6}>
             <FormControl isRequired>
-                <FormLabel forhtml='email-address'>Email Address  </FormLabel>
+                <FormLabel forhtml='email-address'> Email Address  </FormLabel>
                 <InputGroup>
                   <InputLeftElement
                       pointerEvents="none"
@@ -94,9 +95,13 @@ import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
                 </InputGroup> 
               </FormControl>
             </ ModalBody>
-            <ModalFooter>
-              <Button mr={3} onClick={handleCreateAccount}> Create Account </Button>
-              <Button mr={3} type='submit'> Log In </Button>
+            <ModalFooter >
+              <div className='modal-footer'> 
+                <div className='create-account-button-container'> 
+                  <Button mr={3} onClick={handleCreateAccount}> Create Account </Button>
+                </div>
+                <Button mr={3} type='submit'> Log In </Button>
+              </div>
             </ModalFooter>
           </form>
         </ModalContent>

@@ -1,11 +1,12 @@
-.friend-button {
+/* .friend-button {
     background-color: white;
-}
+} */
 
 .friend-button button {
     align-self: center;
     margin: 5px 2px 2px 2px;
-    width: 98%;    background-color: navy;
+    width: 98%;    
+    background-color: rgb(59, 59, 143);
     border-radius: 5px;
     padding: 2px
 }
@@ -18,4 +19,8 @@
 .friend-button button:active {
     background-color: navy;
     color:white;
+}
+.buttons button {
+    margin:5px;
+    background-color: rgb(59, 59, 143);
 }

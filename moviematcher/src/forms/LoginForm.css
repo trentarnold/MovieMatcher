@@ -1,0 +1,14 @@
+.create-account-button-container {
+  /* display: flex;
+  justify-content: flex-start; */
+  max-width: fit-content;
+}
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.create-account-button-container {
+  display: flex;
+  align-items: center;
+}
