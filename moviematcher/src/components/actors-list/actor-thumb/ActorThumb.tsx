@@ -14,6 +14,10 @@ const ActorThumb:React.FC<Props> = ({actor}) => {
                 <p> {actor.name}</p>
               </div>  
           </div>}
+          {!actor.profile_path && 
+          <div className='actor-thumb-img-background-alt'>
+          <p> {actor.name}</p>
+        </div>  }
         </div> 
   )
 }

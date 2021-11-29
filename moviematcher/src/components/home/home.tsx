@@ -19,12 +19,11 @@ const Home = () => {
     
     return (
         <div className="home">
-            <h1>home</h1>
-            <MovieList movieList={popularMovies}/>
-            <MovieList movieList={popularMovies}/>
-            <MovieList movieList={popularMovies}/>
-            <MovieList movieList={popularMovies}/>
-            <MovieList movieList={popularMovies}/>
+            <MovieList criteria="Popular Movies" movieList={popularMovies}/>
+            <MovieList criteria="Bad Movies" movieList={popularMovies}/>
+            <MovieList criteria="Good Movies" movieList={popularMovies}/>
+            <MovieList criteria="Illegal Movies" movieList={popularMovies}/>
+            <MovieList criteria="Horror Movies" movieList={popularMovies}/>
         </div>
     )
 }

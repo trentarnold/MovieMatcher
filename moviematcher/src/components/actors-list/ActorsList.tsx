@@ -9,7 +9,6 @@ type Props = {
 }
 const ActorsList:React.FC<Props>  = ({id}) => {
   const [actorList, setActorList] = useState<ActorListInterface>(actorListPlaceholder)
-  console.log(actorList)
   useEffect(() => {
       async function fetchMovie () {
           const actorListIDS = await APIService.getActorList(id);
@@ -20,7 +19,7 @@ const ActorsList:React.FC<Props>  = ({id}) => {
   return (
     <div className="actor-list-container">
         <h1>Cast</h1>
-        {/* pass individual movie to MovieThumb */}
+        {console.log(actorList)}
         <div className="movie-list">
             {actorList.cast.map((actor:any) => <ActorThumb key={Number(actor.id)} actor={actor}/>)}
         </div>

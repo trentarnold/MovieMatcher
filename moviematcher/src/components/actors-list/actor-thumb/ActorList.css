@@ -36,3 +36,16 @@
   justify-content: center;
   font-size: 1.5rem;
 }
+
+.actor-thumb-img-background-alt {
+  position: relative;
+  height: 30vh;
+  width: 21vh;
+  background: linear-gradient(0.25turn, rgba(24, 24, 24, 0.95), rgba(0, 35, 88, 0.6), rgba(24, 24, 24, 0.95));;
+  z-index: 10;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}

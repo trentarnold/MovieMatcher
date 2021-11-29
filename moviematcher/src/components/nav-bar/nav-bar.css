@@ -11,6 +11,11 @@
     box-shadow: 0 0 3px;
 }
 
+.logo {
+height: 70px;
+color:grey
+}
+
 .nav-areas {
     display: flex;
     justify-content: space-between;

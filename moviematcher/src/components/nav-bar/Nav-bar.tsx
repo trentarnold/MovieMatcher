@@ -13,7 +13,7 @@ const Navbar = () => {
     <div className="nav-bar">
       <div className="nav-areas">
         <NavLink to="/">
-          <p><strong>Movie Matcher</strong></p>
+          <img className="logo" src="/logo.svg" alt="logo" />
         </ NavLink>
         <NavLink to='/recent'>
           <p>Recent Activity</p>
