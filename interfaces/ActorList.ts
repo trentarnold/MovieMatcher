@@ -20,7 +20,7 @@ popularity: number,
 profile_path?: string|null
 }
 
-interface Crew {
+export interface Crew {
 adult: boolean,
 credit_id: string,
 department: string,

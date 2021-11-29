@@ -1,23 +1,26 @@
 import React from 'react'
 import { Button } from '@chakra-ui/button';
 import './profile-info.css'
-import { profilePlaceholder } from '../../../profilePlaceholder';
+import { IUser } from '../../../../../interfaces/userInterface';
 
+type Props = {
+  profile: IUser
+}
 
-const ProfileInfo = () => {
+const ProfileInfo:React.FC<Props> = ({profile}) => {
 
 
     return (
         <div className='profile-info'>
             <div className='profile-info-icons'>
-              <img src={String(profilePlaceholder.profilePic)}/>
+              <img src={String(profile.profilePic)}/>
               <div className="profile-info-buttons">
                 <Button>Add/Delete</Button>
                 <Button>Match</Button>
               </div>
             </div>
             <div className='profile-info-details'>
-              <p>{profilePlaceholder.username}</p>
+              <p>{profile.username}</p>
             </div>
         </div>
     )

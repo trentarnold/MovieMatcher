@@ -23,7 +23,7 @@ const MoviePage = () => {
     return (
         <div>
             <MovieDetails />
-            <MovieList movieList = {similarMovies} />
+            <MovieList criteria = 'Popular Movies' movieList = {similarMovies} />
         </div>
     )
 }
