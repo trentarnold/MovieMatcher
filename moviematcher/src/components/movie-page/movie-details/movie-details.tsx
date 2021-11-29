@@ -22,8 +22,8 @@ const MovieDetails = () => {
                 <img src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`}></img>
             </div>
             <div>
-                <p>{currentMovie.original_title}</p>
-                <p>{currentMovie.overview}</p>
+                <div className='movie-details-title'>{currentMovie.title}</div>
+                <div>{currentMovie.overview}</div>
                 <div>
                     <Button>Add to Watchlist</Button>
                     <Button>rate</Button> 
