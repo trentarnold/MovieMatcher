@@ -1,0 +1,17 @@
+.actor-thumb-img {
+  min-height: 30vh;
+  min-width: 21vh;
+  max-height: 30vh;
+  border-radius: .2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow-y: hidden;
+}
+.actor-thumb {
+  position: relative;
+  /* min-width: 17vw; */
+  margin-right: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

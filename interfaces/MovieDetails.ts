@@ -3,7 +3,7 @@ export interface MovieDetailsInterface {
   backdrop_path: string,
   belongs_to_collection?:any,
   budget: number,
-  genres: number[],
+  genres: Genre[],
   homepage: string,
   id: number,
   imdb_id: string,
@@ -36,6 +36,10 @@ origin_country?: string
 interface ProductionCountries {
   iso_3166_1: string,
   name: string
+}
+interface Genre {
+  id:number,
+  name:string
 }
 
 interface SpokenLanguages {
