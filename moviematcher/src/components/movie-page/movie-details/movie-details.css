@@ -3,6 +3,7 @@
   color:white;
   font-size: 2.5rem;
   margin-right: .8rem;
+  max-width: 30vw;
 }
 .movie-details-title-container {
   display: flex;
@@ -23,11 +24,12 @@
   align-items: center; 
 }
 .movie-details-information-container {
-  height: 400px;
+  min-height: 400px;
+  max-height: fit-content;
   display: flex;
   flex-direction: column;
   margin-left: 20px;
-  width:40vw;
+  width:50vw;
   background: linear-gradient(rgb(0, 15, 31), rgb(29, 70, 110), rgb(0, 15, 31));
   padding:10px;
   justify-content: space-between;
@@ -64,4 +66,13 @@
   justify-content: space-around;
   color: white;
   font-style: italic;
+}
+.movie-details-stream-provider {
+  height: 50px;
+  /* border-radius: 50%; */
+  margin: 10px;
+}
+.movie-details-stream-providers{
+  display: flex;
+  justify-content: center;
 }

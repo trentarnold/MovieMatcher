@@ -26,16 +26,18 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
                   starSpacing="1px"
                   starRatedColor='gold' />
               <Button style={{backgroundColor:'transparent'}}
-                     className='btn hidden-background'
+                     className='btn hidden-background enlarge-on-hover'
                      onClick={() => {
                       navigate(`/movieDetails/${movie.id}`)
                      }}>
                      More Details
               </Button>
-              <Button style={{backgroundColor:'transparent'}}>
+              <Button style={{backgroundColor:'transparent'}}
+                      className='enlarge-on-hover'>
                     <FaPlus color='green'/> <span style={{fontStyle:'italic'}}>Add to WatchList </span>
               </Button>
-              <Button style={{backgroundColor:'transparent'}}>
+              <Button style={{backgroundColor:'transparent'}}
+                      className='enlarge-on-hover'>
                     <FaMinus color='red'/> <span style={{fontStyle:'italic'}}>Add to BlackList</span>
               </Button>
             </div>  
