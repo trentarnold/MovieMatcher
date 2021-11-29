@@ -1,16 +1,19 @@
 import React from 'react'
+import { Button } from '@chakra-ui/button';
+import './profile-info.css'
+
 
 const ProfileInfo = () => {
     return (
-        <div style={{display:'flex'}}>
+        <div className='profile-info'>
             <div>
-              <h1>Profile picture</h1>
+              <img src='/pictures/cowboy.png'/>
             </div>
             <div>
               <p>Name</p>
               <p>Description</p>
-              <button>Add/Delete</button>
-              <button>Match</button>
+              <Button>Add/Delete</Button>
+              <Button>Match</Button>
             </div>
         </div>
     )

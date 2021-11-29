@@ -3,7 +3,7 @@ import ActivityCard from './activity-card/activity-card'
 
 const ActivityList = () => {
     return (
-        <div>
+        <div className="recent-activity">
             <ActivityCard />
             <ActivityCard />
         </div>

@@ -3,8 +3,8 @@ import './friend-button.css'
 
 const FriendButton = () => {
     return (
-        <div>
-            <h1>BUTTON</h1>
+        <div className="friend-button">
+            <button>Match With Friend</button>
         </div>
     )
 }

@@ -1,0 +1,16 @@
+.activity-card {
+    display: flex;
+    justify-content: space-between;
+    background-color: grey;
+    width: 60vw;
+    margin: 15px;
+    border-radius: 15px;
+    color: white
+}
+
+.activity-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

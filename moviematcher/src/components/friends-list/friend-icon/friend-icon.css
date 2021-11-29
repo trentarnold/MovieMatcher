@@ -1,0 +1,33 @@
+.friend-icon {
+ align-self: center;
+ display: flex;
+ justify-content:space-between;
+ width: 95%;
+ background-color: white;
+ border-radius: 10px;
+ margin-top: 5px;
+ max-height: 50px;
+ overflow-y: auto;
+}
+
+.friend-icon img {
+    object-fit: scale-down;
+    border-radius: 50%;
+}
+
+.friend-icon p {
+    height: 100%;
+    width: 100%;
+    margin-left: 5px;
+    text-align: left;
+}
+
+.online-status {
+    align-self: flex-end;
+    background-color: rgb(68, 205, 50);
+    margin-bottom: 2px;
+    margin-right: 2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 5px;
+}

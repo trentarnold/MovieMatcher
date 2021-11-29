@@ -1,7 +1,6 @@
 .movie-thumb-img {
-  min-height: 30vh;
-  min-width: 21vh;
-  max-height: 30vh;
+  height: 30vh;
+  width: 21vh;
   border-radius: .2rem;
   position: absolute;
   top: 0;
@@ -9,9 +8,7 @@
   overflow-y: hidden;
 
 }
-.movie-thumb-img:hover{
-  
-}
+
 .movie-thumb-img-background:hover {
   opacity: 1;
   transition: .5s;
@@ -28,9 +25,9 @@
 
 .movie-thumb-img-background {
   position: relative;
-  min-height: 30vh;
-  min-width: 21vh;
-  background: linear-gradient(0.25turn, rgba(24, 24, 24, 0.95), rgba(235, 248, 225, .6), rgba(24, 24, 24, 0.95));;
+  height: 30vh;
+  width: 21vh;
+  background: linear-gradient(0.25turn, rgba(24, 24, 24, 0.95), rgba(0, 35, 88, 0.6), rgba(24, 24, 24, 0.95));;
   z-index: 10;
   opacity: 0;
   text-align: center;

@@ -1,0 +1,7 @@
+.profile-info {
+    display: flex;
+}
+
+.profile-info button {
+    margin: 5px;
+}
