@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import MovieThumb from '../../movie-list/movie-thumb/movie-thumb'
 import './activity-card.css'
+import { Movie } from '../../../../../interfaces/MovieInterface'
 
 const ActivityCard = () => {
 
-    const [username] = useState('TestUsername');
-    const [movieName] = useState('Test Movie Name');
-    const [time] = useState(Date.now());
-    const [mockMovie] = useState({
+    const [username] = useState<string>('TestUsername');
+    const [time] = useState<number>(Date.now());
+    const [mockMovie] = useState<Movie>({
         adult: false,
         backdrop_path: "/dK12GIdhGP6NPGFssK2Fh265jyr.jpg",
         genre_ids: [ 28, 35, 80],
