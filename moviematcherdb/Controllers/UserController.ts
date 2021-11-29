@@ -43,7 +43,7 @@ async function createUser (req, res) {
   try {
     const {username, email, password} = req.body;
     const hash = await bcrypt.hast(password, 10);
-    const user = await deleteBlacklist.User.findOne({ where: { username: username}});
+    const user = await db.User.findOne({ where: { username: username}});
     if(user) return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
     const newUser = await db.User.create({
       username,
@@ -64,7 +64,7 @@ async function createUser (req, res) {
 async function loginUser (req, res) {
   try {
     const { username, password } = req.body;
-    const user = await deleteBlacklist.User.findOne({where: { username: `${username}`}});
+    const user = await db.User.findOne({where: { username: `${username}`}});
     if(!user){
       return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
     };
