@@ -1,7 +1,7 @@
 import { IListItem } from './listItemInterface';
 import { IViewedMovie} from './viewedMovieInterface';
 
-interface IUser {
+export interface IUser {
   username: String,
   email: String,
   password: String,
