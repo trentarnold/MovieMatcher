@@ -32,9 +32,21 @@ function getFriends (req, res) {
   }
 }
 
-function createUser (req, res) {
+async function createUser (req, res) {
   try {
-
+    const {username, email, password} = req.body;
+    const hash = await bcrypt.hast(password, 10);
+    const user = await deleteBlacklist.User.findOne({ where: { username: username}});
+    if(user) return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
+    const newUser = await db.User.create({
+      username,
+      email,
+      password //need to update with db schema
+    });
+    if(newUser){
+      const accessToken = jwt.sign({_id: newUser.id}, SECRET_KEY);
+      res.status(201).send({ confirmed: true, accessToken})
+    }
   }
   catch (err) {
     console.log(err.message)
@@ -42,9 +54,22 @@ function createUser (req, res) {
   }
 }
 
-function loginUser (req, res) {
+async function loginUser (req, res) {
   try {
-
+    const { username, password } = req.body;
+    const user = await deleteBlacklist.User.findOne({where: { username: `${username}`}});
+    if(!user){
+      return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
+    };
+    /*const validatedUser = await bcrypt.compare(password, user.password);
+    if(validatedUser){
+      //const accessToken = jwt.sign({_id: user.id}, SECRET_KEY);
+        res.status(200).send({
+         db fields here
+         })
+    }
+    else{
+      res.status(400).send({confirmed: false)}*/
   }
   catch (err) {
     console.log(err.message)
