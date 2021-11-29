@@ -38,7 +38,7 @@ export const movieDetailsPlaceHolder:MovieDetailsInterface = {
   backdrop_path: 'string',
   belongs_to_collection:'any',
   budget: 1,
-  genres: [1],
+  genres: [{id:1, name:'name'}],
   homepage: 'string',
   id: 1,
   imdb_id: 'string',
