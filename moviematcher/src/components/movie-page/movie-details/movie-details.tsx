@@ -11,13 +11,26 @@ import ActorsList from '../../actors-list/ActorsList';
 const MovieDetails = () => {
     const { id } : any = useParams();
     const [currentMovie, setCurrentMovie] = useState<MovieDetailsInterface>(movieDetailsPlaceHolder)
-    console.log(currentMovie)
+    const [streamProviders, setStreamProviders] = useState<any>();
     useEffect(() => {
+        let isCancelled = false;
         async function fetchMovie () {
             const movieDetails = await APIService.getIndividualMovie(id);
-            setCurrentMovie(movieDetails);
+            if(!isCancelled) {
+                setCurrentMovie(movieDetails);
+            }
         }
-        fetchMovie()
+        async function fetchStreamProviders () {
+           const fetchedStreamProviders = await APIService.getStreamProviders(id);  
+           if(!isCancelled) {
+               setStreamProviders(fetchedStreamProviders.US.flatrate);
+           }
+        } 
+        fetchMovie();
+        fetchStreamProviders();
+        return () => {
+            isCancelled = true
+        }
     }, [id])
 
     const reduceToFiveStarRating = (averageVote:number):number => {
@@ -29,23 +42,27 @@ const MovieDetails = () => {
                     <div className='movie-details-information-container'>
                         <div className ='movie-details-title-container'>
                         <div className='movie-details-title'>{currentMovie.title}</div>            
-                        <StarRatings
+                        <StarRatings 
                             rating={reduceToFiveStarRating(currentMovie.vote_average)}
                             starDimension="2rem"
                             starSpacing="1px"
-                            starRatedColor='gold' />
+                            starRatedColor='gold'
+                             />
                         <div style={{color:'white', marginLeft:'10px'}}>({currentMovie.vote_count})</div>
                         </div>
                         <div className='movie-details-description'>{currentMovie.overview}</div>
                         <div className='movie-details-genres'>
                                 {currentMovie.genres.map(genre => <div> {genre.name}</div>)}
                         </div>
+                        <div className='movie-details-stream-providers'>
+                            {streamProviders && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'></img>)}
+                        </div>
                         <div className='movie-details-production-company'>
                             <div className='movie-details-company-logo-container'> 
-                            {currentMovie.production_companies.map(company => {
+                            {currentMovie.production_companies.map((company, index) => {
                                 return (
                                     <div> 
-                                        {company.logo_path ? 
+                                        {company.logo_path && index < 5? 
                                             <div>
                                             <img className ='movie-details-company-logo'src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}></img>
                                             </div> 
@@ -62,7 +79,7 @@ const MovieDetails = () => {
                         </div>
                         <div className='movie-details-button-holder'>
                             <Button>Add to Watchlist</Button>
-                            <Button>rate</Button> 
+                            <Button>Rate</Button> 
                         </div>
                     </div>
                     <div>
