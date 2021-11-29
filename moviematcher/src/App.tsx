@@ -20,7 +20,9 @@ function App() {
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/movieDetails/:id' element={<MoviePage />} />
       </Routes>
-      <Outlet />
+      <div className="outlet">
+        <Outlet />
+      </div>
       <LoginForm />
       <CreateAccountForm />
     </div>

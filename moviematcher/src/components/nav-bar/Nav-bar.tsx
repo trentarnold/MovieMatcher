@@ -10,19 +10,23 @@ const Navbar = () => {
   const dispatch = useAppDispatch()
   return (
     <div className="nav-bar">
-      <NavLink to="/">
-        <h1>Movie Matcher</h1>
-      </ NavLink>
-      <NavLink to='/recent'>
-        <p>Recent Activity</p>
-      </NavLink>
-      <NavLink to='/profile'>
-        <p>Profile</p>
-      </NavLink>
-      <NavLink to='movieDetails'>
-        <p>Movie Details</p>
-      </NavLink>
-      <Button onClick={() => dispatch(turnOnLogin())}> Login </Button>
+      <div className="nav-areas">
+        <NavLink to="/">
+          <p><strong>Movie Matcher</strong></p>
+        </ NavLink>
+        <NavLink to='/recent'>
+          <p>Recent Activity</p>
+        </NavLink>
+        <NavLink to='/profile'>
+          <p>Profile</p>
+        </NavLink>
+        <NavLink to='movieDetails'>
+          <p>Movie Details</p>
+        </NavLink>
+      </div>
+      <div className="buttons">
+        <Button onClick={() => dispatch(turnOnLogin())}> Login </Button>
+      </div>
     </div>
   )
 }

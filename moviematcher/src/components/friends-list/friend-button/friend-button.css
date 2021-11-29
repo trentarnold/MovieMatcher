@@ -1,0 +1,18 @@
+
+.friend-button button {
+    align-self: center;
+    width: 100%;
+    background-color: navy;
+    border-radius: 5px;
+    padding: 2px
+}
+
+.friend-button button:hover {
+    background-color: white;
+    color:navy;
+}
+
+.friend-button button:active {
+    background-color: navy;
+    color:white;
+}

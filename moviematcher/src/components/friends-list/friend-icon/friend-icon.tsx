@@ -3,8 +3,10 @@ import './friend-icon.css'
 
 const FriendIcon = () => {
     return (
-        <div>
-                        <h1>ICON</h1>
+        <div className="friend-icon">
+            <img src="/pictures/cowboy.png" />
+            <p>Name</p>
+            <div className="online-status"></div>
         </div>
     )
 }

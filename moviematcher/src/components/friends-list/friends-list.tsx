@@ -8,7 +8,13 @@ const FriendsList = () => {
   return (
     <div className="friends-list">
       <FriendSearch />
-      <FriendIcon />
+      <div className="friend-icons">
+        <FriendIcon />
+        <FriendIcon />
+        <FriendIcon />
+        <FriendIcon />
+
+      </div>
       <FriendButton />
     </div>
   )

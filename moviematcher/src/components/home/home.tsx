@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Movie, Results } from '../../../../interfaces/MovieInterface';
 import MovieList from '../movie-list/movie-list';
 import APIService from '../../services/APISevice';
+import './home.css'
 
 const Home = () => {
     const [popularMovies, setPopularMovies] = useState<Movie[]>([])
@@ -19,8 +20,11 @@ const Home = () => {
     }, [])
     
     return (
-        <div>
+        <div className="home">
             <h1>home</h1>
+            <MovieList movieList={popularMovies}/>
+            <MovieList movieList={popularMovies}/>
+            <MovieList movieList={popularMovies}/>
             <MovieList movieList={popularMovies}/>
             <MovieList movieList={popularMovies}/>
         </div>

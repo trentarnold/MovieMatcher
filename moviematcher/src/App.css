@@ -3,11 +3,13 @@
   display: flex;
   flex-direction: column;
   background-color: rgb(0, 15, 31);
-  color: rgb(125, 249, 255);
+  color: rgb(173, 173, 173)
 }
-.btn {
-
-} 
+ 
 .hidden-background {
   background-color: transparent;
+}
+
+.outlet {
+  margin-top: 80px;
 }
