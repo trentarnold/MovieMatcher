@@ -48,6 +48,7 @@ router.get('/movies/director', getMoviesbyDirector);
 router.get('/movies/cast', getMoviesbyCast);
 router.get('/movies/genre', getMoviesbyGenre);
 router.get('/movies/popular', getMoviesbyPopularity);
+//router.get('/movies/castDetails', getCastDetails);
 
 //Action Controller Routes
 const {
