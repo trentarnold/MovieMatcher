@@ -2,6 +2,29 @@
     display: flex;
 }
 
-.profile-info button {
+.profile-info-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    width:40vw;
+    background: linear-gradient(rgb(0, 15, 31), rgb(29, 70, 110), rgb(0, 15, 31));
+    padding:10px;
+    justify-content: space-between;
+}
+
+.profile-info-details button {
     margin: 5px;
+}
+
+.profile-info-icons {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info-buttons {
+    margin: 10px;
+}
+
+.profile-info-buttons button {
+margin: 5px;
 }

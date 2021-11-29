@@ -7,6 +7,7 @@ import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
 import { movieDetailsPlaceHolder } from '../../../moviePlaceholder';
 import StarRatings from 'react-star-ratings';
 import ActorsList from '../../actors-list/ActorsList';
+
 const MovieDetails = () => {
     const { id } : any = useParams();
     const [currentMovie, setCurrentMovie] = useState<MovieDetailsInterface>(movieDetailsPlaceHolder)
@@ -25,9 +26,6 @@ const MovieDetails = () => {
     return (
         <div>
             <div className='movie-details-container'>
-                    <div>
-                        <img className='movie-details-image' src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`}></img>
-                    </div>
                     <div className='movie-details-information-container'>
                         <div className ='movie-details-title-container'>
                         <div className='movie-details-title'>{currentMovie.title}</div>            
@@ -66,6 +64,9 @@ const MovieDetails = () => {
                             <Button>Add to Watchlist</Button>
                             <Button>rate</Button> 
                         </div>
+                    </div>
+                    <div>
+                        <img className='movie-details-image' src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`}></img>
                     </div>
             </div>
             <ActorsList id ={id}/>

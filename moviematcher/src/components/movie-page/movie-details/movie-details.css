@@ -19,10 +19,11 @@
 .movie-details-container {
   display: flex;
   margin: 10px;
-  /* justify-content: center;
-  align-items: center; */
+  justify-content: center;
+  align-items: center; 
 }
 .movie-details-information-container {
+  height: 400px;
   display: flex;
   flex-direction: column;
   margin-left: 20px;

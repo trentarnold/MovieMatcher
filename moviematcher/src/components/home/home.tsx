@@ -6,9 +6,7 @@ import './home.css'
 
 const Home = () => {
     const [popularMovies, setPopularMovies] = useState<Movie[]>([])
-
-    console.log(popularMovies)
-
+    
     useEffect(() => {
         async function fetchPopular () {
             const popularMoviesRes = await APIService.getPopularMovies();
