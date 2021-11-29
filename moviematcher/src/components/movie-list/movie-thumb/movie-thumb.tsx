@@ -4,6 +4,7 @@ import { Movie } from '../../../../../interfaces/MovieInterface'
 import {Button} from '@chakra-ui/react'
 import StarRatings from 'react-star-ratings';
 import {  useNavigate } from "react-router-dom";
+import { FaPlus, FaMinus} from 'react-icons/fa';
 type Props = {
   movie:Movie;
 }
@@ -30,6 +31,12 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
                       navigate(`/movieDetails/${movie.id}`)
                      }}>
                      More Details
+              </Button>
+              <Button style={{backgroundColor:'transparent'}}>
+                    <FaPlus color='green'/> <span style={{fontStyle:'italic'}}>Add to WatchList </span>
+              </Button>
+              <Button style={{backgroundColor:'transparent'}}>
+                    <FaMinus color='red'/> <span style={{fontStyle:'italic'}}>Add to BlackList</span>
               </Button>
             </div>  
             <img className='movie-thumb-img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt='movie poster' />   

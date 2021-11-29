@@ -1,29 +1,20 @@
 import React from 'react'
 import './ActorList.css'
+import { Cast } from '../../../../../interfaces/ActorList'
 type Props = {
-  actor:any
+  actor:Cast
 }
 const ActorThumb:React.FC<Props> = ({actor}) => {
   return (
-      <div className="actor-thumb">
-         <img className='actor-thumb-img' src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`} alt='movie poster' />   
-            {/* <div className='movie-thumb-img-background'>
-              <p> {actor.title}</p>
-              <StarRatings
-                  rating={reduceToFiveStarRating(movie.vote_average)}
-                  starDimension="20px"
-                  starSpacing="1px"
-                  starRatedColor='gold' />
-              <Button style={{backgroundColor:'transparent'}}
-                     className='btn hidden-background'
-                     onClick={() => {
-                      navigate(`/movieDetails/${movie.id}`)
-                     }}>
-                     More Details
-              </Button>
-            </div>   */}
-
-        </div>
+       <div className="actor-thumb">
+          {actor.profile_path && 
+          <div>
+            <img className='actor-thumb-img' src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`} alt='movie poster' /> 
+              <div className='actor-thumb-img-background'>
+                <p> {actor.name}</p>
+              </div>  
+          </div>}
+        </div> 
   )
 }
 

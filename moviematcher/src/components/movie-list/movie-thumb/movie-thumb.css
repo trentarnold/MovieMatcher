@@ -24,6 +24,10 @@
 }
 
 .movie-thumb-img-background {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
   position: relative;
   height: 30vh;
   width: 21vh;

@@ -5,7 +5,7 @@ export interface ActorListInterface {
 }
 
 
-interface Cast {
+export interface Cast {
 adult: boolean,
 cast_id: number,
 character: string,
