@@ -23,3 +23,8 @@
 .buttons {
     margin: 15px;
 }
+
+.buttons button {
+    margin:5px;
+    background-color: rgb(59, 59, 143);
+}
