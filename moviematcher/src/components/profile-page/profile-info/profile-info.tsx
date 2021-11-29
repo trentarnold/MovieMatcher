@@ -1,19 +1,23 @@
 import React from 'react'
 import { Button } from '@chakra-ui/button';
 import './profile-info.css'
+import { profilePlaceholder } from '../../../profilePlaceholder';
 
 
 const ProfileInfo = () => {
+
+
     return (
         <div className='profile-info'>
-            <div>
-              <img src='/pictures/cowboy.png'/>
+            <div className='profile-info-icons'>
+              <img src={String(profilePlaceholder.profilePic)}/>
+              <div className="profile-info-buttons">
+                <Button>Add/Delete</Button>
+                <Button>Match</Button>
+              </div>
             </div>
-            <div>
-              <p>Name</p>
-              <p>Description</p>
-              <Button>Add/Delete</Button>
-              <Button>Match</Button>
+            <div className='profile-info-details'>
+              <p>{profilePlaceholder.username}</p>
             </div>
         </div>
     )
