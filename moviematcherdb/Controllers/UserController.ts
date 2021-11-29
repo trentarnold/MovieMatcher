@@ -1,10 +1,13 @@
-const User = require('../../interfaces/userInterface');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-function updateUser (req, res) {
+async function updateUser (req, res) {
   try{
-    User.save(req.body);
-    res.status(201);
-    res.send('User Updated');
+    const { username, value, newValue }  =req.body;
+    await db.User.findOne({ where: {username: username}}).then(user => {
+      user.update({ [value]: newValue });
+    })
+    res.status(201).send('User updated');
   }
   catch (err){
     console.log(err.message)
@@ -12,9 +15,11 @@ function updateUser (req, res) {
   }
 }
 
-function getUser (req, res) {
+async function getUser (req, res) {
   try {
-
+    const { username } = req.body;
+    const match = await db.User.findOne({ where: { username: username } });
+    res.status(200).send(match);
   }
   catch (err) {
     console.log(err.message)
@@ -22,9 +27,11 @@ function getUser (req, res) {
   }
 }
 
-function getFriends (req, res) {
+async function getFriends (req, res) {
   try{
-
+    const {User} = req.body;
+    //const friends = await db.Friends.findAll( { where: }) waiting on DB info to complete search
+    res.status(200).send(JSON.stringify(friends));
   }
   catch (err){
     console.log(err.message);
@@ -77,9 +84,14 @@ async function loginUser (req, res) {
   }
 }
 
-function addFriend (req, res) {
+async function addFriend (req, res) {
   try {
-
+    const friend = await db.Friends.create(req.body)
+    if(friend){
+      res.status(201).send('Friend added!');
+    } else {
+      res.status(401).send(`Friend could not be added.`);
+    }
   }
   catch (err){
     console.log(err.message)
@@ -87,9 +99,12 @@ function addFriend (req, res) {
   }
 }
 
-function deleteFriend (req, res) {
+async function deleteFriend (req, res) {
   try {
-
+    const {id} = req.body;
+    const friend =  await db.Friends.findOne({ where: {id: id}});
+    await friend.destroy();
+    res.status(200).send('Friend removed.');
   }
   catch (err) {
     console.log(err.message)
@@ -97,9 +112,14 @@ function deleteFriend (req, res) {
   }
 }
 
-function findFriends (req, res) {
+async function addWant (req, res) {
   try {
-
+    const Want = await db.Wants.create(req.body);
+    if(Want) {
+      res.status(201).send('Want added');
+    } else {
+      res.status(401).send(`Couldn't add want.`)
+    }
   }
   catch (err) {
     console.log(err.message)
@@ -107,9 +127,12 @@ function findFriends (req, res) {
   }
 }
 
-function addWant (req, res) {
+async function deleteWant (req, res) {
   try {
-
+    const { id } = req.body; //need to check this with many-many tables.
+    const want = await db.Wants.findOne({ where: { id: id }});
+    await want.destroy();
+    res.status(200).send('Want removed')
   }
   catch (err) {
     console.log(err.message)
@@ -117,9 +140,14 @@ function addWant (req, res) {
   }
 }
 
-function deleteWant (req, res) {
+async function addBlacklist (req, res){
   try {
-
+    const newBlacklist = await db.Blacklist.create(req.body);
+    if(newBlacklist) {
+      res.status(201).send('Blacklist added');
+    } else {
+      res.status(401).send(`Couldn't add blacklist.`)
+    }
   }
   catch (err) {
     console.log(err.message)
@@ -127,19 +155,12 @@ function deleteWant (req, res) {
   }
 }
 
-function addBlacklist (req, res){
+async function deleteBlacklist (req, res) {
   try {
-
-  }
-  catch (err) {
-    console.log(err.message)
-    res.sendStatus(500)
-  }
-}
-
-function deleteBlacklist (req, res) {
-  try {
-
+    const { id } = req.body; //need to check this with many-many tables.
+    const blackList = await db.Blacklist.findOne({ where: {id: id}});
+    await blackList.destroy();
+    res.status(200).send('Blacklist removed');
   }
   catch (err) {
     console.log(err.message)
@@ -165,7 +186,6 @@ module.exports = {
   loginUser,
   addFriend,
   deleteFriend,
-  findFriends,
   addWant,
   deleteWant,
   addBlacklist,

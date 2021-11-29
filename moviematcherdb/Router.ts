@@ -26,7 +26,6 @@ router.post('/user/create', createUser);
 router.post('/user/login', loginUser);
 router.put('/user/friends', addFriend);
 router.delete('/user/friends', deleteFriend);
-router.get('/user/friends', findFriends);
 router.post('/user/wants', addWant);
 router.delete('/user/wants', deleteWant);
 router.post('/user/blacklist', addBlacklist);
