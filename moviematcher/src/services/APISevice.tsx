@@ -53,6 +53,15 @@ const APIService = {
       console.log(err)
       return actorListPlaceholder
     }
+  },
+  getSimilarMovies: async(id:number): Promise<Results> => {
+    try {
+      const similarMovies = await fetch(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US`)
+      return await similarMovies.json();
+    } catch (e) {
+      console.log(e);
+      return {results:[]};
+    }
   }
 };
 
