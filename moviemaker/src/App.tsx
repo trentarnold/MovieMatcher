@@ -18,7 +18,7 @@ function App() {
           <Route path='/' element={<Home /> } />
           <Route path='/recent' element={<RecentActivity />} />
           <Route path='/profile' element={<ProfilePage />} />
-          <Route path='/movieDetails' element={<MoviePage />} />
+          <Route path='/movieDetails/:id' element={<MoviePage />} />
       </Routes>
       <Outlet />
       <LoginForm />
