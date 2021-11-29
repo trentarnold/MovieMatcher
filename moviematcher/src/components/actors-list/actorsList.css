@@ -1,0 +1,12 @@
+.actor-list-container {
+  align-items: left;
+  margin-left: 15px;
+}
+
+.actor-list {
+  display: flex;
+  justify-content:space-between;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 35vh;
+}
