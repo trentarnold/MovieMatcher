@@ -1,8 +1,12 @@
 import { Model, Optional } from 'sequelize';
 import { sequelize, DataTypes } from './index';
 import WatchedMovie from './watched_movie';
+import Rating from './rating';
+import Friend from './friend';
+import WhitelistItem from './whitelist_item';
+import BlacklistItem from './blacklist_item';
 
-interface UserAttributes {
+export interface UserAttributes {
   id: number;
   username: string;
   email: string;
@@ -18,7 +22,7 @@ interface UserAttributes {
 interface UserCreationAttributes
   extends Optional<UserAttributes, 'id'> {}
 
-interface UserInstance
+export interface UserInstance
   extends Model<UserAttributes, UserCreationAttributes>,
     UserAttributes {
       createdAt?: Date;
@@ -50,15 +54,23 @@ const User = sequelize.define<UserInstance>('user', {
   },
 })
 
-User.hasMany(WatchedMovie, {
-  sourceKey: "id",
-  foreignKey: "uid",
-  as: "watched_movies",
-})
+// ASSOCIATIONS
 
-WatchedMovie.belongsTo(User, {
-  foreignKey: "uid",
-})
+// user -- watched movies
+User.hasMany(WatchedMovie, { sourceKey: "id", foreignKey: "uid", as: "watched_movies" })
+WatchedMovie.belongsTo(User, { foreignKey: "uid" })
 
+// user -- ratings
+User.hasMany(Rating, { sourceKey: "id", foreignKey: "uid", as: "ratings" })
+// Rating.belongsTo(User, { foreignKey: "uid" })
+
+// user -- friends
+User.hasMany(Friend, { sourceKey: "id", foreignKey: "uid", as: 'friends' })
+
+// user -- whitelist
+User.hasMany(WhitelistItem, { sourceKey: "id", foreignKey: "uid", as: 'whitelist' })
+
+// user -- blacklist
+User.hasMany(BlacklistItem, { sourceKey: "id", foreignKey: "uid", as: 'blacklist' })
 
 export default User

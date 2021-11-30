@@ -1,25 +1,26 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3001;
-const db = require('./DB');
-const Router = require('./Router')
+const port:number = 3001;
+const router = require('./Router');
+import { connectDB } from './models';
+import { Request, Response } from 'express';
 
-const corsConfig = {
-  origin: 'http://localhost:3000',
-  credentials: true
-};
+// const corsConfig = {
+//   origin: 'http://localhost:3001',
+//   //credentials: true
+// };
 
-app.use(cors(corsConfig));
+app.use(cors());
 app.use(express.json());
-app.use(Router);
-app.get('*', (req,res) => {
+app.use(router);
+app.get('*', (req:Request,res:Response) => {
   res.status(404).send('The page you are looking for has not been found')
 });
 
 (async () => {
-  await db.sequelize.sync();
-  app.listen(port, e => {
+  await connectDB();
+  app.listen(port, (e:any) => {
     if (e) {
       console.log(e);
     } else {
