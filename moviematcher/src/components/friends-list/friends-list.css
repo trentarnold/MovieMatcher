@@ -3,7 +3,6 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     top:75px;
     right:0;
     z-index: 10;
@@ -13,9 +12,27 @@
     border-left: 3px solid grey;
 }
 
-.friend-icons {
-    height: 100%;
+.friends-list-toggle {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: space-around;
+    margin: 5px;
+}
+
+.friends-list-toggle button {
+    background-color: rgb(41, 41, 75);
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.friends-list-toggle button:hover {
+    border: 0;
+    color: rgb(41, 41, 75);
+    background-color: white;
+}
+
+.friends-list-toggle button:active {
+    border: 0;
+    color: white;
+    background-color: rgb(69, 69, 131);
 }

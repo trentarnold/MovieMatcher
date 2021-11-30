@@ -1,10 +1,10 @@
-.friend-search input {
+.user-search input {
     border-radius: 5px;
     margin: 5px 2px 2px 2px;
     width: 98%;
 }
 
-.friend-icons {
+.user-icons {
     height: 100%;
     display: flex;
     flex-direction: column;

@@ -1,16 +1,20 @@
 export interface Movie {
   adult: Boolean,
   backdrop_path: String,
-  genre_ids: Number[],
-  id: Number,
+  genre_ids: number[],
+  id: number,
   original_language: String,
   original_title: String,
   overview: String,
-  popularity: Number,
+  popularity: number,
   poster_path: String,
   release_date: String,
   title: String,
   video: Boolean,
-  vote_average: Number,
-  vote_count: Number
+  vote_average: number,
+  vote_count: number
+}
+
+export interface Results {
+  results: Movie[]
 }
