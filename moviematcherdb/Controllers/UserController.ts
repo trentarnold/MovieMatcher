@@ -2,13 +2,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
+import { createUserQuery, searchByUsername } from '../models/queries/userQueries';
 
 async function updateUser (req:Request,res:Response) {
   try{
     const { username, value, newValue }  =req.body;
-    //await db.User.findOne({ where: {username: username}}).then(user => {
-     // user.update({ [value]: newValue });
-    //})
+    await updateUserQuery(req.body);
     res.status(201).send('User updated');
   }
   catch (err:any){
@@ -24,7 +23,7 @@ export async function getUser (req:RequestInstance, res:Response) {
     } else {
       res.status(500).send({message: "User not authorized"})
     }
-    
+
   }
   catch (err:any) {
     console.log(err.message)
@@ -48,17 +47,15 @@ async function createUser (req:Request,res:Response) {
   try {
     const {username, email, password} = req.body;
     const hash = await bcrypt.hast(password, 10);
-    //const user = await db.User.findOne({ where: { username: username}});
-    //if(user) return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
-    //const newUser = await db.User.create({
-     // username,
-    //   email,
-    //   password //need to update with db schema
-    // });
-    // if(newUser){
-    //   const accessToken = jwt.sign({_id: newUser.id}, SECRET_KEY);
-    //   res.status(201).send({ confirmed: true, accessToken})
-    // }
+    const user = await searchByUsername(username);
+    if (user != null) {
+      return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
+    }
+    const newUser = await createUserQuery(req.body);
+    if(newUser){
+      const accessToken = jwt.sign({_id: newUser.id}, SECRET_KEY);
+      res.status(201).send({ confirmed: true, accessToken})
+    }
   }
   catch (err:any) {
     console.log(err.message)
