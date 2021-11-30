@@ -1,3 +1,4 @@
+const express = require('express');
 const router = express.Router();
 
 
@@ -63,6 +64,4 @@ router.get('/activity', getActivity)
 router.post('/activity', addRating)
 router.get('/activity', getRating)
 
-module.exports = {
-  router
-}
+export default router;

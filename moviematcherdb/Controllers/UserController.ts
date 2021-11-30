@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+import {Request, Response } from 'express';
 
-async function updateUser (req, res) {
+async function updateUser (req:Request,res:Response) {
   try{
     const { username, value, newValue }  =req.body;
     await db.User.findOne({ where: {username: username}}).then(user => {
@@ -9,37 +10,37 @@ async function updateUser (req, res) {
     })
     res.status(201).send('User updated');
   }
-  catch (err){
+  catch (err:any){
     console.log(err.message)
     res.sendStatus(500);
   }
 }
 
-async function getUser (req, res) {
+async function getUser (req:Request,res:Response) {
   try {
     const { username } = req.body;
     const match = await db.User.findOne({ where: { username: username } });
     res.status(200).send(match);
   }
-  catch (err) {
+  catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
 }
 
-async function getFriends (req, res) {
+async function getFriends (req:Request,res:Response) {
   try{
     const {User} = req.body;
     //const friends = await db.Friends.findAll( { where: }) waiting on DB info to complete search
     res.status(200).send(JSON.stringify(friends));
   }
-  catch (err){
+  catch (err:any){
     console.log(err.message);
     res.sendStatus(500);
   }
 }
 
-async function createUser (req, res) {
+async function createUser (req:Request,res:Response) {
   try {
     const {username, email, password} = req.body;
     const hash = await bcrypt.hast(password, 10);
@@ -55,13 +56,13 @@ async function createUser (req, res) {
       res.status(201).send({ confirmed: true, accessToken})
     }
   }
-  catch (err) {
+  catch (err:any) {
     console.log(err.message)
     res.sendStatus(500);
   }
 }
 
-async function loginUser (req, res) {
+async function loginUser (req:Request,res:Response) {
   try {
     const { username, password } = req.body;
     const user = await db.User.findOne({where: { username: `${username}`}});
@@ -78,13 +79,13 @@ async function loginUser (req, res) {
     else{
       res.status(400).send({confirmed: false)}*/
   }
-  catch (err) {
+  catch (err:any) {
     console.log(err.message)
     res.sendStatus(500);
   }
 }
 
-async function addFriend (req, res) {
+async function addFriend (req:Request,res:Response) {
   try {
     const friend = await db.Friends.create(req.body)
     if(friend){
@@ -93,26 +94,26 @@ async function addFriend (req, res) {
       res.status(401).send(`Friend could not be added.`);
     }
   }
-  catch (err){
+  catch (err:any){
     console.log(err.message)
     res.sendStatus(500)
   }
 }
 
-async function deleteFriend (req, res) {
+async function deleteFriend (req:Request,res:Response) {
   try {
     const {id} = req.body;
     const friend =  await db.Friends.findOne({ where: {id: id}});
     await friend.destroy();
     res.status(200).send('Friend removed.');
   }
-  catch (err) {
+  catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
 }
 
-async function addWant (req, res) {
+async function addWant (req:Request,res:Response) {
   try {
     const Want = await db.Wants.create(req.body);
     if(Want) {
@@ -121,26 +122,26 @@ async function addWant (req, res) {
       res.status(401).send(`Couldn't add want.`)
     }
   }
-  catch (err) {
+  catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
 }
 
-async function deleteWant (req, res) {
+async function deleteWant (req:Request,res:Response) {
   try {
     const { id } = req.body; //need to check this with many-many tables.
     const want = await db.Wants.findOne({ where: { id: id }});
     await want.destroy();
     res.status(200).send('Want removed')
   }
-  catch (err) {
+  catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
 }
 
-async function addBlacklist (req, res){
+async function addBlacklist (req:Request,res:Response){
   try {
     const newBlacklist = await db.Blacklist.create(req.body);
     if(newBlacklist) {
@@ -149,30 +150,30 @@ async function addBlacklist (req, res){
       res.status(401).send(`Couldn't add blacklist.`)
     }
   }
-  catch (err) {
+  catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
 }
 
-async function deleteBlacklist (req, res) {
+async function deleteBlacklist (req:Request,res:Response) {
   try {
     const { id } = req.body; //need to check this with many-many tables.
     const blackList = await db.Blacklist.findOne({ where: {id: id}});
     await blackList.destroy();
     res.status(200).send('Blacklist removed');
   }
-  catch (err) {
+  catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
 }
 
-function updateProfilePic (req, res) {
+function updateProfilePic (req:Request,res:Response) {
   try {
 
   }
-  catch (err) {
+  catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }

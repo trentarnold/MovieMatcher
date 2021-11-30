@@ -13,3 +13,13 @@ apiService.addtoActivity = () : Promise<Activity> => {
 
   })
 }
+
+apiService.getActivity = () : Promise<> => {
+  return fetch(`${base_URL}/activity`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+
+  })
+}

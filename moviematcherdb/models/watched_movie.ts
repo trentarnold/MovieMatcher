@@ -25,7 +25,7 @@ interface WatchedMovieInstance
       },
       friendid: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        defaultValue: 0,
       },
     })
 
