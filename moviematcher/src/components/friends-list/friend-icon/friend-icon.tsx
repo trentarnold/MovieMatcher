@@ -10,6 +10,7 @@ const FriendIcon = () => {
               <div className="user-icon-buttons">
                   <button>Match</button>
                   <button>Add</button>
+                  <button>Profile</button>
               </div>
             </div>
             <div className="online-status"></div>
