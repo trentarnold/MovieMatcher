@@ -13,7 +13,7 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
     return (
         <div className='profile-info'>
             <div className='profile-info-icons'>
-              <img src={String(profile.profilePic)}/>
+              <img src={String(profile.profilePic)} alt="profile"/>
               <div className="profile-info-buttons">
                 <Button>Add/Delete</Button>
                 <Button>Match</Button>

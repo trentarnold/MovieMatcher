@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import FriendIcon from '../friend-icon/friend-icon' 
+import { profilePlaceholder } from '../../../profilePlaceholder'
 import './user-search.css'
 
 const UserSearch = () => {
@@ -15,8 +16,7 @@ const UserSearch = () => {
         <div className="user-search">
             <input className="search-bar" value={query} onChange={handleChange}/>
             <div className="user-icons"> 
-                <FriendIcon />
-
+              <FriendIcon user={profilePlaceholder} friend={false}/>
             </div>
         </div>
     )

@@ -1,7 +1,6 @@
-import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Button } from '@chakra-ui/button';
-import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
+import { useAppDispatch } from '../../redux/app/hooks';
 import { turnOnLogin } from '../../redux/features/modals/loginSlice';
 import { toggleFriendsList } from '../../redux/features/modals/friendsListSlice'
 
