@@ -11,6 +11,9 @@ export interface Movie {
   release_date: String,
   title: String,
   video: Boolean,
-  vote_average: Number,
+  vote_average: number,
   vote_count: Number
+}
+export interface Results {
+  results: Movie[]
 }
