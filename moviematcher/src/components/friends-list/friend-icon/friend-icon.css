@@ -36,15 +36,16 @@
   max-width: 40px;
   font-size: 60%;
   border-radius: 5px;
-  color: rgb(41, 41, 75);
-  background-color: white;
   padding: 2px;
   margin: 2px;
+  margin-left: 4px;
+  background-color: rgb(69, 69, 131);
+  color: white;
 }
 
 .user-icon-buttons button:hover {
-    background-color: rgb(69, 69, 131);
-    color: white;
+    color: rgb(41, 41, 75);
+    background-color: white;
 }
 
 .user-icon-buttons button:active {
