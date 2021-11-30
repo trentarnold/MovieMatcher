@@ -1,0 +1,40 @@
+.reel {
+  display: inline-block;
+  width: 600px;
+  height: 600px;
+  line-height: 100%;
+  vertical-align: middle;
+  background: url(https://pixabay.com/static/uploads/photo/2013/07/12/14/09/film-reel-147850_960_720.png);
+  background-size: 600px 600px;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  text-align: center;
+  animation-duration: 12s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-name: spin;
+  opacity: .1;
+}
+
+div i {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(360deg) }
+}
+.spinner-holder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5vh;
+  height: 85vh;
+}
+.welcome-text {
+  position: absolute;
+  font-size: 5rem;
+  color: white;
+}
