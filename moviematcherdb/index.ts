@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 const Router = require('./Router');
 const port = 3001;
-const DB = require('./DB');
+const db = require('./DB');
 
 const corsConfig = {
   origin: 'http://localhost:3000',
@@ -12,7 +12,7 @@ const corsConfig = {
 
 app.use(cors(corsConfig));
 app.use(express.json());
-app.use(router);
+app.use(Router);
 app.get('*', (req,res) => {
   res.status(404).send('The page you are looking for has not been found')
 });
