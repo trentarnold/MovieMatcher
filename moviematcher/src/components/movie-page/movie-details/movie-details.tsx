@@ -22,7 +22,7 @@ const MovieDetails = () => {
         }
         async function fetchStreamProviders () {
            const fetchedStreamProviders = await APIService.getStreamProviders(id);  
-           if(!isCancelled) {
+           if(!isCancelled && fetchedStreamProviders.US) {
                setStreamProviders(fetchedStreamProviders.US.flatrate);
            }
         } 
@@ -54,9 +54,12 @@ const MovieDetails = () => {
                         <div className='movie-details-genres'>
                                 {currentMovie.genres.map(genre => <div> {genre.name}</div>)}
                         </div>
+                        {streamProviders &&
                         <div className='movie-details-stream-providers'>
-                            {streamProviders && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'></img>)}
+                            {streamProviders && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'></img>)
+                            }
                         </div>
+                        }
                         <div className='movie-details-production-company'>
                             <div className='movie-details-company-logo-container'> 
                             {currentMovie.production_companies.map((company, index) => {
