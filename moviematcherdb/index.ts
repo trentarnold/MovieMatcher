@@ -20,7 +20,7 @@ app.get('*', (req:Request,res:Response) => {
 
 (async () => {
   await connectDB();
-  app.listen((e:any) => {
+  app.listen(port, (e:any) => {
     if (e) {
       console.log(e);
     } else {

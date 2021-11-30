@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import {Request, Response } from 'express';
+import { RequestInstance } from '../middleware/authMiddleware'
 
 async function updateUser (req:Request,res:Response) {
   try{
@@ -16,11 +17,14 @@ async function updateUser (req:Request,res:Response) {
   }
 }
 
-export async function getUser (req:Request,res:Response) {
+export async function getUser (req:RequestInstance, res:Response) {
   try {
-    const { username } = req.body;
-   // const match = await db.User.findOne({ where: { username: username } });
-    //res.status(200).send(match);
+    if (req.user) {
+      res.status(200).send(req.user)
+    } else {
+      res.status(500).send({message: "User not authorized"})
+    }
+    
   }
   catch (err:any) {
     console.log(err.message)
