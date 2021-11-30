@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/cm44-4/MovieMatcher#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.10"
   }
 }
