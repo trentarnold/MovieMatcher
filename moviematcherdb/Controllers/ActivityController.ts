@@ -1,4 +1,4 @@
-function addtoActivity (res, req) {
+async function addtoActivity (res, req) {
   try{
     const newActivity = await db.Activity.create(req.body);
     if(newActivity){
@@ -13,7 +13,7 @@ function addtoActivity (res, req) {
   }
 }
 
-function getActivity (res, req) {
+async function getActivity (res, req) {
   try {
     const {user} = req.body;
    // const activity = await db.Activity.findAll( {where: }) waiting on DB to fill search in.
@@ -25,7 +25,7 @@ function getActivity (res, req) {
   }
 }
 
-function addRating (req, res) {
+async function addRating (req, res) {
   try {
     const newRating = await db.Ratings.create(req.body);
     if(newRating){
@@ -40,7 +40,7 @@ function addRating (req, res) {
   }
 }
 
-function getRating (req, res) {
+async function getRating (req, res) {
   try {
     const {User, Movie} = req.body;
    // const rating = await db.Rating.findOne({ where: }) //Waiting on DB for search.
