@@ -6,10 +6,10 @@
   color: rgb(173, 173, 173)
 }
  
-.hidden-background {
-  background-color: transparent;
-}
-
 .outlet {
   margin-top: 80px;
+}
+.enlarge-on-hover:hover {
+  transition: .2s;
+  transform: scale(1.25);
 }
