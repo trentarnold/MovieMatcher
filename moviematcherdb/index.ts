@@ -2,8 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = 3001;
-const db = require('./DB');
-const Router = require('./Router')
+const router = require('./Router');
+const connectDB = require('./models/index');
+import { Request, Response } from 'express';
 
 const corsConfig = {
   origin: 'http://localhost:3000',
@@ -12,14 +13,14 @@ const corsConfig = {
 
 app.use(cors(corsConfig));
 app.use(express.json());
-app.use(Router);
-app.get('*', (req,res) => {
+app.use(router);
+app.get('*', (req:Request,res:Response) => {
   res.status(404).send('The page you are looking for has not been found')
 });
 
 (async () => {
-  await db.sequelize.sync();
-  app.listen(port, e => {
+  await connectDB();
+  app.listen((port:number, e:any) => {
     if (e) {
       console.log(e);
     } else {
