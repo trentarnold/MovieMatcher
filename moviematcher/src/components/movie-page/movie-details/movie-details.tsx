@@ -54,6 +54,7 @@ const MovieDetails = () => {
                         <div className='movie-details-genres'>
                                 {currentMovie.genres.map(genre => <div> {genre.name}</div>)}
                         </div>
+                        <div style ={{textAlign:'center'}}>Stream On:</div>
                         <div className='movie-details-stream-providers'>
                             {streamProviders && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'></img>)}
                         </div>

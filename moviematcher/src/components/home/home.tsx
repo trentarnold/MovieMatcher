@@ -19,6 +19,17 @@ const Home = () => {
     
     return (
         <div className="home">
+            <div className='spinner-holder'>
+                <div className='welcome-text'> 
+                Welcome to <img style={{height: '30vh'}} className="logo" src="/logo.svg" alt="logo" />
+                </div>
+                <div className="reel">
+                    <i></i>
+                </div>
+                <div className="reel">
+                    <i></i>
+                </div>
+            </div>
             <MovieList criteria="Popular Movies" movieList={popularMovies}/>
             <MovieList criteria="Bad Movies" movieList={popularMovies}/>
             <MovieList criteria="Good Movies" movieList={popularMovies}/>
