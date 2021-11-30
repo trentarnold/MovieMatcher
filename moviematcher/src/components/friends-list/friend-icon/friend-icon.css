@@ -3,7 +3,7 @@
  display: flex;
  justify-content:space-between;
  width: 95%;
- background-color: navy;
+ background-color: rgb(41, 41, 75);
  border-radius: 10px;
  margin-top: 5px;
  max-height: 50px;
@@ -12,7 +12,7 @@
 
 .friend-icon img {
     object-fit: scale-down;
-    border-radius: 50%;
+    border-radius: 10px;
 }
 
 .friend-icon p {
@@ -25,9 +25,9 @@
 .online-status {
     align-self: flex-end;
     background-color: rgb(68, 205, 50);
-    margin-bottom: 2px;
-    margin-right: 2px;
-    width: 8px;
-    height: 8px;
-    border-radius: 5px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    min-height: 8px;
+    min-width: 8px;
+    border-radius: 100%;
 }

@@ -21,7 +21,7 @@ const Home = () => {
         <div className="home">
             <div className='spinner-holder'>
                 <div className='welcome-text'> 
-                Welcome to <img style={{height: '30vh'}} className="logo" src="/logo.svg" alt="logo" />
+                Welcome to <img style={{height: '30vh'}} className="logo" src="/logo-brighter.svg" alt="logo" />
                 </div>
                 <div className="reel">
                     <i></i>
