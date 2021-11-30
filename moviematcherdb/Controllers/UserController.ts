@@ -2,19 +2,20 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
-import { createUserQuery, searchByUsername } from '../models/queries/userQueries';
+import { createUserQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
+require('dotenv').config();
 
-async function updateUser (req:Request,res:Response) {
-  try{
-    const { username, value, newValue }  =req.body;
-    await updateUserQuery(req.body);
-    res.status(201).send('User updated');
-  }
-  catch (err:any){
-    console.log(err.message)
-    res.sendStatus(500);
-  }
-}
+// async function updateUser (req:Request,res:Response) {
+//   try{
+//     const { username, value, newValue }  =req.body;
+//     await updateUserQuery(req.user.id, req.body);
+//     res.status(201).send('User updated');
+//   }
+//   catch (err:any){
+//     console.log(err.message)
+//     res.sendStatus(500);
+//   }
+// }
 
 export async function getUser (req:RequestInstance, res:Response) {
   try {
@@ -44,16 +45,18 @@ export async function getFriends (req:Request,res:Response) {
 }
 
 async function createUser (req:Request,res:Response) {
+  console.log('hit create user')
   try {
-    const {username, email, password} = req.body;
-    const hash = await bcrypt.hast(password, 10);
+    let {username, email, password, profile_pic} = req.body;
+     const hash = await bcrypt.hash(password, 10);
+     password = hash;
     const user = await searchByUsername(username);
     if (user != null) {
       return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
     }
-    const newUser = await createUserQuery(req.body);
+    const newUser = await createUserQuery({username, email, password, profile_pic});
     if(newUser){
-      const accessToken = jwt.sign({_id: newUser.id}, SECRET_KEY);
+      const accessToken = jwt.sign({id: newUser.id}, process.env.SECRET_KEY);
       res.status(201).send({ confirmed: true, accessToken})
     }
   }
@@ -181,7 +184,7 @@ function updateProfilePic (req:Request,res:Response) {
 }
 
 module.exports = {
-  updateUser,
+ // updateUser,
   getUser,
   getFriends,
   createUser,

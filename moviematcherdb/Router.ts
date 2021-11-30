@@ -8,7 +8,7 @@ const {
   // updateUser,
   // getUser,
   // getFriends,
-  // createUser,
+   createUser,
   // loginUser,
   // addFriend,
   // deleteFriend,
@@ -24,7 +24,7 @@ const {
 //router.put('/user/profile/:type/:add', updateUser);
 router.get('/user/profile', authMiddleware, getUser);
 // router.get('/user/friends', getFriends);
-// router.post('/user/create', createUser);
+ router.post('/user/create', createUser);
 // router.post('/user/login', loginUser);
 // router.put('/user/friends', addFriend);
 // router.delete('/user/friends', deleteFriend);
