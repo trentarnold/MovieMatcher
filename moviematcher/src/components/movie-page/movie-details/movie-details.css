@@ -51,13 +51,14 @@
 }
 .movie-details-company-logo{
   width:5rem;
+  margin-right: 20px;
 }
 .movie-details-production-company {
   color:white;
 }
 .movie-details-company-logo-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 
 }
