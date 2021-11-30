@@ -1,5 +1,6 @@
-moviemaker/node_modules/@babel/code-frame/lib/index.js
+moviematcher/node_modules/@babel/code-frame/lib/index.js
 
+moviematcherdb/package-lock.json
 package-lock.json
 
 .DS_Store
@@ -38,9 +39,5 @@ dist
 .env.development.local
 .env.test.local
 .env.production.local
-<<<<<<< HEAD
 moviematcherdb/config
-=======
->>>>>>> 4264c72d656cb50070f741a25c994ad6db86dd7b
-moviemakerdb/Controllers/MovieController.ts
->>>>>>> Controllers
+
