@@ -4,7 +4,6 @@ export async function populateWatchedMovies() {
   await WatchedMovie.create({
     uid: 1,
     movieid: 580489,
-    friendid: 1,
   })
   await WatchedMovie.create({
     uid: 2,

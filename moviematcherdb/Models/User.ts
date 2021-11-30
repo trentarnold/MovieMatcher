@@ -6,7 +6,7 @@ import Friend from './friend';
 import WhitelistItem from './whitelist_item';
 import BlacklistItem from './blacklist_item';
 
-interface UserAttributes {
+export interface UserAttributes {
   id: number;
   username: string;
   email: string;
@@ -22,7 +22,7 @@ interface UserAttributes {
 interface UserCreationAttributes
   extends Optional<UserAttributes, 'id'> {}
 
-interface UserInstance
+export interface UserInstance
   extends Model<UserAttributes, UserCreationAttributes>,
     UserAttributes {
       createdAt?: Date;
