@@ -4,11 +4,11 @@ import MovieThumb from './movie-thumb/movie-thumb';
 import {Movie} from '../../../../interfaces/MovieInterface'
 import { useAppSelector } from '../../redux/app/hooks'
 
-
 type Props  = {
   movieList: Movie[],
   criteria: string
 }
+
 const MovieList: React.FC<Props> = ({movieList, criteria}) => {
 
   const toggle = useAppSelector((state) => state.friendsList.value)
