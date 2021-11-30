@@ -14,13 +14,7 @@ export interface UserAttributes {
   profile_pic: string;
 };
 
-/*
-  We have to declare the AuthorCreationAttributes to
-  tell Sequelize and TypeScript that the property id,
-  in this case, is optional to be passed at creation time
-*/
-interface UserCreationAttributes
-  extends Optional<UserAttributes, 'id'> {}
+const getAll = () => (db.users);
 
 export interface UserInstance
   extends Model<UserAttributes, UserCreationAttributes>,

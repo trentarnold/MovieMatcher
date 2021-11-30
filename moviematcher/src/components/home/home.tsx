@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Movie, Results } from '../../../../interfaces/MovieInterface';
+import { Movie } from '../../../../interfaces/MovieInterface';
 import MovieList from '../movie-list/movie-list';
 import APIService from '../../services/APISevice';
 import './home.css'
