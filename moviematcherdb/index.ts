@@ -1,17 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3001;
+const port:number = 3001;
 const router = require('./Router');
-const connectDB = require('./models/index');
+import { connectDB } from './models';
 import { Request, Response } from 'express';
 
-const corsConfig = {
-  origin: 'http://localhost:3000',
-  credentials: true
-};
+// const corsConfig = {
+//   origin: 'http://localhost:3001',
+//   //credentials: true
+// };
 
-app.use(cors(corsConfig));
+app.use(cors());
 app.use(express.json());
 app.use(router);
 app.get('*', (req:Request,res:Response) => {
@@ -20,7 +20,7 @@ app.get('*', (req:Request,res:Response) => {
 
 (async () => {
   await connectDB();
-  app.listen((port:number, e:any) => {
+  app.listen(port, (e:any) => {
     if (e) {
       console.log(e);
     } else {
