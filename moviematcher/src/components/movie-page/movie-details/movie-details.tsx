@@ -57,7 +57,7 @@ const MovieDetails = () => {
                         <div style ={{textAlign:'center'}}>Stream On:</div>
                         {streamProviders &&
                         <div className='movie-details-stream-providers'>
-                            {streamProviders && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'></img>)
+                            {streamProviders && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'/>)
                             }
                         </div>
                         }
@@ -68,7 +68,7 @@ const MovieDetails = () => {
                                     <div> 
                                         {company.logo_path && index < 5? 
                                             <div>
-                                            <img className ='movie-details-company-logo'src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}></img>
+                                            <img className ='movie-details-company-logo'src={`https://image.tmdb.org/t/p/w500${company.logo_path}`} alt="production company"/>
                                             </div> 
                                             : ''
                                         }
@@ -87,7 +87,7 @@ const MovieDetails = () => {
                         </div>
                     </div>
                     <div>
-                        <img className='movie-details-image' src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`}></img>
+                        <img className='movie-details-image' src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`} alt="movie poster"/>
                     </div>
             </div>
             <ActorsList id ={id}/>

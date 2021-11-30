@@ -6,8 +6,8 @@
  background-color: rgb(41, 41, 75);
  border-radius: 10px;
  margin-top: 5px;
- max-height: 50px;
- overflow-y: auto;
+ height: 55px;
+ overflow:hidden;
 }
 
 .friend-icon img {

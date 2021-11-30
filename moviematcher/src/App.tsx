@@ -8,8 +8,15 @@ import MoviePage from './components/movie-page/movie-page';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import LoginForm from './forms/LoginForm';
 import CreateAccountForm from './forms/CreateAccountForm';
+import { useEffect } from 'react';
+
 
 function App() {
+
+  useEffect(() => {
+    document.title = "Movie Matcher"
+ }, []);
+ 
   return (
     <div className="App">
       <Navbar />
