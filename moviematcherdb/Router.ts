@@ -14,8 +14,10 @@ const {
    deleteFriend,
   // addWant,
   // deleteWant,
+  // getWant,
   // addBlacklist,
   // deleteBlacklist,
+  // getBlacklist
 
 } = require('./Controllers/UserController');
 
@@ -28,8 +30,10 @@ router.get('/user/profile', authMiddleware, getUser);
  router.delete('/user/friends', authMiddleware, deleteFriend);
 // router.post('/user/wants', addWant);
 // router.delete('/user/wants', deleteWant);
+// router.get('/user/wants'), getWant);
 // router.post('/user/blacklist', addBlacklist);
 // router.delete('/user/blacklist', deleteBlacklist);
+// router.get('/user/blacklist'), getBlacklist);
 
 //Movie Controller Routes
 // const {
