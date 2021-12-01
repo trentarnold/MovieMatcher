@@ -262,6 +262,30 @@ async function getBlacklist (req: RequestInstance, res: Response) {
     console.log(err.message)
     res.sendStatus(500)
   }
+  
+}
+
+async function updatePicture (req: RequestInstance, res: Response) {
+  try{ 
+    if (req.files === null) {
+      return res.status(400).send('No file sent');
+    }
+    const date = String(Date.now());
+    const directory = path.join(__dirname, `../public/`);
+      if(req.files) {
+        const newImage = req.files.image;
+        newImage.mv(directory + date + newImage.name, (e: Error) => { 
+        res.status(201).json({fileName: date + newImage.name, filePath:`/${date + newImage.name}`});
+        if(e) {
+          console.log(e);
+          return res.status(500);
+        }
+      })
+     }
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
 }
 
 module.exports = {
@@ -279,5 +303,6 @@ module.exports = {
   addBlacklist,
   deleteBlacklist,
   getBlacklist,
-  getSpecificUser
+  getSpecificUser,
+  updatePicture,
 }

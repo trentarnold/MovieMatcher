@@ -19,7 +19,8 @@ const {
    getWant,
    addBlacklist,
    deleteBlacklist,
-   getBlacklist
+   getBlacklist,
+   updatePicture,
 
 } = require('./Controllers/UserController');
 
@@ -30,6 +31,7 @@ router.get('/user/allPeople', authMiddleware, getAllPeople)
 router.get('/user/friends',authMiddleware, getFriends);
 router.post('/user/create', createUser);
 router.post('/user/login', loginUser);
+router.post('/user/picture', updatePicture)
 router.post('/user/friends', authMiddleware, addFriend);
 router.delete('/user/friends', authMiddleware, deleteFriend);
 router.post('/user/wants', authMiddleware, addWant);
