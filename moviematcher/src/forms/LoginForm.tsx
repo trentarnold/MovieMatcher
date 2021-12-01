@@ -40,7 +40,7 @@ const LoginForm = () => {
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await ServerApiService.userLogin(username, password)
-    if (response.confirmed) {
+    if (response.accessToken) {
       const authToken = response.accessToken;
       dispatch(setToken(authToken));
       handleClose();
