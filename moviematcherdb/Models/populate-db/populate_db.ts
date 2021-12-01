@@ -1,6 +1,6 @@
 import { sequelize } from '../index'
 import { connectDB } from '../index'
-import User from '../user';
+import User from '../User';
 import WatchedMovie from '../watched_movie';
 import Rating from '../rating';
 import Friend from '../friend';
