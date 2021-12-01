@@ -24,10 +24,12 @@ const CreateAccountForm = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [pic, setPic] = useState<File>()
+  const [base64,setBase64] = useState<string | ArrayBuffer | null>('')
   const { isOpen, onOpen, onClose } = useDisclosure();
   const open = useAppSelector(selectCreateAccount);
   const dispatch = useAppDispatch()
-
+  console.log(base64);
   useEffect(() => {
     if(open) {
       onOpen()
@@ -36,7 +38,9 @@ const CreateAccountForm = () => {
 
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleClose()
+    getBase64();
+    //we will send username, email, base64 and password
+    handleClose();
     setUserName('');
     setEmail('');
     setPassword('');
@@ -45,6 +49,16 @@ const CreateAccountForm = () => {
   const handleClose = () => {
     dispatch(turnOffCreateAccount());
     onClose()
+  }
+  const getBase64 = async() => {
+    const reader = new FileReader();
+    if(pic) reader.readAsDataURL(pic);
+    reader.onload = function () {
+      setBase64(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   }
 
     return (
@@ -109,6 +123,11 @@ const CreateAccountForm = () => {
                   </Input>
                 </InputGroup> 
               </FormControl>
+              <Input type='file' onChange = {
+                (e: React.FormEvent<HTMLInputElement>) => {
+                  if (e.currentTarget.files) setPic(e.currentTarget.files[0])
+                }
+              }></Input>
             </ ModalBody>
             <ModalFooter>
               <Button mr={3} onClick={() => {
