@@ -1,4 +1,4 @@
-import User from "../user"
+import User from "../User"
 const bcrypt = require('bcryptjs');
 
 export async function populateUsers() {

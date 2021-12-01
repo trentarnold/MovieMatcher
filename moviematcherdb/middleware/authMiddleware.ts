@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 import { fetchUserQuery } from '../models/queries/userQueries';
-import { UserAttributes } from '../models/user';
+import { UserAttributes } from '../models/User';
 import { Request, Response, NextFunction } from 'express';
 require('dotenv').config();
 
