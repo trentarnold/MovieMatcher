@@ -1,9 +1,10 @@
 import {Movie, Results} from '../../../interfaces/MovieInterface';
 import { movieDetailsPlaceHolder } from '../moviePlaceholder';
-import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails'
-import { Observable } from 'redux';
-import { ActorListInterface } from '../../../interfaces/ActorList'
+import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails';
+import { ActorListInterface } from '../../../interfaces/ActorList';
 import { actorListPlaceholder } from '../actorListPlaceholder';
+import { ActorDetailsInterface } from '../../../interfaces/ActorDetails';
+import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
 const BASE_URL = 'http://localhost:3001/'
 
 const APIService = {
@@ -60,6 +61,16 @@ const APIService = {
     } catch (e) {
       console.log(e);
       return {results:[]};
+    }
+  },
+  getActorDetails: async(actorId:number): Promise<ActorDetailsInterface> => {
+    try {
+      const actorDetails = await fetch(`https://api.themoviedb.org/3/person/${actorId}?api_key=66be68e2d9a8be7fee88a803b45d654b`)
+      return await actorDetails.json();
+      
+    }catch(e) {
+      console.log(e)
+      return actorDetailsPlaceholder;
     }
   },
   getCombinedCredits: async(actorId:number): Promise<Movie[]> => {
