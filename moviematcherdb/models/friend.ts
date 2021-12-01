@@ -1,12 +1,12 @@
 import { Model } from 'sequelize';
 import { sequelize, DataTypes } from './index';
 
-interface FriendAttributes {
+export interface FriendAttributes {
   uid: number;
   friendid: number;
 };
 
-interface FriendInstance
+export interface FriendInstance
   extends Model<FriendAttributes>,
   FriendAttributes {
       createdAt?: Date;
