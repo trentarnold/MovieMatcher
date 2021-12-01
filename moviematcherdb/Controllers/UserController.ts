@@ -172,7 +172,7 @@ async function updatePicture (req: RequestInstance, res: Response) {
     const directory = path.join(__dirname, `../public/`)
       if(req.files) {
         const newImage = req.files.image;
-        newImage.mv(directory + date + newImage.name, (e: Error) => {
+        newImage.mv(directory + date + newImage.name, (e: Error) => { 
         res.status(201).json({fileName: date + newImage.name, filePath:`/${date + newImage.name}`})
         if(e) {
           console.log(e);
