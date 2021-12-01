@@ -1,12 +1,12 @@
 import { Model } from 'sequelize';
 import { sequelize, DataTypes } from './index';
 
-interface WhitelistItemAttributes {
+export interface WhitelistItemAttributes {
   uid: number;
   movieid: number;
 };
 
-interface WhitelistItemInstance
+export interface WhitelistItemInstance
   extends Model<WhitelistItemAttributes>,
   WhitelistItemAttributes {
       createdAt?: Date;
