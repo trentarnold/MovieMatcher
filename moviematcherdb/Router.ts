@@ -9,7 +9,7 @@ const {
   // getUser,
   // getFriends,
    createUser,
-  // loginUser,
+   loginUser,
   // addFriend,
   // deleteFriend,
   // findFriends,
@@ -25,7 +25,7 @@ const {
 router.get('/user/profile', authMiddleware, getUser);
 // router.get('/user/friends', getFriends);
  router.post('/user/create', createUser);
-// router.post('/user/login', loginUser);
+ router.post('/user/login', loginUser);
 // router.put('/user/friends', addFriend);
 // router.delete('/user/friends', deleteFriend);
 // router.post('/user/wants', addWant);

@@ -66,22 +66,23 @@ async function createUser (req:Request,res:Response) {
   }
 }
 
-async function loginUser (req:Request,res:Response) {
+async function loginUser (req:Request,res:Response) { //needs work
   try {
     const { username, password } = req.body;
-    // const user = await db.User.findOne({where: { username: `${username}`}});
-    // if(!user){
-    //   return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
-    // };
-    /*const validatedUser = await bcrypt.compare(password, user.password);
+    const user = await searchByUsername(username);
+    if(user === null){
+       return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
+     };
+    const validatedUser = await bcrypt.compare(password, user.password);
     if(validatedUser){
-      //const accessToken = jwt.sign({_id: user.id}, SECRET_KEY);
+      const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
         res.status(200).send({
-         db fields here
+          confirmed: true, accessToken
          })
     }
     else{
-      res.status(400).send({confirmed: false)}*/
+      res.status(400).send({confirmed: false});
+    }
   }
   catch (err:any) {
     console.log(err.message)
