@@ -4,13 +4,14 @@ import { sequelize, DataTypes } from './index';
 export interface FriendAttributes {
   uid: number;
   friendid: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export interface FriendInstance
   extends Model<FriendAttributes>,
   FriendAttributes {
-      createdAt?: Date;
-      updatedAt?: Date;
+      dataValues?: FriendAttributes
     }
 
     const Friend = sequelize.define<FriendInstance>('friend', {
