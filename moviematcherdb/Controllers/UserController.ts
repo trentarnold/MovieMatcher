@@ -2,20 +2,20 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
+import { createUserQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
+require('dotenv').config();
 
-async function updateUser (req:Request,res:Response) {
-  try{
-    const { username, value, newValue }  =req.body;
-    //await db.User.findOne({ where: {username: username}}).then(user => {
-     // user.update({ [value]: newValue });
-    //})
-    res.status(201).send('User updated');
-  }
-  catch (err:any){
-    console.log(err.message)
-    res.sendStatus(500);
-  }
-}
+// async function updateUser (req:Request,res:Response) {
+//   try{
+//     const { username, value, newValue }  =req.body;
+//     await updateUserQuery(req.user.id, req.body);
+//     res.status(201).send('User updated');
+//   }
+//   catch (err:any){
+//     console.log(err.message)
+//     res.sendStatus(500);
+//   }
+// }
 
 export async function getUser (req:RequestInstance, res:Response) {
   try {
@@ -24,7 +24,7 @@ export async function getUser (req:RequestInstance, res:Response) {
     } else {
       res.status(500).send({message: "User not authorized"})
     }
-    
+
   }
   catch (err:any) {
     console.log(err.message)
@@ -45,20 +45,20 @@ export async function getFriends (req:Request,res:Response) {
 }
 
 async function createUser (req:Request,res:Response) {
+  console.log('hit create user')
   try {
-    const {username, email, password} = req.body;
-    const hash = await bcrypt.hast(password, 10);
-    //const user = await db.User.findOne({ where: { username: username}});
-    //if(user) return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
-    //const newUser = await db.User.create({
-     // username,
-    //   email,
-    //   password //need to update with db schema
-    // });
-    // if(newUser){
-    //   const accessToken = jwt.sign({_id: newUser.id}, SECRET_KEY);
-    //   res.status(201).send({ confirmed: true, accessToken})
-    // }
+    let {username, email, password, profile_pic} = req.body;
+     const hash = await bcrypt.hash(password, 10);
+     password = hash;
+    const user = await searchByUsername(username);
+    if (user != null) {
+      return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
+    }
+    const newUser = await createUserQuery({username, email, password, profile_pic});
+    if(newUser){
+      const accessToken = jwt.sign({id: newUser.id}, process.env.SECRET_KEY);
+      res.status(201).send({ confirmed: true, accessToken})
+    }
   }
   catch (err:any) {
     console.log(err.message)
@@ -66,22 +66,23 @@ async function createUser (req:Request,res:Response) {
   }
 }
 
-async function loginUser (req:Request,res:Response) {
+async function loginUser (req:Request,res:Response) { //needs work
   try {
     const { username, password } = req.body;
-    // const user = await db.User.findOne({where: { username: `${username}`}});
-    // if(!user){
-    //   return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
-    // };
-    /*const validatedUser = await bcrypt.compare(password, user.password);
+    const user = await searchByUsername(username);
+    if(user === null){
+       return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
+     };
+    const validatedUser = await bcrypt.compare(password, user.password);
     if(validatedUser){
-      //const accessToken = jwt.sign({_id: user.id}, SECRET_KEY);
+      const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
         res.status(200).send({
-         db fields here
+          confirmed: true, accessToken
          })
     }
     else{
-      res.status(400).send({confirmed: false)}*/
+      res.status(400).send({confirmed: false});
+    }
   }
   catch (err:any) {
     console.log(err.message)
@@ -184,7 +185,7 @@ function updateProfilePic (req:Request,res:Response) {
 }
 
 module.exports = {
-  updateUser,
+ // updateUser,
   getUser,
   getFriends,
   createUser,

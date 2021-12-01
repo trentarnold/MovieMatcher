@@ -1,6 +1,6 @@
 const express = require('express');
 export const router = express.Router();
-
+import { authMiddleware } from "./middleware/authMiddleware";
 
 
 //User Controller Routes
@@ -8,8 +8,8 @@ const {
   // updateUser,
   // getUser,
   // getFriends,
-  // createUser,
-  // loginUser,
+   createUser,
+   loginUser,
   // addFriend,
   // deleteFriend,
   // findFriends,
@@ -22,10 +22,10 @@ const {
 } = require('./Controllers/UserController');
 
 //router.put('/user/profile/:type/:add', updateUser);
-router.get('/user/profile', getUser);
+router.get('/user/profile', authMiddleware, getUser);
 // router.get('/user/friends', getFriends);
-// router.post('/user/create', createUser);
-// router.post('/user/login', loginUser);
+ router.post('/user/create', createUser);
+ router.post('/user/login', loginUser);
 // router.put('/user/friends', addFriend);
 // router.delete('/user/friends', deleteFriend);
 // router.post('/user/wants', addWant);
