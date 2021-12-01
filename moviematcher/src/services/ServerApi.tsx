@@ -32,8 +32,8 @@ export const ServerApiService = {
         },
         body: JSON.stringify({username, password})
       })
-      const {confirmed, accessToken} = await response.json()
-      return {confirmed, accessToken};
+      const {user, accessToken} = await response.json()
+      return {user, accessToken};
     } catch (e) {
       console.log(e);
       return {confirmed: false, accessToken:''};
