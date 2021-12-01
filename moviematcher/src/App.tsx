@@ -9,7 +9,7 @@ import {Routes, Route, Outlet} from 'react-router-dom';
 import LoginForm from './forms/LoginForm';
 import CreateAccountForm from './forms/CreateAccountForm';
 import { useEffect } from 'react';
-
+import ActorPage from './components/ActorPage/ActorPage';
 
 function App() {
 
@@ -26,6 +26,7 @@ function App() {
           <Route path='/recent' element={<RecentActivity />} />
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/movieDetails/:id' element={<MoviePage />} />
+          <Route path='/actorDetails/:id' element = {<ActorPage />} />
       </Routes>
       <div className="outlet">
         <Outlet />
