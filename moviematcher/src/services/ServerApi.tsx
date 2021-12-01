@@ -9,6 +9,21 @@ interface User {
   profile_pic:string | ArrayBuffer | null
 }
 export const ServerApiService = {
+  getUser: async(accessToken:string): Promise<UserInterface> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/profile`, {
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      });
+      return await response.json();
+    } catch (e) {
+      console.log(e);
+      return UserPlaceholder;
+    }
+  },
   createUser: async(user:User): Promise<AccessTokenResponse> => {
     try {
       let response = await fetch(`${BASE_URL}/user/create`, {
