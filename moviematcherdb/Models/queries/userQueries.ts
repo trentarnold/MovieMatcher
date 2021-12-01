@@ -14,7 +14,7 @@ export async function getAllPeopleQuery() {
 }
 
 export async function searchByUsername(username: string): Promise<UserAttributes | null> {
-  const user = await User.findOne({where: {username: username}, attributes: ['id', 'username', 'email', 'profile_pic', 'createdAt', 'updatedAt']})
+  const user = await User.findOne({where: {username: username}})
   return user && user.dataValues ? user.dataValues : null;
 }
 
