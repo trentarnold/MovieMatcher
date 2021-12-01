@@ -3,6 +3,7 @@ const cors = require('cors');
 const app = express();
 const port:number = 3001;
 const router = require('./Router');
+const fileUpload = require('express-fileupload');
 import { connectDB } from './models';
 import { Request, Response } from 'express';
 
@@ -13,6 +14,7 @@ import { Request, Response } from 'express';
 
 app.use(cors());
 app.use(express.json());
+app.use(fileUpload());
 app.use(router);
 app.get('*', (req:Request,res:Response) => {
   res.status(404).send('The page you are looking for has not been found')
