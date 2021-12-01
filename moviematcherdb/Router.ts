@@ -5,23 +5,23 @@ import { authMiddleware } from "./middleware/authMiddleware";
 
 //User Controller Routes
 const {
-  // updateUser,
-  // getUser,
+   updateUser,
+   getUser,
    getFriends,
    createUser,
    loginUser,
    addFriend,
    deleteFriend,
-   findFriends,
   // addWant,
   // deleteWant,
+  // getWant,
   // addBlacklist,
   // deleteBlacklist,
-  // updateProfilePic
-  getUser
+  // getBlacklist
+
 } = require('./Controllers/UserController');
 
-//router.put('/user/profile/:type/:add', updateUser);
+router.put('/user/profile',authMiddleware, updateUser);
 router.get('/user/profile', authMiddleware, getUser);
  router.get('/user/friends',authMiddleware, getFriends);
  router.post('/user/create', createUser);
@@ -30,8 +30,10 @@ router.get('/user/profile', authMiddleware, getUser);
  router.delete('/user/friends', authMiddleware, deleteFriend);
 // router.post('/user/wants', addWant);
 // router.delete('/user/wants', deleteWant);
+// router.get('/user/wants'), getWant);
 // router.post('/user/blacklist', addBlacklist);
 // router.delete('/user/blacklist', deleteBlacklist);
+// router.get('/user/blacklist'), getBlacklist);
 
 //Movie Controller Routes
 // const {

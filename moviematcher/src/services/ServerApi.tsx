@@ -39,7 +39,22 @@ export const ServerApiService = {
       return {user: UserPlaceholder, accessToken:''};
     }
   },
-
+  getFriends: async(accessToken:string) => {
+    try{
+      const response = await fetch(`${BASE_URL}/user/friends`, {
+        method: 'Get',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      })
+      const data = response.json();
+      console.log(data);
+    }catch(err) {
+      console.log(err);
+    }
+  }
 }
 
 

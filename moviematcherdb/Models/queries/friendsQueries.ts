@@ -1,6 +1,7 @@
 import Friend from "../friend";
 import { fetchUserQuery } from "./userQueries";
 import { Op } from 'sequelize';
+import { connectDB } from "../index";
 
 export async function findAllFriends(id: number) {
   const friendIDArr: [number] = [id];

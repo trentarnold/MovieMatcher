@@ -21,7 +21,7 @@ import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { setToken } from '../redux/features/modals/authSlice';
 import { ServerApiService } from '../services/ServerApi'
 import './LoginForm.css'
-
+import { setUserId } from '../redux/features/user/userIdSlice';
 
 
 const LoginForm = () => {
@@ -45,6 +45,7 @@ const LoginForm = () => {
       if (response.accessToken) {
         const authToken = response.accessToken;
         dispatch(setToken(authToken));
+        dispatch(setUserId(response.user.id))
         handleClose();
         setUsername('');
         setPassword('');
