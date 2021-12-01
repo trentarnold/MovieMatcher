@@ -16,7 +16,7 @@ const UserSearch = () => {
         <div className="user-search">
             <input className="search-bar" value={query} onChange={handleChange}/>
             <div className="user-icons"> 
-              <FriendIcon user={profilePlaceholder} friend={false}/>
+              {/* <FriendIcon user={profilePlaceholder} friend={false}/> */}
             </div>
         </div>
     )

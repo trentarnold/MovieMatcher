@@ -1,13 +1,20 @@
 import { NavLink } from 'react-router-dom'
 import { Button } from '@chakra-ui/button';
-import { useAppDispatch } from '../../redux/app/hooks';
+import { useAppDispatch, useAppSelector  } from '../../redux/app/hooks';
 import { turnOnLogin } from '../../redux/features/modals/loginSlice';
 import { toggleFriendsList } from '../../redux/features/modals/friendsListSlice'
+import { clearToken, selectAuth } from '../../redux/features/modals/authSlice';
 
 import './nav-bar.css'
 const Navbar = () => {
   
+  const auth = useAppSelector(selectAuth)
   const dispatch = useAppDispatch()
+
+  const handleLogOut = () =>{
+    dispatch(clearToken())
+  }
+  
   return (
     <div className="nav-bar">
       <div className="nav-areas">
@@ -26,7 +33,8 @@ const Navbar = () => {
       </div>
       <div className="buttons">
         <Button onClick={() => dispatch(toggleFriendsList())}> Friends </Button>
-        <Button onClick={() => dispatch(turnOnLogin())}> Login </Button>
+        {!auth && <Button onClick={() => dispatch(turnOnLogin())}> Login </Button>}
+        {auth && <Button onClick={handleLogOut}>Log Out</Button>}
       </div>
     </div>
   )
