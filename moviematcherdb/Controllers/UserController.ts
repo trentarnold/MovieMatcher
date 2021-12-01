@@ -76,14 +76,14 @@ async function createUser (req:Request,res:Response) {
     let {username, email, password, profile_pic} = req.body;
      const hash = await bcrypt.hash(password, 10);
      password = hash;
-    const user = await searchByUsername(username);
-    if (user != null) {
+    const Existinguser = await searchByUsername(username);
+    if (Existinguser != null) {
       return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
     }
-    const newUser = await createUserQuery({username, email, password, profile_pic});
-    if(newUser){
-      const accessToken = jwt.sign({id: newUser.id}, process.env.SECRET_KEY);
-      res.status(201).send({ newUser, accessToken}) //returns the created user and their JWT
+    const User = await createUserQuery({username, email, password, profile_pic});
+    if(User){
+      const accessToken = jwt.sign({id: User.id}, process.env.SECRET_KEY);
+      res.status(201).send({ User, accessToken}) //returns the created user and their JWT
     }
   }
   catch (err:any) {
@@ -262,11 +262,11 @@ async function getBlacklist (req: RequestInstance, res: Response) {
     console.log(err.message)
     res.sendStatus(500)
   }
-  
+
 }
 
 async function updatePicture (req: RequestInstance, res: Response) {
-  try{ 
+  try{
     if (req.files === null) {
       return res.status(400).send('No file sent');
     }
@@ -274,7 +274,7 @@ async function updatePicture (req: RequestInstance, res: Response) {
     const directory = path.join(__dirname, `../public/`);
       if(req.files) {
         const newImage = req.files.image;
-        newImage.mv(directory + date + newImage.name, (e: Error) => { 
+        newImage.mv(directory + date + newImage.name, (e: Error) => {
         res.status(201).json({fileName: date + newImage.name, filePath:`/${date + newImage.name}`});
         if(e) {
           console.log(e);
