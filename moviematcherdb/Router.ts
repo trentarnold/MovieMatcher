@@ -7,7 +7,7 @@ import { authMiddleware } from "./middleware/authMiddleware";
 const {
   // updateUser,
   // getUser,
-  // getFriends,
+   getFriends,
    createUser,
    loginUser,
   // addFriend,
@@ -23,7 +23,7 @@ const {
 
 //router.put('/user/profile/:type/:add', updateUser);
 router.get('/user/profile', authMiddleware, getUser);
-// router.get('/user/friends', getFriends);
+ router.get('/user/friends',authMiddleware, getFriends);
  router.post('/user/create', createUser);
  router.post('/user/login', loginUser);
 // router.put('/user/friends', addFriend);
