@@ -16,7 +16,7 @@ export async function findAllFriends(id: number) {
   friendUsers.map(friend => {
     if (friend.dataValues) friendIDArr.push(friend.dataValues.uid)
   })
-  if (friendIDArr.length === 1) return null
+  if (friendIDArr.length === 1) return 'no friends'
 
   friendIDArr.shift();
   const uniqueSet = new Set(friendIDArr);
@@ -30,12 +30,12 @@ export async function findAllFriends(id: number) {
 
 async function friendExists(id: number, friendID: number) {
   const exists = await Friend.findOne({where: { [Op.or]:[ { [Op.and]: [{uid: id}, {friendid: friendID}] }, { [Op.and]: [{uid: friendID}, {friendid: id}] } ] }})
-  return exists ? exists.dataValues : false;
+  return exists && exists.dataValues ? exists.dataValues : false;
 }
 
 export async function addFriendQuery(id: number, friendID: number) {
   const exists = await friendExists(id, friendID);
-  if (exists) return null
+  if (exists) return 'already exists'
   else {
     await Friend.create({uid: id, friendid: friendID})
     return await findAllFriends(id);
@@ -44,7 +44,7 @@ export async function addFriendQuery(id: number, friendID: number) {
 
 export async function deleteFriendQuery(id: number, friendID: number) {
   const exists = await friendExists(id, friendID);
-  if (!exists) return null
+  if (!exists) return 'does not exist'
   else {
     const userID = exists.uid;
     const friend = exists.friendid;
@@ -52,3 +52,10 @@ export async function deleteFriendQuery(id: number, friendID: number) {
     return await findAllFriends(id);
   }
 }
+
+async function run() {
+  await connectDB();
+  console.log(await findAllFriends(1))
+}
+
+run()
