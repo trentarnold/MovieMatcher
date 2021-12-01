@@ -164,6 +164,10 @@ async function deleteWant (req:Request,res:Response) {
   }
 }
 
+async function getWant (req: Request, res: Response) {
+
+}
+
 async function addBlacklist (req:Request,res:Response){
   try {
     // const newBlacklist = await db.Blacklist.create(req.body);
@@ -192,6 +196,9 @@ async function deleteBlacklist (req:Request,res:Response) {
   }
 }
 
+async function getBlacklist (req: Request, res: Response) {
+
+}
 
 module.exports = {
   updateUser,
@@ -203,6 +210,8 @@ module.exports = {
   deleteFriend,
   addWant,
   deleteWant,
+  getWant,
   addBlacklist,
   deleteBlacklist,
+  getBlacklist
 }
