@@ -1,9 +1,10 @@
 import React from 'react'
 import './friend-icon.css'
-import {IUser} from '../../../../../interfaces/userInterface'
+import {IUser} from '../../../../../interfaces/userInterface';
+import { User } from '../../../../../interfaces/responses'
 
 type Props = {
-    user: IUser,
+    user: User,
     friend: boolean,
 }
 
@@ -24,7 +25,7 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
 
     return (
         <div className="friend-icon">
-            <img src={user.profilePic} alt="profile"/>
+            <img src={user.profile_pic} alt="profile"/>
             <div className="user-icon-middle">
               <p>{user.username}</p>
               <div className="user-icon-buttons">
