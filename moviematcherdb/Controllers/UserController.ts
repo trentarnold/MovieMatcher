@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
-import { findAllFriends } from '../models/queries/friendsQueries';
+import { addFriendQuery, deleteFriendQuery, findAllFriends } from '../models/queries/friendsQueries';
 import { createUserQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
 require('dotenv').config();
 
@@ -81,9 +81,10 @@ async function loginUser (req:Request,res:Response) { //needs work
      };
     const validatedUser = await bcrypt.compare(password, user.password);
     if(validatedUser){
+      console.log(validatedUser);
       const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
         res.status(200).send({
-          confirmed: true, accessToken
+         accessToken, user
          })
     }
     else{
@@ -96,14 +97,16 @@ async function loginUser (req:Request,res:Response) { //needs work
   }
 }
 
-async function addFriend (req:Request,res:Response) {
+async function addFriend (req:RequestInstance,res:Response) {
   try {
-    // const friend = await db.Friends.create(req.body)
-    // if(friend){
-    //   res.status(201).send('Friend added!');
-    // } else {
-    //   res.status(401).send(`Friend could not be added.`);
-    // }
+      if(req.body && req.user){
+     const friend = await addFriendQuery(req.user.id, req.body.friendid)
+    if(friend != null){
+      res.status(201).send(friend);
+    } else {
+      res.status(401).send(`Friend could not be added.`);
+    }
+    }
   }
   catch (err:any){
     console.log(err.message)
@@ -111,12 +114,16 @@ async function addFriend (req:Request,res:Response) {
   }
 }
 
-async function deleteFriend (req:Request,res:Response) {
+async function deleteFriend (req:RequestInstance,res:Response) {
   try {
-    const {id} = req.body;
-    // const friend =  await db.Friends.findOne({ where: {id: id}});
-    // await friend.destroy();
-    res.status(200).send('Friend removed.');
+    if(req.body&&req.user){
+      const deleted = await deleteFriendQuery(req.user.id, req.body.friendid);
+      if(deleted != null){
+        res.status(200).send('Friend removed.' + deleted);
+      } else {
+        res.status(401).send('Friend could not be deleted');
+      }
+    }
   }
   catch (err:any) {
     console.log(err.message)
