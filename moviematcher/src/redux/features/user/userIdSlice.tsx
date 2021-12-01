@@ -23,5 +23,5 @@ export const userIdSlice = createSlice({
 });
 
 export const { setUserId, clearUserId } = userIdSlice.actions;
-export const selectAuth = (state: RootState) => state.userId.value;
+export const selectUserId = (state: RootState) => state.userId.value;
 export default userIdSlice.reducer;

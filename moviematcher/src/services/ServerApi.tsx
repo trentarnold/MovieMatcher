@@ -25,7 +25,7 @@ export const ServerApiService = {
   },
   userLogin: async(username:string, password:string): Promise<AccessTokenResponse> => {
     try {
-      const response = await fetch(`${BASE_URL}user/login`, {
+      const response = await fetch(`${BASE_URL}/user/login`, {
         method: 'POST',
         headers:{
           'Content-Type': 'application/json'
