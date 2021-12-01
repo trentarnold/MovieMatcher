@@ -26,7 +26,7 @@ const {
 router.put('/user/profile',authMiddleware, updateUser);
 router.get('/user/profile', authMiddleware, getUser);
 router.get('/user/otherUser', authMiddleware, getSpecificUser) // Not for user calls, internal use only!
-router.get('user/allPeople', authMiddleware, getAllPeople)
+router.get('/user/allPeople', authMiddleware, getAllPeople)
  router.get('/user/friends',authMiddleware, getFriends);
  router.post('/user/create', createUser);
  router.post('/user/login', loginUser);
