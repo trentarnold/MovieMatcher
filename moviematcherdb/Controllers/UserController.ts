@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
 import { addFriendQuery, deleteFriendQuery, findAllFriends } from '../models/queries/friendsQueries';
-import { createUserQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
+import { createUserQuery, fetchUserQuery, getAllPeopleQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
 require('dotenv').config();
 
 async function updateUser (req:RequestInstance,res:Response) {
@@ -35,7 +35,22 @@ export async function getUser (req:RequestInstance, res:Response) {
     res.sendStatus(500)
   }
 }
+export async function getSpecificUser (req:Request, res:Response) {
+  try {
+    if (req.body) {
+      const specificUser = await fetchUserQuery(req.body.id);
+      console.log(specificUser);
+      res.status(200).send(specificUser);
+    } else {
+      res.status(500).send({message: "User not found"})
+    }
 
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500)
+  }
+}
 export async function getFriends (req:RequestInstance,res:Response) {
   try{
     const {User} = req.body;
@@ -66,7 +81,7 @@ async function createUser (req:Request,res:Response) {
     const newUser = await createUserQuery({username, email, password, profile_pic});
     if(newUser){
       const accessToken = jwt.sign({id: newUser.id}, process.env.SECRET_KEY);
-      res.status(201).send({ confirmed: true, accessToken})
+      res.status(201).send({ newUser, accessToken})
     }
   }
   catch (err:any) {
@@ -93,6 +108,17 @@ async function loginUser (req:Request,res:Response) { //needs work
     else{
       res.status(400).send({confirmed: false});
     }
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500);
+  }
+}
+
+async function getAllPeople (req: Request, res: Response){
+  try{
+    const people = await getAllPeopleQuery();
+    res.status(201).send(people);
   }
   catch (err:any) {
     console.log(err.message)
@@ -135,15 +161,15 @@ async function deleteFriend (req:RequestInstance,res:Response) {
     res.sendStatus(500)
   }
 }
-
-async function addWant (req:Request,res:Response) {
+/*
+async function addWant (req:RequestInstance,res:Response) {
   try {
-  //   const Want = await db.Wants.create(req.body);
-  //   if(Want) {
-  //     res.status(201).send('Want added');
-  //   } else {
-  //     res.status(401).send(`Couldn't add want.`)
-  //   }
+    const Want = await addWantQuery(req.body.id);
+    if(Want) {
+      res.status(201).send('Want added');
+    } else {
+      res.status(401).send(`Couldn't add want.`)
+    }
    }
   catch (err:any) {
     console.log(err.message)
@@ -164,19 +190,33 @@ async function deleteWant (req:Request,res:Response) {
   }
 }
 
-async function getWant (req: Request, res: Response) {
+async function getWant (req: RequestInstance, res: Response) {
+  try {
+    if (req.user) {
+      const wants = await fetchWhiteList(req.user.id);
+      if(wants != null){
+      res.status(200).send(wants);
+      }
+    } else {
+      res.status(500).send('Unable to retrieve Want List..')
+    }
 
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500)
+  }
 }
 
 async function addBlacklist (req:Request,res:Response){
   try {
-    // const newBlacklist = await db.Blacklist.create(req.body);
-    // if(newBlacklist) {
-    //   res.status(201).send('Blacklist added');
-    // } else {
-    //   res.status(401).send(`Couldn't add blacklist.`)
-    // }
-  }
+    const Want = await addBlacklistQuery(req.body.id);
+    if(Want) {
+      res.status(201).send('Blacklist added');
+    } else {
+      res.status(401).send(`Couldn't add Blacklist item.`)
+    }
+   }
   catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
@@ -196,9 +236,21 @@ async function deleteBlacklist (req:Request,res:Response) {
   }
 }
 
-async function getBlacklist (req: Request, res: Response) {
+async function getBlacklist (req: RequestInstance, res: Response) {
+  try {
+    if (req.user) {
+      const Blacklist = await fetchBlackList(req.user.id);
+      res.status(200).send(Blacklist);
+    } else {
+      res.status(500).send('Unable to retrieve Blacklist..')
+    }
 
-}
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500)
+  }
+}*/
 
 module.exports = {
   updateUser,
@@ -206,12 +258,14 @@ module.exports = {
   getFriends,
   createUser,
   loginUser,
+  getAllPeople,
   addFriend,
   deleteFriend,
-  addWant,
-  deleteWant,
-  getWant,
-  addBlacklist,
-  deleteBlacklist,
-  getBlacklist
+  // addWant,
+  // deleteWant,
+  // getWant,
+  // addBlacklist,
+  // deleteBlacklist,
+  // getBlacklist,
+  getSpecificUser
 }

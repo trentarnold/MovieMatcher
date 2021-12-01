@@ -5,6 +5,11 @@ export async function fetchUserQuery(id: number): Promise<UserAttributes | null>
   return user && user.dataValues ? user.dataValues : null;
 }
 
+export async function getAllPeopleQuery() {
+  const Users = await User.findAll();
+  return Users;
+}
+
 export async function searchByUsername(username: string): Promise<UserAttributes | null> {
   const user = await User.findOne({where: {username: username}})
   return user && user.dataValues ? user.dataValues : null;
