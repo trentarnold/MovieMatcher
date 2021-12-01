@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-//import { store } from './redux/app/store';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import * as serviceWorker from './serviceWorker';
@@ -15,6 +14,7 @@ import loginReducer, { LoginState } from './redux/features/modals/loginSlice'
 import createAccountReducer, { CreateAccountState } from './redux/features/modals/createAccountSlice'
 import friendsListReducer, { FriendsListState } from './redux/features/modals/friendsListSlice'
 import authReducer, {authState} from './redux/features/modals/authSlice'
+import userIdReducer, {userIdState} from './redux/features/user/userIdSlice'
 
 const persistConfig = {
   key: 'root',
@@ -25,7 +25,8 @@ interface IAppState {
   login: LoginState;
   createAccount: CreateAccountState;
   friendsList: FriendsListState;
-  auth: authState 
+  auth: authState; 
+  userId: userIdState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -33,7 +34,7 @@ const rootReducer = combineReducers<IAppState>({
   createAccount: createAccountReducer,
   friendsList: friendsListReducer,
   auth: authReducer,
-
+  userId: userIdReducer,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);
