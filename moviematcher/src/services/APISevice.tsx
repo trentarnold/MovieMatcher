@@ -1,7 +1,6 @@
 import {Movie, Results} from '../../../interfaces/MovieInterface';
 import { movieDetailsPlaceHolder } from '../moviePlaceholder';
 import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails'
-import {loginResponse} from '../../../interfaces/responses'
 import { Observable } from 'redux';
 import { ActorListInterface } from '../../../interfaces/ActorList'
 import { actorListPlaceholder } from '../actorListPlaceholder';
@@ -85,22 +84,6 @@ const APIService = {
       return []
     }
   },
-  userLogin: async(username:string, password:string): Promise<loginResponse> => {
-    try {
-      const response = await fetch(`${BASE_URL}user/login`, {
-        method: 'POST',
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({username, password})
-      })
-      const {confirmed, accessToken} = await response.json()
-      return {confirmed, accessToken};
-    } catch (e) {
-      console.log(e);
-      return {confirmed: false, accessToken:''};
-    }
-  }
 };
 
 

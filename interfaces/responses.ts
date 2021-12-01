@@ -1,5 +1,4 @@
-export interface loginResponse {
-    confirmed: boolean;
-    accessToken: string;
-  }
-  
+export interface AccessTokenResponse {
+  confirmed:boolean,
+  accessToken:string
+}

@@ -18,8 +18,8 @@ import { FaLock, FaUserAlt} from 'react-icons/fa';
 import { selectLogin, turnOffLogin } from '../redux/features/modals/loginSlice';
 import { turnOnCreateAccount } from '../redux/features/modals/createAccountSlice';
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
-import { setToken, selectAuth } from '../redux/features/modals/authSlice';
-import APIService from '../services/APISevice'
+import { setToken } from '../redux/features/modals/authSlice';
+import { ServerApiService } from '../services/ServerApi'
 import './LoginForm.css'
 
 
@@ -39,10 +39,10 @@ const LoginForm = () => {
 
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await APIService.userLogin(username, password)
+    const response = await ServerApiService.userLogin(username, password)
     if (response.confirmed) {
       const authToken = response.accessToken;
-      await dispatch(setToken(authToken));
+      dispatch(setToken(authToken));
       handleClose();
       //redirect user or have a modal pop up to confirm log in
     } else {alert('invalid username or password')}
