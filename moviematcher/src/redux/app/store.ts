@@ -3,6 +3,7 @@ import counterReducer from '../features/refernces/counter/counterSlice';
 import loginReducer from '../features/modals/loginSlice'
 import createAccountReducer from '../features/modals/createAccountSlice'
 import friendsListReducer from '../features/modals/friendsListSlice'
+import authReducer from '../features/modals/authSlice'
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     login: loginReducer,
     createAccount: createAccountReducer,
     friendsList: friendsListReducer,
+    auth: authReducer,
   },
 });
 
