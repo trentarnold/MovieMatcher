@@ -1,0 +1,9 @@
+.center {
+  text-align: center;
+  justify-self: center;
+}
+.movie-details-title-container.center {
+  justify-self: center;
+  align-self: center;
+  text-align: center;
+}

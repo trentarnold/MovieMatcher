@@ -50,6 +50,7 @@ const LoginForm = () => {
     setPassword('');
     }
 
+    
   const handleClose = () => {
     dispatch(turnOffLogin());
     onClose();

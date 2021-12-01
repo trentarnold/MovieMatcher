@@ -49,7 +49,7 @@ const User = sequelize.define<UserInstance>('user', {
     allowNull: false
   },
   profile_pic: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: true
   },
 })

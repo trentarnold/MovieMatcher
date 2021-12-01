@@ -1,6 +1,6 @@
 import User, { UserInstance, UserAttributes } from '../user';
 
-export async function fetchUserQuery(id: number) {
+export async function fetchUserQuery(id: number): Promise<UserInstance | null> {
   return await User.findOne({where: { id: id }}).then((user: any) => {
     const userInstance = user.dataValues;
     return userInstance;
@@ -19,5 +19,7 @@ export async function createUserQuery(user: { username: string, email: string, p
 }
 
 export async function updateUserQuery(id: number, fields:{ username?: string, email?: string, password?: string, profile_pic?: string }) {
-  return await User.update(fields, {where: {id: id}}).then((user: any) => user.dataValues);
+  await User.update(fields, {where: {id: id}}).then((user: any) => user.dataValues);
+  return await fetchUserQuery(id);
 }
+
