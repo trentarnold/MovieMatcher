@@ -1,6 +1,6 @@
 import {AccessTokenResponse} from '../../../interfaces/responses'
+import { UserPlaceholder } from '../UserPlaceholder'
 const BASE_URL = 'http://localhost:3001'
-
 interface User {
   username:string,
   email:string,
@@ -20,7 +20,7 @@ export const ServerApiService = {
       return await response.json();
     }catch(err) {
       console.log(err);
-      return {confirmed:false, accessToken:''}
+      return {user: UserPlaceholder, accessToken:''}
     }
   },
   userLogin: async(username:string, password:string): Promise<AccessTokenResponse> => {
@@ -36,7 +36,7 @@ export const ServerApiService = {
       return {user, accessToken};
     } catch (e) {
       console.log(e);
-      return {confirmed: false, accessToken:''};
+      return {user: UserPlaceholder, accessToken:''};
     }
   },
 
