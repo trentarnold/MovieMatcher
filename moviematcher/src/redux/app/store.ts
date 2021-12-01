@@ -5,7 +5,7 @@ import createAccountReducer from '../features/modals/createAccountSlice'
 import friendsListReducer from '../features/modals/friendsListSlice'
 import authReducer from '../features/modals/authSlice'
 import userIdReducer from '../features/user/userIdSlice'
-
+import friendIdsReducer from '../features/user/friendsIdSlice'
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -13,7 +13,8 @@ export const store = configureStore({
     createAccount: createAccountReducer,
     friendsList: friendsListReducer,
     auth: authReducer,
-    userId: userIdReducer
+    userId: userIdReducer,
+    friendIds: friendIdsReducer
   },
 });
 

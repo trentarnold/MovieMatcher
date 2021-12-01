@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
 import { addFriendQuery, deleteFriendQuery, findAllFriends } from '../models/queries/friendsQueries';

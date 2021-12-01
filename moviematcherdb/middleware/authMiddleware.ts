@@ -11,6 +11,7 @@ interface UserProperties extends UserAttributes {
 
 export interface RequestInstance extends Request {
   user?: UserProperties;
+  files?: {image:{name:string, mv:Function}}
 }
 
 export async function authMiddleware(req: RequestInstance, res: Response, next: NextFunction): Promise<void> {

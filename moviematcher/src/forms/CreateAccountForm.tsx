@@ -31,6 +31,7 @@ const CreateAccountForm = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const open = useAppSelector(selectCreateAccount);
   const dispatch = useAppDispatch()
+  
   useEffect(() => {
     if(open) {
       onOpen()

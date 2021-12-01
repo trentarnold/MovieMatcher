@@ -15,7 +15,7 @@ import createAccountReducer, { CreateAccountState } from './redux/features/modal
 import friendsListReducer, { FriendsListState } from './redux/features/modals/friendsListSlice'
 import authReducer, {authState} from './redux/features/modals/authSlice'
 import userIdReducer, {userIdState} from './redux/features/user/userIdSlice'
-
+import friendIdReducer, {friendIdsState} from './redux/features/user/friendsIdSlice'
 const persistConfig = {
   key: 'root',
   storage,
@@ -27,6 +27,7 @@ interface IAppState {
   friendsList: FriendsListState;
   auth: authState; 
   userId: userIdState;
+  friendIds: friendIdsState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -35,6 +36,7 @@ const rootReducer = combineReducers<IAppState>({
   friendsList: friendsListReducer,
   auth: authReducer,
   userId: userIdReducer,
+  friendIds: friendIdReducer,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);
