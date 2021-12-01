@@ -100,6 +100,7 @@ async function loginUser (req:Request,res:Response) { //needs work
 async function addFriend (req:RequestInstance,res:Response) {
   try {
       if(req.body && req.user){
+        if(req.user.id === req.body.friendid) return res.status(401).send(`Can't add yourself as a friend.`)
      const friend = await addFriendQuery(req.user.id, req.body.friendid)
     if(friend != null){
       res.status(201).send(friend);
@@ -117,6 +118,7 @@ async function addFriend (req:RequestInstance,res:Response) {
 async function deleteFriend (req:RequestInstance,res:Response) {
   try {
     if(req.body&&req.user){
+      if(req.user.id === req.body.friendid) return res.status(401).send(`Can't delete yourself as a friend.`)
       const deleted = await deleteFriendQuery(req.user.id, req.body.friendid);
       if(deleted != null){
         res.status(200).send(deleted);
