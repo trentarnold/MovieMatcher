@@ -1,16 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import './friend-search.css';
 import FriendIcon from '../friend-icon/friend-icon';
-import { profilePlaceholder } from '../../../profilePlaceholder';
 import { ServerApiService } from '../../../services/ServerApi';
-import { useAppSelector } from '../../../redux/app/hooks';
+import { setFriendIds } from '../../../redux/features/user/friendsIdSlice';
+import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { User } from '../../../../../interfaces/responses';
+import { selectFriendIds } from '../../../redux/features/user/friendsIdSlice';
 const FriendSearch = () => {
-  const accessToken = useAppSelector(selectAuth)
+  const dispatch = useAppDispatch();
+  const accessToken = useAppSelector(selectAuth);
+  const friendIds = useAppSelector(selectFriendIds);
   const [query, setQuery] = useState('');
   const [friends, setFriends] = useState<User[]>([]);
-  console.log(friends)
   function handleChange (e: React.FormEvent<HTMLInputElement>) {
       const input = e.currentTarget.value
       setQuery(input);
@@ -29,19 +31,15 @@ const FriendSearch = () => {
       return () => {
         isCancelled = true;
       }
-    }, [accessToken])
-  //add useEffect to get friendslist from redux and set as initial state
+    }, [accessToken, friendIds])
 
   return (
     <div className="friend-search">
       <input className="search-bar" value={query} onChange={handleChange}/>
       <div className="friend-icons">
         {friends.map((friend:any) => {
-          return <FriendIcon user={friend} friend={true} />
+          return <FriendIcon key={friend.id} user={friend} friend={true} />
         })}
-          {/* <FriendIcon user={profilePlaceholder} friend={true}/>
-          <FriendIcon user={profilePlaceholder} friend={true}/>
-          <FriendIcon user={profilePlaceholder} friend={true}/> */}
         </div>
 
     </div>
