@@ -58,3 +58,6 @@ export const ServerApiService = {
 }
 
 
+
+// router.get('/user/otherUser', authMiddleware, getSpecificUser) // Not for user calls, internal use only!
+// router.get('user/allPeople', authMiddleware, getAllPeople)
