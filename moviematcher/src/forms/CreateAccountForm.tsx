@@ -19,7 +19,7 @@ import { FaLock, FaUserAlt, FaUserTag} from 'react-icons/fa';
 import { selectCreateAccount, turnOffCreateAccount } from '../redux/features/modals/createAccountSlice';
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { turnOnLogin } from '../redux/features/modals/loginSlice';
-
+import { ServerApiService } from '../services/ServerApi';
 const CreateAccountForm = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -29,7 +29,6 @@ const CreateAccountForm = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const open = useAppSelector(selectCreateAccount);
   const dispatch = useAppDispatch()
-  console.log(base64);
   useEffect(() => {
     if(open) {
       onOpen()
@@ -39,7 +38,9 @@ const CreateAccountForm = () => {
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     getBase64();
-    //we will send username, email, base64 and password
+
+    let {accessToken, confirmed} = await ServerApiService.createUser({username:userName, email, password, profile_pic:base64});
+    console.log(accessToken, confirmed);
     handleClose();
     setUserName('');
     setEmail('');
