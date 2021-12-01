@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
+import { findAllFriends } from '../models/queries/friendsQueries';
 import { createUserQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
 require('dotenv').config();
 
@@ -35,8 +36,12 @@ export async function getUser (req:RequestInstance, res:Response) {
 export async function getFriends (req:Request,res:Response) {
   try{
     const {User} = req.body;
-    //const friends = await db.Friends.findAll( { where: }) waiting on DB info to complete search
-    //res.status(200).send(JSON.stringify(friends));
+    const friends = await findAllFriends(User.id);
+    if(friends === null){
+      res.status(200).send('User has no friends. Loser.')
+    } else{
+      res.status(200).send();
+    }
   }
   catch (err:any){
     console.log(err.message);
@@ -45,7 +50,6 @@ export async function getFriends (req:Request,res:Response) {
 }
 
 async function createUser (req:Request,res:Response) {
-  console.log('hit create user')
   try {
     let {username, email, password, profile_pic} = req.body;
      const hash = await bcrypt.hash(password, 10);
