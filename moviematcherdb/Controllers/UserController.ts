@@ -83,7 +83,7 @@ async function createUser (req:Request,res:Response) {
     const newUser = await createUserQuery({username, email, password, profile_pic});
     if(newUser){
       const accessToken = jwt.sign({id: newUser.id}, process.env.SECRET_KEY);
-      res.status(201).send({ newUser, accessToken}) //returns the created user and their JWT
+      res.status(201).send({ user = newUser, accessToken}) //returns the created user and their JWT
     }
   }
   catch (err:any) {
