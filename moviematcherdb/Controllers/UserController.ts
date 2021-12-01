@@ -189,15 +189,6 @@ async function deleteBlacklist (req:Request,res:Response) {
   }
 }
 
-function updateProfilePic (req:Request,res:Response) {
-  try {
-
-  }
-  catch (err:any) {
-    console.log(err.message)
-    res.sendStatus(500)
-  }
-}
 
 module.exports = {
  // updateUser,
@@ -211,5 +202,4 @@ module.exports = {
   deleteWant,
   addBlacklist,
   deleteBlacklist,
-  updateProfilePic
 }

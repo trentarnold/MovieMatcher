@@ -32,7 +32,6 @@ router.get('/user/profile', authMiddleware, getUser);
 // router.delete('/user/wants', deleteWant);
 // router.post('/user/blacklist', addBlacklist);
 // router.delete('/user/blacklist', deleteBlacklist);
-// router.put('/user/profile', updateProfilePic);
 
 //Movie Controller Routes
 // const {
