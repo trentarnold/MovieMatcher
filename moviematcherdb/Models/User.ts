@@ -12,6 +12,8 @@ export interface UserAttributes {
   email: string;
   password: string;
   profile_pic: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 /*
@@ -25,8 +27,7 @@ interface UserCreationAttributes
 export interface UserInstance
   extends Model<UserAttributes, UserCreationAttributes>,
     UserAttributes {
-      createdAt?: Date;
-      updatedAt?: Date;
+      dataValues?: UserAttributes
     }
 
 const User = sequelize.define<UserInstance>('user', {
