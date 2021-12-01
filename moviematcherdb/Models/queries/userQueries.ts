@@ -1,4 +1,4 @@
-import User, { UserInstance, UserAttributes } from '../user';
+import User, { UserInstance, UserAttributes } from '../User';
 
 //NEED TO STOP RETURNING PASSWORDS
 
