@@ -6,17 +6,20 @@ import { addFriendQuery, deleteFriendQuery, findAllFriends } from '../models/que
 import { createUserQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
 require('dotenv').config();
 
-// async function updateUser (req:Request,res:Response) {
-//   try{
-//     const { username, value, newValue }  =req.body;
-//     await updateUserQuery(req.user.id, req.body);
-//     res.status(201).send('User updated');
-//   }
-//   catch (err:any){
-//     console.log(err.message)
-//     res.sendStatus(500);
-//   }
-// }
+async function updateUser (req:RequestInstance,res:Response) {
+  try{
+    if(req.body && req.user){
+    const updatedUser = await updateUserQuery(req.user.id, req.body);
+    res.status(201).send(updatedUser);
+    } else {
+      res.status(401).send('User could not be updated.')
+    }
+  }
+  catch (err:any){
+    console.log(err.message)
+    res.sendStatus(500);
+  }
+}
 
 export async function getUser (req:RequestInstance, res:Response) {
   try {
@@ -191,7 +194,7 @@ async function deleteBlacklist (req:Request,res:Response) {
 
 
 module.exports = {
- // updateUser,
+  updateUser,
   getUser,
   getFriends,
   createUser,

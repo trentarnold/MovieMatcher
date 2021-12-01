@@ -5,23 +5,21 @@ import { authMiddleware } from "./middleware/authMiddleware";
 
 //User Controller Routes
 const {
-  // updateUser,
-  // getUser,
+   updateUser,
+   getUser,
    getFriends,
    createUser,
    loginUser,
    addFriend,
    deleteFriend,
-   findFriends,
   // addWant,
   // deleteWant,
   // addBlacklist,
   // deleteBlacklist,
-  // updateProfilePic
-  getUser
+
 } = require('./Controllers/UserController');
 
-//router.put('/user/profile/:type/:add', updateUser);
+router.put('/user/profile',authMiddleware, updateUser);
 router.get('/user/profile', authMiddleware, getUser);
  router.get('/user/friends',authMiddleware, getFriends);
  router.post('/user/create', createUser);
