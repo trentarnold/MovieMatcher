@@ -19,6 +19,7 @@ import { FaLock, FaUserAlt, FaUserTag} from 'react-icons/fa';
 import { selectCreateAccount, turnOffCreateAccount } from '../redux/features/modals/createAccountSlice';
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { turnOnLogin } from '../redux/features/modals/loginSlice';
+import { setToken } from '../redux/features/modals/authSlice';
 import { ServerApiService } from '../services/ServerApi';
 const CreateAccountForm = () => {
   const [userName, setUserName] = useState('');
@@ -38,13 +39,16 @@ const CreateAccountForm = () => {
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     getBase64();
-
     let {accessToken, confirmed} = await ServerApiService.createUser({username:userName, email, password, profile_pic:base64});
-    console.log(accessToken, confirmed);
-    handleClose();
-    setUserName('');
-    setEmail('');
-    setPassword('');
+      if (confirmed) {
+        dispatch(setToken(accessToken))
+        handleClose();
+        setUserName('');
+        setEmail('');
+        setPassword('');
+      } else {
+        alert('Invalid information, try again.')
+      }
     }
 
   const handleClose = () => {

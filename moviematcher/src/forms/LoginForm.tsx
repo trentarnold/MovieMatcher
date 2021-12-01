@@ -18,12 +18,17 @@ import { FaLock, FaUserAlt} from 'react-icons/fa';
 import { selectLogin, turnOffLogin } from '../redux/features/modals/loginSlice';
 import { turnOnCreateAccount } from '../redux/features/modals/createAccountSlice';
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
+import { setToken } from '../redux/features/modals/authSlice';
+import { ServerApiService } from '../services/ServerApi'
 import './LoginForm.css'
- const LoginForm = () => {
-  const [email, setEmail] = useState('');
+
+
+
+const LoginForm = () => {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const open = useAppSelector(selectLogin)
+  const open = useAppSelector(selectLogin);
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -34,11 +39,18 @@ import './LoginForm.css'
 
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleClose();
-    setEmail('');
+    const response = await ServerApiService.userLogin(username, password)
+    if (response.confirmed) {
+      const authToken = response.accessToken;
+      dispatch(setToken(authToken));
+      handleClose();
+      //redirect user or have a modal pop up to confirm log in
+    } else {alert('invalid username or password')}
+    setUsername('');
     setPassword('');
     }
 
+    
   const handleClose = () => {
     dispatch(turnOffLogin());
     onClose();
@@ -61,7 +73,7 @@ import './LoginForm.css'
       <form onSubmit = {(e:React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
         <ModalBody pb={6}>
             <FormControl isRequired>
-                <FormLabel forhtml='email-address'> Email Address  </FormLabel>
+                <FormLabel forhtml='username'> Username  </FormLabel>
                 <InputGroup>
                   <InputLeftElement
                       pointerEvents="none"
@@ -70,10 +82,10 @@ import './LoginForm.css'
                   <Input 
                     autoFocus
                     errorBorderColor="red.300"  
-                    name='email-address' 
-                    placeholder='Enter your email' 
-                    value = {email} 
-                    onChange = {(e:React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}>
+                    name='username' 
+                    placeholder='Enter your username' 
+                    value = {username} 
+                    onChange = {(e:React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}>
                   </Input>
                 </InputGroup> 
               </FormControl>

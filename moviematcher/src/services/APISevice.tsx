@@ -1,7 +1,8 @@
 import {Movie, Results} from '../../../interfaces/MovieInterface';
 import { movieDetailsPlaceHolder } from '../moviePlaceholder';
-import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails';
-import { ActorListInterface } from '../../../interfaces/ActorList';
+import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails'
+import { Observable } from 'redux';
+import { ActorListInterface } from '../../../interfaces/ActorList'
 import { actorListPlaceholder } from '../actorListPlaceholder';
 import { ActorDetailsInterface } from '../../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
@@ -82,7 +83,7 @@ const APIService = {
       console.log(e)
       return []
     }
-  }
+  },
 };
 
 
