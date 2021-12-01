@@ -33,14 +33,16 @@ export async function getUser (req:RequestInstance, res:Response) {
   }
 }
 
-export async function getFriends (req:Request,res:Response) {
+export async function getFriends (req:RequestInstance,res:Response) {
   try{
     const {User} = req.body;
-    const friends = await findAllFriends(User.id);
-    if(friends === null){
-      res.status(200).send('User has no friends. Loser.')
-    } else{
-      res.status(200).send();
+    if(req.user) {
+      const friends = await findAllFriends(req.user.id);
+      if(friends === null){
+        res.status(200).send('User has no friends. Loser.')
+      } else{
+        res.status(200).send(friends);
+      }
     }
   }
   catch (err:any){
