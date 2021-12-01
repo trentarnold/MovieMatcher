@@ -52,10 +52,3 @@ export async function deleteFriendQuery(id: number, friendID: number) {
     return await findAllFriends(id);
   }
 }
-
-async function run() {
-  await connectDB();
-  console.log(await findAllFriends(1))
-}
-
-run()

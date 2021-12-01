@@ -14,13 +14,12 @@ const {
    addFriend,
    deleteFriend,
    getSpecificUser,
-   updatePicture,
-  // addWant,
-  // deleteWant,
-  // getWant,
-  // addBlacklist,
-  // deleteBlacklist,
-  // getBlacklist
+   addWant,
+   deleteWant,
+   getWant,
+   addBlacklist,
+   deleteBlacklist,
+   getBlacklist
 
 } = require('./Controllers/UserController');
 
@@ -28,18 +27,17 @@ router.put('/user/profile',authMiddleware, updateUser);
 router.get('/user/profile', authMiddleware, getUser);
 router.get('/user/otherUser', authMiddleware, getSpecificUser) // Not for user calls, internal use only!
 router.get('/user/allPeople', authMiddleware, getAllPeople)
- router.get('/user/friends',authMiddleware, getFriends);
- router.post('/user/create', createUser);
- router.post('/user/login', loginUser);
- router.post('/user/friends', authMiddleware, addFriend);
- router.delete('/user/friends', authMiddleware, deleteFriend);
-router.post('/user/picture', authMiddleware, updatePicture)
-// router.post('/user/wants', addWant);
-// router.delete('/user/wants', deleteWant);
-// router.get('/user/wants'), getWant);
-// router.post('/user/blacklist', addBlacklist);
-// router.delete('/user/blacklist', deleteBlacklist);
-// router.get('/user/blacklist'), getBlacklist);
+router.get('/user/friends',authMiddleware, getFriends);
+router.post('/user/create', createUser);
+router.post('/user/login', loginUser);
+router.post('/user/friends', authMiddleware, addFriend);
+router.delete('/user/friends', authMiddleware, deleteFriend);
+router.post('/user/wants', authMiddleware, addWant);
+router.delete('/user/wants', authMiddleware, deleteWant);
+router.get('/user/wants', authMiddleware, getWant);
+router.post('/user/blacklist', authMiddleware, addBlacklist);
+router.delete('/user/blacklist', authMiddleware, deleteBlacklist);
+router.get('/user/blacklist', authMiddleware, getBlacklist);
 
 //Movie Controller Routes
 // const {

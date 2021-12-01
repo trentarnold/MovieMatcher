@@ -5,13 +5,14 @@ import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
 import { addFriendQuery, deleteFriendQuery, findAllFriends } from '../models/queries/friendsQueries';
 import { createUserQuery, fetchUserQuery, getAllPeopleQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
+import {addWhitelistQuery, fetchWhitelistQuery, deleteWhitelistQuery,fetchBlacklistQuery, addBlacklistQuery, deleteBlacklistQuery } from '../models/queries/listQueries'
 require('dotenv').config();
 
 async function updateUser (req:RequestInstance,res:Response) {
   try{
     if(req.body && req.user){
     const updatedUser = await updateUserQuery(req.user.id, req.body);
-    res.status(201).send(updatedUser);
+    res.status(201).send(updatedUser); // returns the user after update
     } else {
       res.status(401).send('User could not be updated.')
     }
@@ -41,7 +42,7 @@ export async function getSpecificUser (req:Request, res:Response) {
     if (req.body) {
       const specificUser = await fetchUserQuery(req.body.id);
       console.log(specificUser);
-      res.status(200).send(specificUser);
+      res.status(200).send(specificUser);  //returns the queried user
     } else {
       res.status(500).send({message: "User not found"})
     }
@@ -60,7 +61,7 @@ export async function getFriends (req:RequestInstance,res:Response) {
       if(friends === null){
         res.status(200).send('User has no friends. Loser.')
       } else{
-        res.status(200).send(friends);
+        res.status(200).send(friends); //returns friends list
       }
     }
   }
@@ -82,7 +83,7 @@ async function createUser (req:Request,res:Response) {
     const newUser = await createUserQuery({username, email, password, profile_pic});
     if(newUser){
       const accessToken = jwt.sign({id: newUser.id}, process.env.SECRET_KEY);
-      res.status(201).send({ newUser, accessToken})
+      res.status(201).send({ newUser, accessToken}) //returns the created user and their JWT
     }
   }
   catch (err:any) {
@@ -102,9 +103,7 @@ async function loginUser (req:Request,res:Response) { //needs work
     if(validatedUser){
       console.log(validatedUser);
       const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
-        res.status(200).send({
-         accessToken, user
-         })
+        res.status(200).send({accessToken, user}) //returns the user that logged in and their JWT
     }
     else{
       res.status(400).send({confirmed: false});
@@ -119,7 +118,7 @@ async function loginUser (req:Request,res:Response) { //needs work
 async function getAllPeople (req: Request, res: Response){
   try{
     const people = await getAllPeopleQuery();
-    res.status(201).send(people);
+    res.status(201).send(people); //returns all users
   }
   catch (err:any) {
     console.log(err.message)
@@ -133,7 +132,7 @@ async function addFriend (req:RequestInstance,res:Response) {
         if(req.user.id === req.body.friendid) return res.status(401).send(`Can't add yourself as a friend.`)
      const friend = await addFriendQuery(req.user.id, req.body.friendid)
     if(friend != null){
-      res.status(201).send(friend);
+      res.status(201).send(friend); // returns updated friends list
     } else {
       res.status(401).send(`Friend could not be added.`);
     }
@@ -149,9 +148,9 @@ async function deleteFriend (req:RequestInstance,res:Response) {
   try {
     if(req.body&&req.user){
       if(req.user.id === req.body.friendid) return res.status(401).send(`Can't delete yourself as a friend.`)
-      const deleted = await deleteFriendQuery(req.user.id, req.body.friendid);
-      if(deleted != null){
-        res.status(200).send(deleted);
+      const remaining = await deleteFriendQuery(req.user.id, req.body.friendid);
+      if(remaining != null){
+        res.status(200).send(remaining); // returns remaining friends
       } else {
         res.status(401).send('Friend could not be deleted');
       }
@@ -163,50 +162,33 @@ async function deleteFriend (req:RequestInstance,res:Response) {
   }
 }
 
-async function updatePicture (req: RequestInstance, res: Response) {
-  try{ 
-    if (req.files === null) {
-      return res.status(400).send('No file sent')
-    }
-    const date = String(Date.now());
-    const directory = path.join(__dirname, `../public/`)
-      if(req.files) {
-        const newImage = req.files.image;
-        newImage.mv(directory + date + newImage.name, (e: Error) => {
-        res.status(201).json({fileName: date + newImage.name, filePath:`/${date + newImage.name}`})
-        if(e) {
-          console.log(e);
-          return res.status(500);
-        }
-      })
-     }
-  } catch (e) {
-    console.log(e);
-    res.sendStatus(500)
-  }
-}
-/*
 async function addWant (req:RequestInstance,res:Response) {
   try {
-    const Want = await addWantQuery(req.body.id);
-    if(Want) {
-      res.status(201).send('Want added');
-    } else {
-      res.status(401).send(`Couldn't add want.`)
+    if(req.body && req.user) {
+      const Want = await addWhitelistQuery(req.user.id, req.body.movieID);
+      if(Want === 'already exists'){
+        res.status(201).send('Movie is already on Want list.')
+      } else{
+        res.status(201).send(Want); //Returns Want list with new movie added
     }
    }
+  }
   catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
 }
 
-async function deleteWant (req:Request,res:Response) {
+async function deleteWant (req:RequestInstance,res:Response) {
   try {
-    const { id } = req.body; //need to check this with many-many tables.
-    // const want = await db.Wants.findOne({ where: { id: id }});
-    // await want.destroy();
-    res.status(200).send('Want removed')
+    if(req.body && req.user){
+    const deleted = await deleteWhitelistQuery(req.user.id, req.body.movieID);
+      if(deleted === 'does not exist'){
+        res.status(201).send('Movie is not in Want list.');
+      } else {
+        res.status(201).send(deleted); //returns want list after removing movie
+      }
+    }
   }
   catch (err:any) {
     console.log(err.message)
@@ -217,14 +199,13 @@ async function deleteWant (req:Request,res:Response) {
 async function getWant (req: RequestInstance, res: Response) {
   try {
     if (req.user) {
-      const wants = await fetchWhiteList(req.user.id);
-      if(wants != null){
-      res.status(200).send(wants);
+      const wantlist = await fetchWhitelistQuery(req.user.id);
+      if(wantlist === 'no whitelist'){
+      res.status(200).send('User does not have any movie on their Want list');
+      } else {
+        res.status(201).send(wantlist); //sends want list
       }
-    } else {
-      res.status(500).send('Unable to retrieve Want List..')
     }
-
   }
   catch (err:any) {
     console.log(err.message)
@@ -232,49 +213,56 @@ async function getWant (req: RequestInstance, res: Response) {
   }
 }
 
-async function addBlacklist (req:Request,res:Response){
+async function addBlacklist (req:RequestInstance,res:Response){
   try {
-    const Want = await addBlacklistQuery(req.body.id);
-    if(Want) {
-      res.status(201).send('Blacklist added');
-    } else {
-      res.status(401).send(`Couldn't add Blacklist item.`)
+    if(req.body && req.user) {
+      const Blacklistitem = await addBlacklistQuery(req.user.id, req.body.movieID);
+      if(Blacklistitem === 'already exists'){
+        res.status(201).send('Movie is already on Blacklist.')
+      } else{
+        res.status(201).send(Blacklistitem); //Returns Blacklist with new movie added
     }
    }
+  }
   catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
 }
 
-async function deleteBlacklist (req:Request,res:Response) {
+async function deleteBlacklist (req:RequestInstance,res:Response) {
   try {
-    const { id } = req.body; //need to check this with many-many tables.
-    // const blackList = await db.Blacklist.findOne({ where: {id: id}});
-    // await blackList.destroy();
-    res.status(200).send('Blacklist removed');
-  }
-  catch (err:any) {
-    console.log(err.message)
-    res.sendStatus(500)
-  }
+    if(req.body && req.user){
+      const deleted = await deleteBlacklistQuery(req.user.id, req.body.movieID);
+        if(deleted === 'does not exist'){
+          res.status(201).send('Movie is not in Blacklist.');
+        } else {
+          res.status(201).send(deleted); //returns Blacklist after removing movie
+        }
+      }
+    }
+    catch (err:any) {
+      console.log(err.message)
+      res.sendStatus(500)
+    }
 }
 
 async function getBlacklist (req: RequestInstance, res: Response) {
   try {
     if (req.user) {
-      const Blacklist = await fetchBlackList(req.user.id);
-      res.status(200).send(Blacklist);
-    } else {
-      res.status(500).send('Unable to retrieve Blacklist..')
+      const Blacklist = await fetchBlacklistQuery(req.user.id);
+      if(Blacklist === 'no blacklist'){
+      res.status(200).send('User does not have any movie on their Blacklist');
+      } else {
+        res.status(201).send(Blacklist); //sends Blacklist
+      }
     }
-
   }
   catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
-}*/
+}
 
 module.exports = {
   updateUser,
@@ -285,12 +273,11 @@ module.exports = {
   getAllPeople,
   addFriend,
   deleteFriend,
-  updatePicture,
-  // addWant,
-  // deleteWant,
-  // getWant,
-  // addBlacklist,
-  // deleteBlacklist,
-  // getBlacklist,
+  addWant,
+  deleteWant,
+  getWant,
+  addBlacklist,
+  deleteBlacklist,
+  getBlacklist,
   getSpecificUser
 }
