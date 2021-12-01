@@ -1,5 +1,6 @@
 import {AccessTokenResponse, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
+import axios from 'axios';
 const BASE_URL = 'http://localhost:3001'
 interface User {
   username:string,
@@ -120,6 +121,21 @@ export const ServerApiService = {
     }catch(err) {
       console.log(err)
       return [UserPlaceholder]
+    }
+  },
+  updateUser: async(accessToken:string, image:File): Promise<UserInterface> => {
+    try {
+      const fd= new FormData();
+      fd.append('image', image)
+      return await axios.post(`${BASE_URL}/user/picture`, fd, {
+        headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${accessToken}`
+        },
+      }); 
+    } catch (e) {
+      console.log(e);
+      return UserPlaceholder;
     }
   }
 }

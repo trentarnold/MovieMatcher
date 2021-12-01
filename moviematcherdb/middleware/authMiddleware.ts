@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 import { fetchUserQuery } from '../models/queries/userQueries';
-import { UserAttributes } from '../models/user';
+import { UserAttributes } from '../models/User';
 import { Request, Response, NextFunction } from 'express';
 require('dotenv').config();
 
@@ -11,6 +11,7 @@ interface UserProperties extends UserAttributes {
 
 export interface RequestInstance extends Request {
   user?: UserProperties;
+  files?: {image:{name:string, mv:Function}}
 }
 
 export async function authMiddleware(req: RequestInstance, res: Response, next: NextFunction): Promise<void> {
