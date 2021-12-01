@@ -119,7 +119,7 @@ async function deleteFriend (req:RequestInstance,res:Response) {
     if(req.body&&req.user){
       const deleted = await deleteFriendQuery(req.user.id, req.body.friendid);
       if(deleted != null){
-        res.status(200).send('Friend removed.' + deleted);
+        res.status(200).send(deleted);
       } else {
         res.status(401).send('Friend could not be deleted');
       }

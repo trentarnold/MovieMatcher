@@ -26,7 +26,7 @@ router.get('/user/profile', authMiddleware, getUser);
  router.get('/user/friends',authMiddleware, getFriends);
  router.post('/user/create', createUser);
  router.post('/user/login', loginUser);
- router.put('/user/friends', authMiddleware, addFriend);
+ router.post('/user/friends', authMiddleware, addFriend);
  router.delete('/user/friends', authMiddleware, deleteFriend);
 // router.post('/user/wants', addWant);
 // router.delete('/user/wants', deleteWant);
