@@ -1,4 +1,4 @@
-import {AccessTokenResponse} from '../../../interfaces/responses'
+import {AccessTokenResponse, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
 const BASE_URL = 'http://localhost:3001'
 interface User {
@@ -39,7 +39,7 @@ export const ServerApiService = {
       return {user: UserPlaceholder, accessToken:''};
     }
   },
-  getFriends: async(accessToken:string) => {
+  getFriends: async(accessToken:string): Promise<UserInterface[]> => {
     try{
       const response = await fetch(`${BASE_URL}/user/friends`, {
         method: 'Get',
@@ -49,10 +49,10 @@ export const ServerApiService = {
           Authorization: `Bearer ${accessToken}`,
         }
       })
-      const data = response.json();
-      console.log(data);
+      return await response.json();
     }catch(err) {
       console.log(err);
+      return [UserPlaceholder]
     }
   }
 }
