@@ -3,6 +3,9 @@ import { fetchUserQuery } from "./userQueries";
 import { Op } from 'sequelize';
 import { connectDB } from "../index";
 
+//NEED TO STOP RETURNING PASSWORDS
+
+
 export async function findAllFriends(id: number) {
   const friendIDArr: [number] = [id];
   const userFriends = await Friend.findAll({where: {uid: id}})
@@ -18,7 +21,7 @@ export async function findAllFriends(id: number) {
   friendIDArr.shift();
   const uniqueSet = new Set(friendIDArr);
   const uniqueArr = [...uniqueSet];
-  
+
   // query user data for each friend
   return Promise.all(uniqueArr.map((num: number) => {
     return fetchUserQuery(num);

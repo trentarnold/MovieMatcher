@@ -1,5 +1,8 @@
 import User, { UserInstance, UserAttributes } from '../user';
 
+//NEED TO STOP RETURNING PASSWORDS
+
+
 export async function fetchUserQuery(id: number): Promise<UserAttributes | null> {
   const user = await User.findOne({where: { id: id }});
   return user && user.dataValues ? user.dataValues : null;
