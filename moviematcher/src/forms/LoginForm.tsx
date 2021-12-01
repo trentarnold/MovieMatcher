@@ -39,16 +39,20 @@ const LoginForm = () => {
 
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await ServerApiService.userLogin(username, password)
-    if (response.accessToken) {
-      const authToken = response.accessToken;
-      dispatch(setToken(authToken));
-      handleClose();
-      //redirect user or have a modal pop up to confirm log in
-    } else {alert('invalid username or password')}
-    setUsername('');
-    setPassword('');
+    try {
+      const response = await ServerApiService.userLogin(username, password);
+      console.log(response)
+      if (response.accessToken) {
+        const authToken = response.accessToken;
+        dispatch(setToken(authToken));
+        handleClose();
+        setUsername('');
+        setPassword('');
+      }
+    } catch (e) {
+      console.log(e)
     }
+  }
 
     
   const handleClose = () => {

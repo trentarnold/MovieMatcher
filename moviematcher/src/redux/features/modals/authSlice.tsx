@@ -4,6 +4,7 @@ import { RootState } from '../../app/store';
 export interface authState {
   value: string;
 }
+
 const initialState: authState = {
   value: "",
 };
