@@ -1,5 +1,5 @@
 import { connectDB } from '../index'
-import User from '../user';
+import User from '../User';
 
 connectDB();
 
