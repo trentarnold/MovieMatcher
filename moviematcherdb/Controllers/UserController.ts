@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
 import { addFriendQuery, deleteFriendQuery, findAllFriends } from '../models/queries/friendsQueries';
@@ -161,6 +162,29 @@ async function deleteFriend (req:RequestInstance,res:Response) {
     res.sendStatus(500)
   }
 }
+
+async function updatePicture (req: RequestInstance, res: Response) {
+  try{ 
+    if (req.files === null) {
+      return res.status(400).send('No file sent')
+    }
+    const date = String(Date.now());
+    const directory = path.join(__dirname, `../public/`)
+      if(req.files) {
+        const newImage = req.files.image;
+        newImage.mv(directory + date + newImage.name, (e: Error) => {
+        res.status(201).json({fileName: date + newImage.name, filePath:`/${date + newImage.name}`})
+        if(e) {
+          console.log(e);
+          return res.status(500);
+        }
+      })
+     }
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500)
+  }
+}
 /*
 async function addWant (req:RequestInstance,res:Response) {
   try {
@@ -261,6 +285,7 @@ module.exports = {
   getAllPeople,
   addFriend,
   deleteFriend,
+  updatePicture,
   // addWant,
   // deleteWant,
   // getWant,

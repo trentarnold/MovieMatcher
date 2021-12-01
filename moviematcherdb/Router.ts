@@ -13,7 +13,8 @@ const {
    getAllPeople,
    addFriend,
    deleteFriend,
-   getSpecificUser
+   getSpecificUser,
+   updatePicture,
   // addWant,
   // deleteWant,
   // getWant,
@@ -32,6 +33,7 @@ router.get('/user/allPeople', authMiddleware, getAllPeople)
  router.post('/user/login', loginUser);
  router.post('/user/friends', authMiddleware, addFriend);
  router.delete('/user/friends', authMiddleware, deleteFriend);
+router.post('/user/picture', authMiddleware, updatePicture)
 // router.post('/user/wants', addWant);
 // router.delete('/user/wants', deleteWant);
 // router.get('/user/wants'), getWant);
