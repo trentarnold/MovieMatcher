@@ -15,21 +15,18 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
 
   const [profileInfo, setProfileInfo] = useState<IProfileInfo>({ id: 0, username: "", email: "", profile_pic: "", createdAt: "", updatedAt: "" })
   const [pic, setPic] = useState<File>();
-  const [refresh, setRefresh] = useState(false)
-  const [picUrl, setPicUrl] = useState('')
   const token = useAppSelector(selectAuth);
   const params = useParams();
 
   function handleChange (e: React.FormEvent<HTMLInputElement>) {
-    if (e.currentTarget.files) setPic(e.currentTarget.files[0])
+    if (e.currentTarget.files) setPic(e.currentTarget.files[0]);
   }
 
   async function updatePicture () {
     try{
       if(pic){
-        await ServerApiService.changeProfilePicture(token, pic)
-        determinePicture()
-       // setRefresh(!refresh)
+        await ServerApiService.changeProfilePicture(token, pic);
+        window.location.reload();
       }
     } catch (e) {
       console.log (e);
@@ -40,45 +37,38 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
   useEffect(() => {
     async function getInfo() {
       try {
-        const info = await ServerApiService.getUser(token)
-        setProfileInfo(info)
-        determinePicture()
+        const info = await ServerApiService.getUser(token);
+        setProfileInfo(info);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }
     
     async function getOtherUserInfo(id: number) {
       try {
         const info = await ServerApiService.getSpecificUser(token, id);
-        setProfileInfo(info)
-        determinePicture()
+        setProfileInfo(info);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }
     
     if (params.id){
-      console.log(params.id)
-      getOtherUserInfo(Number(params.id))
-    } else  getInfo()
+      console.log('Params: ' + params.id);
+      getOtherUserInfo(Number(params.id));
+    } else  {
+      getInfo();
+    }
    
-  }, [token, refresh])
+  }, [token, params])
 
-
-  const determinePicture = () =>{
-    console.log(profileInfo.profile_pic)
-    if (profileInfo.profile_pic[0] !== '/') {
-        setPicUrl('https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png')
-    } else setPicUrl(`http://localhost:3001${profileInfo.profile_pic}`)
-  }
   
 
 
   return (
       <div className='profile-info'>
           <div className='profile-info-icons'>
-            <img src={picUrl} alt="profile"/>
+            <img src={`http://localhost:3001${profileInfo.profile_pic}`} alt="profile"/>
             {!params.id && <>
               <input type="file" onChange={handleChange}/>
               <Button onClick={updatePicture}>Update Photo</Button>
