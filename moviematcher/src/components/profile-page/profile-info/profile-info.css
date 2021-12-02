@@ -21,6 +21,14 @@
     flex-direction: column;
 }
 
+.profile-info-icons img {
+  max-width: 280px;
+}
+
+.profile-info-icons input {
+    margin: 5px
+  }
+
 .profile-info-buttons {
     margin: 10px;
 }

@@ -259,8 +259,6 @@ async function getBlacklist (req: RequestInstance, res: Response) {
 
 }
 
-
-
 module.exports = {
   updateUser,
   getUser,

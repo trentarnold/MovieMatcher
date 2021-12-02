@@ -12,6 +12,7 @@
 
 .friend-icon img {
     object-fit: scale-down;
+    max-width: 55px;
     border-radius: 10px;
 }
 

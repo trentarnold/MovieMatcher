@@ -34,9 +34,15 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
         navigate(`/profile/${user.id}`);
     };
 
+    const determinePicture = () =>{
+      if (user.profile_pic === 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png') {
+          return user.profile_pic
+      } else return `http://localhost:3001${user.profile_pic}`
+    }
+
     return (
         <div className="friend-icon">
-            <img src={user.profile_pic} alt="profile"/>
+            <img src={determinePicture()} alt="profile"/>
             <div className="user-icon-middle">
               <p>{user.username}</p>
               <div className="user-icon-buttons">

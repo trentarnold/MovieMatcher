@@ -44,10 +44,12 @@ const CreateAccountForm = () => {
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let {accessToken, user} = await ServerApiService.createUser({username:userName, email, password, profile_pic:"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png"});
+    let {accessToken, user} = await ServerApiService.createUser({username:userName, email, password, profile_pic:''});
     if (accessToken) {
       dispatch(setToken(accessToken));
-      if(pic) await ServerApiService.updateUser(token, pic);
+      if(pic) {
+        await ServerApiService.changeProfilePicture(accessToken, pic);
+      }
       dispatch(setUserId(user.id));
       handleClose();
     }else {
