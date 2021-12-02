@@ -20,7 +20,7 @@ import { selectCreateAccount, turnOffCreateAccount } from '../redux/features/mod
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { turnOnLogin } from '../redux/features/modals/loginSlice';
 import { ServerApiService } from '../services/ServerApi';
-import { setToken } from '../redux/features/modals/authSlice';
+import { setToken, selectAuth } from '../redux/features/modals/authSlice';
 import { setUserId } from '../redux/features/user/userIdSlice';
 
 const CreateAccountForm = () => {
@@ -30,6 +30,7 @@ const CreateAccountForm = () => {
   const [pic, setPic] = useState<File>()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const open = useAppSelector(selectCreateAccount);
+  const token = useAppSelector(selectAuth)
   const dispatch = useAppDispatch()
   
   useEffect(() => {
@@ -38,12 +39,15 @@ const CreateAccountForm = () => {
     }
   }, [open])
 
+
+
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let {accessToken, user} = await ServerApiService.createUser({username:userName, email, password, profile_pic:"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png"});
     if (accessToken) {
       dispatch(setToken(accessToken));
+      if(pic) await ServerApiService.updateUser(token, pic);
       dispatch(setUserId(user.id));
       handleClose();
     }else {
