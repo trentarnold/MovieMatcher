@@ -4,7 +4,7 @@ import { Movie } from '../../../../../interfaces/MovieInterface'
 import {Button} from '@chakra-ui/react'
 import StarRatings from 'react-star-ratings';
 import {  useNavigate } from "react-router-dom";
-import { FaPlus, FaMinus, FaTimes} from 'react-icons/fa';
+import { FaPlus, FaMinus, FaTimes, FaSkull} from 'react-icons/fa';
 import { ServerApiService } from '../../../services/ServerApi';
 import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
@@ -70,12 +70,13 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
                       onClick={handleAddToWatchList}
                       >
                     {favoriteMovieIds.includes(movie.id) ? <FaTimes color='red' /> : <FaPlus color='green'/>}
-                     <span style={{fontStyle:'italic'}}>{favoriteMovieIds.includes(movie.id) ? 'Remove WatchList' :'Add to WatchList' } </span>
+                     <span style={{fontStyle:'italic', marginLeft:'5px'}}>{favoriteMovieIds.includes(movie.id) ? 'Remove WatchList' :'Add to WatchList' } </span>
               </Button>
               <Button style={{backgroundColor:'transparent'}}
                       className='enlarge-on-hover'
                       onClick={handleBlackList}>
-                    <FaMinus color='red'/> <span style={{fontStyle:'italic'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
+                    { blackListIds.includes(movie.id) ? <FaMinus color='red'/> : <FaSkull color='red' /> }
+                    <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
               </Button>
             </div>  
             <img className='movie-thumb-img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt='movie poster' />   
