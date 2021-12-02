@@ -98,8 +98,8 @@ useEffect(() => {
 
   return (
     <>
-      <FavoriteMovieList criteria="Your Favorite Movies" movieList={watchListMovies}/>
-      <FavoriteMovieList criteria='Your Blacklisted Movies' movieList={blackListedMovies}/>
+      <FavoriteMovieList criteria={"Your Favorite Movies"} movieList={watchListMovies}/>
+      <FavoriteMovieList criteria={'Your Blacklisted Movies'} movieList={blackListedMovies}/>
     </>
   )
 }
