@@ -1,5 +1,8 @@
 import {AccessTokenResponse, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
+import { Movie } from '../../../interfaces/MovieInterface';
+import { FavoriteMovieInterface } from '../../../interfaces/favoriteMovieInterface'
+import axios from 'axios';
 const BASE_URL = 'http://localhost:3001'
 interface User {
   username:string,
@@ -7,8 +10,22 @@ interface User {
   password:string,
   profile_pic:string | ArrayBuffer | null
 }
-
 export const ServerApiService = {
+  getUser: async(accessToken:string): Promise<UserInterface> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/profile`, {
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      });
+      return await response.json();
+    } catch (e) {
+      console.log(e);
+      return UserPlaceholder;
+    }
+  },
   createUser: async(user:User): Promise<AccessTokenResponse> => {
     try {
       let response = await fetch(`${BASE_URL}/user/create`, {
@@ -42,7 +59,7 @@ export const ServerApiService = {
   getFriends: async(accessToken:string): Promise<UserInterface[]> => {
     try{
       const response = await fetch(`${BASE_URL}/user/friends`, {
-        method: 'Get',
+        method: 'GET',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -54,10 +71,144 @@ export const ServerApiService = {
       console.log(err);
       return [UserPlaceholder]
     }
+  },
+  getAllUsers: async(accessToken:string): Promise<UserInterface[]> => {
+    try{
+      const response = await fetch(`${BASE_URL}/user/allPeople`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return [UserPlaceholder]
+    }
+  },
+  getSpecificUser: async(accessToken:string, id:number): Promise<UserInterface> => {
+    try{
+      const response = await fetch(`${BASE_URL}/user/otherUser`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body:JSON.stringify({id})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return UserPlaceholder
+    }
+  },
+  removeFriend: async(accessToken:string, friendId:number): Promise<UserInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/friends`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({friendid:friendId})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err)
+      return [UserPlaceholder]
+    }
+  },
+  addFriend: async(accessToken:string, friendId:number): Promise<UserInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/friends`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({friendid:friendId})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err)
+      return [UserPlaceholder]
+    }
+  },
+  updateUser: async(accessToken:string, image:File): Promise<UserInterface> => {
+    try {
+      const fd= new FormData();
+      fd.append('image', image)
+      return await axios.post(`${BASE_URL}/user/picture`, fd, {
+        headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${accessToken}`
+        },
+      });
+    } catch (e) {
+      console.log(e);
+      return UserPlaceholder;
+    }
+  },
+  addToWatchList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/wants`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  getWatchList: async(accessToken:string): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/wants`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  deleteFromWatchList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/wants`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
   }
 }
 
 
 
-// router.get('/user/otherUser', authMiddleware, getSpecificUser) // Not for user calls, internal use only!
-// router.get('user/allPeople', authMiddleware, getAllPeople)
+// router.post('/user/wants', authMiddleware, addWant);
+// router.delete('/user/wants', authMiddleware, deleteWant);
+// router.get('/user/wants', authMiddleware, getWant);

@@ -10,12 +10,34 @@ import LoginForm from './forms/LoginForm';
 import CreateAccountForm from './forms/CreateAccountForm';
 import { useEffect } from 'react';
 import ActorPage from './components/ActorPage/ActorPage';
-
+import { useAppDispatch, useAppSelector } from './redux/app/hooks';
+import { ServerApiService } from './services/ServerApi';
+import { selectAuth } from './redux/features/modals/authSlice';
+import { setFriendIds } from './redux/features/user/friendsIdSlice';
+import { User } from '../../interfaces/responses';
+import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
 function App() {
-
+  const dispatch = useAppDispatch();
+  const accessToken = useAppSelector(selectAuth);
   useEffect(() => {
     document.title = "Movie Matcher"
- }, []);
+  }, []);
+  useEffect(() => {
+    const fetchFriends = async() => {
+     let userFriends = await ServerApiService.getFriends(accessToken);
+     let ids = userFriends.map((friend:User) => friend.id);
+     dispatch(setFriendIds(ids));
+    }
+    const fetchFavoriteMovies = async() => {
+      let favoriteMovies  = await ServerApiService.getWatchList(accessToken);
+      let ids = favoriteMovies.map((movie) => movie.movieid)
+      dispatch(setFavoriteMovieIds(ids));
+    }
+    if(accessToken) {
+      fetchFriends()
+      fetchFavoriteMovies();
+    }
+  })
  
   return (
     <div className="App">
@@ -27,6 +49,7 @@ function App() {
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/movieDetails/:id' element={<MoviePage />} />
           <Route path='/actorDetails/:id' element = {<ActorPage />} />
+          <Route path='/profile/:id' element = {<ProfilePage />} />
       </Routes>
       <div className="outlet">
         <Outlet />

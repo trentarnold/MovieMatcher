@@ -20,30 +20,34 @@ import { selectCreateAccount, turnOffCreateAccount } from '../redux/features/mod
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { turnOnLogin } from '../redux/features/modals/loginSlice';
 import { ServerApiService } from '../services/ServerApi';
-import { setToken } from '../redux/features/modals/authSlice';
+import { setToken, selectAuth } from '../redux/features/modals/authSlice';
 import { setUserId } from '../redux/features/user/userIdSlice';
+
 const CreateAccountForm = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [pic, setPic] = useState<File>()
-  const [base64,setBase64] = useState<string | ArrayBuffer | null>('')
   const { isOpen, onOpen, onClose } = useDisclosure();
   const open = useAppSelector(selectCreateAccount);
+  const token = useAppSelector(selectAuth)
   const dispatch = useAppDispatch()
+  
   useEffect(() => {
     if(open) {
       onOpen()
     }
   }, [open])
 
+
+
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    getBase64();
 
-    let {accessToken, user} = await ServerApiService.createUser({username:userName, email, password, profile_pic:base64});
+    let {accessToken, user} = await ServerApiService.createUser({username:userName, email, password, profile_pic:"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png"});
     if (accessToken) {
       dispatch(setToken(accessToken));
+      if(pic) await ServerApiService.updateUser(token, pic);
       dispatch(setUserId(user.id));
       handleClose();
     }else {
@@ -58,16 +62,7 @@ const CreateAccountForm = () => {
     dispatch(turnOffCreateAccount());
     onClose()
   }
-  const getBase64 = async() => {
-    const reader = new FileReader();
-    if(pic) reader.readAsDataURL(pic);
-    reader.onload = function () {
-      setBase64(reader.result);
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-  }
+
 
     return (
       <Modal isOpen={isOpen}  onClose = {handleClose} isCentered>
