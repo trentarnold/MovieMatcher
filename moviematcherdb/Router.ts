@@ -1,6 +1,8 @@
 const express = require('express');
 export const router = express.Router();
 import { authMiddleware } from "./middleware/authMiddleware";
+import { checkUsernameMiddleware } from "./middleware/checkUsernameMiddleware";
+import { setPictureMiddleware, updatePictureMiddleware } from "./middleware/pictureMiddleware";
 
 
 //User Controller Routes
@@ -24,12 +26,12 @@ const {
 
 } = require('./Controllers/UserController');
 
-router.put('/user/profile',authMiddleware, updateUser);
+router.put('/user/profile',authMiddleware, updatePictureMiddleware, updateUser);
 router.get('/user/profile', authMiddleware, getUser);
 router.get('/user/otherUser', authMiddleware, getSpecificUser) // Not for user calls, internal use only!
 router.get('/user/allPeople', authMiddleware, getAllPeople)
 router.get('/user/friends',authMiddleware, getFriends);
-router.post('/user/create', createUser);
+router.post('/user/create', checkUsernameMiddleware, setPictureMiddleware ,createUser);
 router.post('/user/login', loginUser);
 router.post('/user/picture', updatePicture)
 router.post('/user/friends', authMiddleware, addFriend);

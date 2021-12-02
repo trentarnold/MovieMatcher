@@ -17,6 +17,7 @@ import authReducer, {authState} from './redux/features/modals/authSlice'
 import userIdReducer, {userIdState} from './redux/features/user/userIdSlice'
 import friendIdReducer, {friendIdsState} from './redux/features/user/friendsIdSlice'
 import favoriteMovieIdsReducer, {favoriteMovieIdsState} from './redux/features/user/watchListIds';
+import blackListIdsReducer, {blackListIdsState} from './redux/features/user/blackListids';
 const persistConfig = {
   key: 'root',
   storage,
@@ -30,6 +31,7 @@ interface IAppState {
   userId: userIdState;
   friendIds: friendIdsState;
   favoriteMovieIds: favoriteMovieIdsState;
+  blackListIds: blackListIdsState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -40,6 +42,7 @@ const rootReducer = combineReducers<IAppState>({
   userId: userIdReducer,
   friendIds: friendIdReducer,
   favoriteMovieIds: favoriteMovieIdsReducer,
+  blackListIds: blackListIdsReducer,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);

@@ -54,9 +54,8 @@ export async function getSpecificUser (req:Request, res:Response) {
 }
 export async function getFriends (req:RequestInstance,res:Response) {
   try{
-    const {User} = req.body;
     if(req.user) {
-      const friends = await findAllFriends(req.user.id);
+      const friends = await findAllFriends(req.body.id | req.user.id);
       if(friends === null){
         res.status(200).send('User has no friends. Loser.')
       } else{
@@ -73,12 +72,8 @@ export async function getFriends (req:RequestInstance,res:Response) {
 async function createUser (req:Request,res:Response) {
   try {
     let {username, email, password, profile_pic} = req.body;
-     const hash = await bcrypt.hash(password, 10);
-     password = hash;
-    const Existinguser = await searchByUsername(username);
-    if (Existinguser != null) {
-      return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
-    }
+    const hash = await bcrypt.hash(password, 10);
+    password = hash;
     const user = await createUserQuery({username, email, password, profile_pic});
     if(user){
       const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
@@ -95,15 +90,14 @@ async function loginUser (req:Request,res:Response) { //needs work
   try {
     const { username, password } = req.body;
     const user = await searchByUsername(username);
-    console.log(user)
     if(user === null){
        return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
      };
     const validatedUser = await bcrypt.compare(password, user.password);
     if(validatedUser){
-      console.log(validatedUser);
       const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
-        res.status(200).send({accessToken, user}) //returns the user that logged in and their JWT
+      const {id, username, email, profile_pic, createdAt, updatedAt} = user
+        res.status(200).send({accessToken, user:{id, username, email, profile_pic, createdAt, updatedAt} }) //returns the user that logged in and their JWT
     }
     else{
       res.status(400).send({confirmed: false});
@@ -265,6 +259,7 @@ async function getBlacklist (req: RequestInstance, res: Response) {
 
 }
 
+
 async function updatePicture (req: RequestInstance, res: Response) {
   try{
     if (req.files === null) {
@@ -281,7 +276,7 @@ async function updatePicture (req: RequestInstance, res: Response) {
           return res.status(500);
         }
       })
-     }
+    }
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
