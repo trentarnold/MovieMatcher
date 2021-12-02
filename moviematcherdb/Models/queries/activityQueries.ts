@@ -3,9 +3,7 @@ import { findAllFriendsID } from './friendsQueries';
 import { WatchedMovieAttributes } from '../watched_movie';
 import { RatingAttributes } from '../rating';
 import { WhitelistItemAttributes } from '../whitelist_item';
-import { BlacklistItemAttributes, BlacklistItemInstance } from '../blacklist_item';
-
-import { connectDB } from "../index";
+import { BlacklistItemAttributes } from '../blacklist_item';
 
 export async function recentActivityQuery(id: number) {
   const date = new Date();
