@@ -54,7 +54,7 @@ export async function getSpecificUser (req:Request, res:Response) {
 export async function getFriends (req:RequestInstance,res:Response) {
   try{
     if(req.user) {
-      const friends = await findAllFriends(req.body.id | req.user.id);
+      const friends = await findAllFriends(req.body.id || req.user.id);
       if(friends === null){
         res.status(200).send('User has no friends. Loser.')
       } else{
@@ -193,7 +193,10 @@ async function getWant (req: RequestInstance, res: Response) {
   try {
     if (req.body && req.user) {
       const wantlist = await fetchWhitelistQuery(req.body.id || req.user.id);
+<<<<<<< HEAD
       console.log(wantlist)
+=======
+>>>>>>> b7692e24e656846bdabedb7f3d72f7f43348a8ed
       if(wantlist === 'no whitelist'){
       res.status(200).send('User does not have any movie on their Want list');
       } else {

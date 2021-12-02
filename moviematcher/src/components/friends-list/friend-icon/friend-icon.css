@@ -45,6 +45,7 @@
   margin-left: 4px;
   background-color: rgb(69, 69, 131);
   color: white;
+  transition: 0.35s;
 }
 
 .user-icon-buttons button:hover {

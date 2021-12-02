@@ -2,9 +2,6 @@ import Friend from "../friend";
 import { fetchUserQuery } from "./userQueries";
 import { Op } from 'sequelize';
 
-//NEED TO STOP RETURNING PASSWORDS
-
-
 export async function findAllFriendsID(id: number) {
   const friendIDArr: [number] = [id];
   const userFriends = await Friend.findAll({where: {uid: id}})
