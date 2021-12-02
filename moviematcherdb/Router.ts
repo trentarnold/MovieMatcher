@@ -61,17 +61,15 @@ router.post('/blacklist', authMiddleware, getBlacklist);
 //router.get('/movies/castDetails', getCastDetails);
 
 //Action Controller Routes
-// const {
-//   addtoActivity,
-//   getActivity,
+const {
+  getActivity,
 //   addRating,
 //   getRating,
 
-// } = require('./Controllers/ActivityController');
+} = require('./Controllers/ActivityController');
 
-// router.post('/activity', addtoActivity)
-// router.get('/activity', getActivity)
-// router.post('/activity', addRating)
-// router.get('/activity', getRating)
+router.get('/activity', getActivity)
+// router.post('/rating', addRating)
+// router.get('/rating', getRating)
 
 module.exports = router;

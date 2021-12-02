@@ -1,25 +1,14 @@
 import {Request, Response} from 'express';
+import { recentActivityQuery } from '../models/queries/activityQueries';
+import { RequestInstance } from '../middleware/authMiddleware'
 
-async function addtoActivity (req:Request,res:Response) {
-  try{
-    // const newActivity = await db.Activity.create(req.body);
-    // if(newActivity){
-    //   res.status(201).send(newActivity);
-    // } else {
-    //   res.status(400).send(`Couldn't make new Activity`);
-    // }
-  }
-  catch (err:any) {
-    console.log(err.message)
-    res.sendStatus(500);
-  }
-}
 
-async function getActivity (req:Request,res:Response) {
+async function getActivity (req:RequestInstance,res:Response) {
   try {
-    const {user} = req.body;
-   // const activity = await db.Activity.findAll( {where: }) waiting on DB to fill search in.
-  //  res.status(200).send(activity);
+    if(req.body && req.user){
+    const activity = await recentActivityQuery(req.body.id || req.user.id);
+    res.status(200).send(activity);
+    }
   }
   catch (err:any) {
     console.log(err.message)
@@ -59,7 +48,6 @@ async function getRating (req:Request,res:Response) {
 }
 
 module.exports = {
-  addtoActivity,
   getActivity,
   addRating,
   getRating,
