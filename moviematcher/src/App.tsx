@@ -16,6 +16,7 @@ import { selectAuth } from './redux/features/modals/authSlice';
 import { setFriendIds } from './redux/features/user/friendsIdSlice';
 import { User } from '../../interfaces/responses';
 import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
+import { setBlackListIds } from './redux/features/user/blackListids'
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
@@ -33,9 +34,15 @@ function App() {
       let ids = favoriteMovies.map((movie) => movie.movieid)
       dispatch(setFavoriteMovieIds(ids));
     }
+    const fetchBlackListMovies = async() => {
+      let blackListMovies = await ServerApiService.getBlackList(accessToken);
+      let ids = blackListMovies.map((movie) => movie.movieid);
+      dispatch(setBlackListIds(ids));
+    }
     if(accessToken) {
-      fetchFriends()
+      fetchFriends();
       fetchFavoriteMovies();
+      fetchBlackListMovies();
     }
   })
  

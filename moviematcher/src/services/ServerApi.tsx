@@ -204,11 +204,62 @@ export const ServerApiService = {
       console.log(err);
       return []
     }
-  }
+  },
+  addToBlackList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/blacklist`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  getBlackList: async(accessToken:string): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/blacklist`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  deleteFromBlackList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/blacklist`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+
 }
 
 
-
-// router.post('/user/wants', authMiddleware, addWant);
-// router.delete('/user/wants', authMiddleware, deleteWant);
-// router.get('/user/wants', authMiddleware, getWant);
+// router.post('/user/blacklist', authMiddleware, addBlacklist);
+// router.delete('/user/blacklist', authMiddleware, deleteBlacklist);
+// router.get('/user/blacklist', authMiddleware, getBlacklist);
