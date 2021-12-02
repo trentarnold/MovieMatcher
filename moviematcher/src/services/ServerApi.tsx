@@ -143,7 +143,7 @@ export const ServerApiService = {
     try {
       const fd= new FormData();
       fd.append('image', image)
-      return await axios.post(`${BASE_URL}/user/picture`, fd, {
+      return await axios.put(`${BASE_URL}/user/profile`, fd, {
         headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${accessToken}`

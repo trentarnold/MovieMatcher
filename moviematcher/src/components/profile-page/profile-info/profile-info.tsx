@@ -28,7 +28,6 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
       if(pic){
         const response = await ServerApiService.changeProfilePicture(token, pic)
         const filePath = response.data.filePath;
-        await ServerApiService.updateUserInfo(token, 'profile_pic', filePath);
         setUrl(filePath);
       }
     } catch (e) {
