@@ -72,12 +72,8 @@ export async function getFriends (req:RequestInstance,res:Response) {
 async function createUser (req:Request,res:Response) {
   try {
     let {username, email, password, profile_pic} = req.body;
-     const hash = await bcrypt.hash(password, 10);
-     password = hash;
-    const Existinguser = await searchByUsername(username);
-    if (Existinguser != null) {
-      return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
-    }
+    const hash = await bcrypt.hash(password, 10);
+    password = hash;
     const user = await createUserQuery({username, email, password, profile_pic});
     if(user){
       const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
@@ -264,6 +260,7 @@ async function getBlacklist (req: RequestInstance, res: Response) {
 
 }
 
+
 async function updatePicture (req: RequestInstance, res: Response) {
   try{
     if (req.files === null) {
@@ -280,7 +277,7 @@ async function updatePicture (req: RequestInstance, res: Response) {
           return res.status(500);
         }
       })
-     }
+    }
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
