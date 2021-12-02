@@ -21,14 +21,15 @@ const Navbar = () => {
         <NavLink to="/">
           <img className="logo" src="/logo.svg" alt="logo" />
         </ NavLink>
-        <NavLink to='/recent'>
-          <p>Recent Activity</p>
+        <NavLink to='/recent' 
+          style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
+          borderRadius: isActive ? '1rem': '',})} className='navlink-item'>
+          Recent Activity
         </NavLink>
-        <NavLink to='/profile'>
-          <p>Profile</p>
-        </NavLink>
-        <NavLink to='movieDetails'>
-          <p>Movie Details</p>
+        <NavLink to='/profile'
+          style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
+          borderRadius: isActive ? '1rem': '',})} className='navlink-item'>
+          Profile
         </NavLink>
       </div>
       <div className="buttons">

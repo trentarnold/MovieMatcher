@@ -1,11 +1,10 @@
 import React from 'react';
 import './movie-list.css';
 import MovieThumb from './movie-thumb/movie-thumb';
-import {Movie} from '../../../../interfaces/MovieInterface'
-import { useAppSelector } from '../../redux/app/hooks'
-
+import {Movie} from '../../../../interfaces/MovieInterface';
+import { useAppSelector } from '../../redux/app/hooks';
 type Props  = {
-  movieList: Movie[],
+  movieList: Movie[] ,
   criteria: string
 }
 

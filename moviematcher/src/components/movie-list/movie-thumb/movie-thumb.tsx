@@ -10,9 +10,10 @@ import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } from '../../../redux/features/user/watchListIds'
 import { selectBlackListIds, setBlackListIds, removeBlackListIds } from '../../../redux/features/user/blackListids';
+import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
 
 type Props = {
-  movie:Movie;
+  movie:Movie | MovieDetailsInterface;
 }
 const MovieThumb:React.FC<Props> = ({movie}) => {
   const navigate = useNavigate();
