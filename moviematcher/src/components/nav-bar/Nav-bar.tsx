@@ -7,7 +7,6 @@ import { clearToken, selectAuth } from '../../redux/features/modals/authSlice';
 
 import './nav-bar.css'
 const Navbar = () => {
-  
   const auth = useAppSelector(selectAuth)
   const dispatch = useAppDispatch()
 
@@ -21,6 +20,8 @@ const Navbar = () => {
         <NavLink to="/">
           <img className="logo" src="/logo.svg" alt="logo" />
         </ NavLink>
+        { auth &&
+        <>
         <NavLink to='/recent' 
           style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
           borderRadius: isActive ? '1rem': '',})} className='navlink-item'>
@@ -31,9 +32,11 @@ const Navbar = () => {
           borderRadius: isActive ? '1rem': '',})} className='navlink-item'>
           Profile
         </NavLink>
+        </>
+      }
       </div>
       <div className="buttons">
-        <Button onClick={() => dispatch(toggleFriendsList())}> Friends </Button>
+        <Button onClick={() => dispatch(toggleFriendsList())}> Friends </Button> 
         {!auth && <Button onClick={() => dispatch(turnOnLogin())}> Login </Button>}
         {auth && <Button onClick={handleLogOut}>Log Out</Button>}
       </div>
