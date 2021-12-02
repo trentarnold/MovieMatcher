@@ -11,3 +11,12 @@ export interface IUser {
   friends: Number[],
   viewHistory: IViewedMovie[]
 }
+
+export interface IProfileInfo {
+  id: number,
+  username: string,
+  email: string,
+  profile_pic: string,
+  createdAt: string,
+  updatedAt: string,
+}

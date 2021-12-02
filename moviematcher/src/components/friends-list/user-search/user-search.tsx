@@ -14,31 +14,40 @@ const UserSearch = () => {
     const accessToken = useAppSelector(selectAuth);
     const friendIds = useAppSelector(selectFriendIds);
     const yourId = useAppSelector(selectUserId);
+
     function handleChange (e: React.FormEvent<HTMLInputElement>) {
-        const input = e.currentTarget.value
-        setQuery(input);
+      const input = e.currentTarget.value
+      setQuery(input);
     }
     useEffect(() => {
-        let isCancelled = false;
-        const fetchUsers = async() => {
-         let otherUsers = await ServerApiService.getAllUsers(accessToken);
-         if(!isCancelled) {
-           setUsers(otherUsers)
-         }
-        }
-        if(accessToken) {
-          fetchUsers()
-        }
-        return () => {
-          isCancelled = true;
-        }
-      }, [accessToken, friendIds])
+      let isCancelled = false;
+      const fetchUsers = async() => {
+       let otherUsers = await ServerApiService.getAllUsers(accessToken);
+       if(!isCancelled) {
+         setUsers(otherUsers)
+       }
+      }
+      if(accessToken) {
+        fetchUsers()
+      }
+      return () => {
+        isCancelled = true;
+      }
+    }, [accessToken, friendIds])
 
+    const filterUsers = () => {
+      return users.filter(user => {
+        return user.username.includes(query)
+      }) 
+    }
+    
     return (
         <div className="user-search">
-            <input className="search-bar" value={query} onChange={handleChange}/>
+            <div className="search-bar-container">
+              <input className="search-bar" value={query} placeholder="Search..." onChange={handleChange}/>
+            </div>
             <div className="user-icons"> 
-            {users.map((user:User) => {
+            {filterUsers().map((user:User) => {
                 if(user.id === yourId) return ''
                 return <FriendIcon key={user.id} user={user} friend={friendIds.includes(user.id)}/>
             })}

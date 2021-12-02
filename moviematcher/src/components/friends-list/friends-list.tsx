@@ -3,10 +3,11 @@ import './friends-list.css'
 import FriendSearch from './friend-search/friend-search'
 import UserSearch from './user-search/user-search'
 import { useAppSelector } from '../../redux/app/hooks'
-
+import { selectAuth } from '../../redux/features/modals/authSlice'
 
 const FriendsList = () => {
   
+  const auth = useAppSelector(selectAuth)
   const toggle = useAppSelector((state) => state.friendsList.value)
   const [friendsToggle, setFriendsToggle] = useState<boolean>(true)
   const [searchToggle, setSearchToggle] = useState<boolean>(false)
@@ -22,7 +23,7 @@ const FriendsList = () => {
   };
 
   return (
-    <div className="friends-list" style={{visibility: toggle? 'visible' : 'hidden'}}>
+    <div className="friends-list" style={{visibility: toggle && auth? 'visible' : 'hidden'}}>
       <div className='friends-list-toggle'>
         <button onClick={handleFriendsClick}>Friends List</button>
         <button onClick={handleSearchClick}>Search Users</button>

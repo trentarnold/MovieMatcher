@@ -43,7 +43,9 @@ const CreateAccountForm = () => {
 
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (userName.match(/ /g) || userName.length > 16) {
+      return alert('Username must be less than 16 characters cannot contain spaces')
+    }
     let {accessToken, user} = await ServerApiService.createUser({username:userName, email, password, profile_pic:''});
     if (accessToken) {
       dispatch(setToken(accessToken));

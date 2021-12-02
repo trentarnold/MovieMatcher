@@ -91,7 +91,7 @@ export const ServerApiService = {
   getSpecificUser: async(accessToken:string, id:number): Promise<UserInterface> => {
     try{
       const response = await fetch(`${BASE_URL}/user/otherUser`, {
-        method: 'GET',
+        method: 'POST',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
