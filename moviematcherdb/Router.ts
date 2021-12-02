@@ -36,9 +36,12 @@ router.delete('/user/friends', authMiddleware, deleteFriend);
 router.post('/user/wants', authMiddleware, addWant);
 router.delete('/user/wants', authMiddleware, deleteWant);
 router.get('/user/wants', authMiddleware, getWant);
+router.post('/wants', authMiddleware, getWant);
 router.post('/user/blacklist', authMiddleware, addBlacklist);
 router.delete('/user/blacklist', authMiddleware, deleteBlacklist);
 router.get('/user/blacklist', authMiddleware, getBlacklist);
+router.post('/blacklist', authMiddleware, getBlacklist);
+
 
 //Movie Controller Routes
 // const {
