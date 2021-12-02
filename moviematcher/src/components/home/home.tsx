@@ -3,10 +3,13 @@ import { Movie } from '../../../../interfaces/MovieInterface';
 import MovieList from '../movie-list/movie-list';
 import APIService from '../../services/APISevice';
 import './home.css'
+import BlackAndWatchList from '../BlackAndWatchList';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectAuth } from '../../redux/features/modals/authSlice';
 
 const Home = () => {
     const [popularMovies, setPopularMovies] = useState<Movie[]>([])
-    
+    const accessToken = useAppSelector(selectAuth)
     useEffect(() => {
         async function fetchPopular () {
             const popularMoviesRes = await APIService.getPopularMovies();
@@ -16,6 +19,7 @@ const Home = () => {
         fetchPopular()
 
     }, [])
+    
     
     return (
         <div className="home">
@@ -30,8 +34,9 @@ const Home = () => {
                     <i></i>
                 </div>
             </div>
-            <MovieList criteria="Popular Movies" movieList={popularMovies}/>
-            <MovieList criteria="Bad Movies" movieList={popularMovies}/>
+            {
+            accessToken && <BlackAndWatchList />
+            }
             <MovieList criteria="Good Movies" movieList={popularMovies}/>
             <MovieList criteria="Illegal Movies" movieList={popularMovies}/>
             <MovieList criteria="Horror Movies" movieList={popularMovies}/>
