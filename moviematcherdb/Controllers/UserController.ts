@@ -191,8 +191,8 @@ async function deleteWant (req:RequestInstance,res:Response) {
 
 async function getWant (req: RequestInstance, res: Response) {
   try {
-    if (req.user) {
-      const wantlist = await fetchWhitelistQuery(req.user.id);
+    if (req.body && req.user) {
+      const wantlist = await fetchWhitelistQuery(req.body.id | req.user.id);
       if(wantlist === 'no whitelist'){
       res.status(200).send('User does not have any movie on their Want list');
       } else {
@@ -242,8 +242,8 @@ async function deleteBlacklist (req:RequestInstance,res:Response) {
 
 async function getBlacklist (req: RequestInstance, res: Response) {
   try {
-    if (req.user) {
-      const Blacklist = await fetchBlacklistQuery(req.user.id);
+    if (req.body && req.user) {
+      const Blacklist = await fetchBlacklistQuery(req.body.id | req.user.id);
       if(Blacklist === 'no blacklist'){
       res.status(200).send('User does not have any movie on their Blacklist');
       } else {

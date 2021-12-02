@@ -16,7 +16,7 @@ async function checkBlacklist(id: number, movieID: number): Promise<BlacklistIte
 // whitelist
 export async function fetchWhitelistQuery(id: number): Promise<WhitelistItemAttributes[] | string | null> {
   const whitelist = await WhitelistItem.findAll({ where: {uid: id}});
-  if (!whitelist) return 'no whitelist'
+  if (!whitelist.length) return 'no whitelist'
   else {
     let cleanArr: WhitelistItemAttributes[] = [];
     for (let item of whitelist) {
@@ -50,7 +50,7 @@ export async function deleteWhitelistQuery(id: number, movieID: number): Promise
 // blacklist
 export async function fetchBlacklistQuery(id: number): Promise<BlacklistItemAttributes[] | string | null> {
   const blacklist = await BlacklistItem.findAll({ where: {uid: id}});
-  if (!blacklist) return 'no blacklist'
+  if (!blacklist.length) return 'no blacklist'
   else {
     let cleanArr: BlacklistItemAttributes[] = [];
     for (let item of blacklist) {
