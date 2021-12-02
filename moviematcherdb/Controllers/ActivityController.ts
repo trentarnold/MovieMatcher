@@ -7,7 +7,7 @@ async function getActivity (req:RequestInstance,res:Response) {
   try {
     if(req.body && req.user){
     const activity = await recentActivityQuery(req.body.id || req.user.id);
-    res.status(200).send(activity);
+    res.status(200).send(activity); //returns array of activities
     }
   }
   catch (err:any) {
