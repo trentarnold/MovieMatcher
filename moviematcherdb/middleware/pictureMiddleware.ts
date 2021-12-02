@@ -12,8 +12,9 @@ export async function updatePictureMiddleware(req: RequestInstance, res: Respons
       if (req.user) {
         const newImage = req.files.image;
         const directory = path.join(__dirname, `../public/`);
-        newImage.mv(directory + req.user.username + '_profile_picture')
-        req.body.profile_pic = `/${req.user.username}_profile_picture`;
+        const filetype = newImage.name.split('.').slice(-1);
+        newImage.mv(`${directory}${req.user.username}_profile_picture.${filetype}`)
+        req.body.profile_pic = `/${req.user.username}_profile_picture.${filetype}`;
         next();
       }
     }
@@ -34,8 +35,9 @@ export async function setPictureMiddleware(req: RequestInstance, res: Response, 
       if (req.user) {
         const newImage = req.files.image;
         const directory = path.join(__dirname, `../public/`);
-        newImage.mv(directory + req.user.username + '_profile_picture')
-        req.body.profile_pic = `/${req.user.username}_profile_picture`;
+        const filetype = newImage.name.split('.').slice(-1);
+        newImage.mv(`${directory}${req.user.username}_profile_picture.${filetype}`)
+        req.body.profile_pic = `/${req.user.username}_profile_picture.${filetype}`;
         next();
       }
     }

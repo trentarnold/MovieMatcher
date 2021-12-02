@@ -1,10 +1,20 @@
-import User, { UserAttributes } from '../User';
+import User, { UserAttributes, UserInstance } from '../User';
+import { Op } from 'sequelize';
 
 //NEED TO STOP RETURNING PASSWORDS
 
 
 export async function fetchUserQuery(id: number): Promise<UserAttributes | null> {
   const user = await User.findOne({where: { id: id }, attributes: ['id', 'username', 'email', 'profile_pic', 'createdAt', 'updatedAt']});
+  return user && user.dataValues ? user.dataValues : null;
+}
+
+export async function fetchUserActivityQuery(id: number, date: Date) {
+  const user = await User.findOne({
+    where: { id: id, createdAt: { [Op.gte]: date } }, 
+    attributes: ['id', 'username', 'email', 'profile_pic', 'createdAt', 'updatedAt'],
+    include:["watched_movies", "ratings", "whitelist", "blacklist"]
+  });
   return user && user.dataValues ? user.dataValues : null;
 }
 
