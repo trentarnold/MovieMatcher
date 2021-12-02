@@ -23,7 +23,7 @@ const ProfilePage = () => {
     return (
         <div className='profile'>
             <ProfileInfo profile={profilePlaceholder}/>
-            <MovieList criteria="Recently Watched" movieList={[]/*moviesToDisplay*/} />
+            {/* <MovieList criteria="Your Favorite Movies" movieList={[]}/> */}
             <RecentActivity />
         </div>
     )
