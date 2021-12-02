@@ -15,6 +15,8 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
 
   const [profileInfo, setProfileInfo] = useState<IProfileInfo>({ id: 0, username: "", email: "", profile_pic: "", createdAt: "", updatedAt: "" })
   const [pic, setPic] = useState<File>();
+  const [refresh, setRefresh] = useState(false)
+  const [picUrl, setPicUrl] = useState('')
   const token = useAppSelector(selectAuth);
   const params = useParams();
 
@@ -26,7 +28,8 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
     try{
       if(pic){
         await ServerApiService.changeProfilePicture(token, pic)
-        window.location.reload()
+        determinePicture()
+       // setRefresh(!refresh)
       }
     } catch (e) {
       console.log (e);
@@ -39,30 +42,43 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
       try {
         const info = await ServerApiService.getUser(token)
         setProfileInfo(info)
+        determinePicture()
       } catch (e) {
         console.log(e)
       }
     }
     
-    async function getOtherUserInfo() {
-      
+    async function getOtherUserInfo(id: number) {
+      try {
+        const info = await ServerApiService.getSpecificUser(token, id);
+        setProfileInfo(info)
+        determinePicture()
+      } catch (e) {
+        console.log(e)
+      }
     }
-
-    getInfo()
+    
+    if (params.id){
+      console.log(params.id)
+      getOtherUserInfo(Number(params.id))
+    } else  getInfo()
    
-  }, [token])
+  }, [token, refresh])
 
 
   const determinePicture = () =>{
-    if (profileInfo.profile_pic === '') {
-        return 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png'
-    } else return `http://localhost:3001${profileInfo.profile_pic}`
+    console.log(profileInfo.profile_pic)
+    if (profileInfo.profile_pic[0] !== '/') {
+        setPicUrl('https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png')
+    } else setPicUrl(`http://localhost:3001${profileInfo.profile_pic}`)
   }
+  
+
 
   return (
       <div className='profile-info'>
           <div className='profile-info-icons'>
-            <img src={determinePicture()} alt="profile"/>
+            <img src={picUrl} alt="profile"/>
             {!params.id && <>
               <input type="file" onChange={handleChange}/>
               <Button onClick={updatePicture}>Update Photo</Button>
@@ -70,10 +86,12 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
           </div>
           <div className='profile-info-details'>
             <h1>{profileInfo.username}</h1>
+            {params.id &&
             <div className="profile-info-buttons">
               <Button>Add/Delete</Button>
               <Button>Match</Button>
             </div>
+            }
           </div>
       </div>
   )

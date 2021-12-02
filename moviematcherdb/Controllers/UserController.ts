@@ -45,7 +45,6 @@ export async function getSpecificUser (req:Request, res:Response) {
     } else {
       res.status(500).send({message: "User not found"})
     }
-
   }
   catch (err:any) {
     console.log(err.message)
