@@ -22,12 +22,12 @@ export const favoriteMovieIdsSlice = createSlice({
     addFavoriteMovieIds: (state, action:PayloadAction<number>) => {
       state.value = [...state.value, action.payload];
     },
-    removeFavoriteFriendIds: (state, action: PayloadAction<number>) => {
+    removeFavoriteMovieIds: (state, action: PayloadAction<number>) => {
       state.value = state.value.filter(id => id !== action.payload)
     }
   } 
 });
 
-export const { setFavoriteMovieIds, clearFavoriteMovieIds, addFavoriteMovieIds, removeFavoriteFriendIds } = favoriteMovieIdsSlice.actions;
+export const { setFavoriteMovieIds, clearFavoriteMovieIds, addFavoriteMovieIds, removeFavoriteMovieIds } = favoriteMovieIdsSlice.actions;
 export const selectFavoriteMovieIds = (state: RootState) => state.favoriteMovieIds.value;
 export default favoriteMovieIdsSlice.reducer;
