@@ -10,7 +10,7 @@ const ProfilePage = () => {
 
     return (
         <div className='profile'>
-            <ProfileInfo profile={profilePlaceholder}/>
+            <ProfileInfo />
             <BlackAndWatchList />
             <RecentActivity />
         </div>

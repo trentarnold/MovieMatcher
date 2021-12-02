@@ -7,11 +7,8 @@ import { useAppSelector } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { useParams } from "react-router-dom";
 
-type Props = {
-  profile: IUser
-}
 
-const ProfileInfo:React.FC<Props> = ({profile}) => {
+const ProfileInfo= () => {
 
   const [profileInfo, setProfileInfo] = useState<IProfileInfo>({ id: 0, username: "", email: "", profile_pic: "", createdAt: "", updatedAt: "" })
   const [pic, setPic] = useState<File>();
