@@ -23,7 +23,8 @@ export interface MovieDetailsInterface {
   title: string,
   video: boolean,
   vote_average: number,
-  vote_count: number
+  vote_count: number,
+  genre_ids?: number[]
 }
 
 interface ProductionCompany {

@@ -19,12 +19,12 @@ color:grey
 .nav-areas {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    font-size: 1.6rem;
 }
-
-.nav-areas p {
-  margin: 15px;
+.navlink-item {
+    margin: 5vw;
 }
-
 .buttons {
     margin: 15px;
 }
