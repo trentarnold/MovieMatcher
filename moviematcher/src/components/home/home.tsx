@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react'
 import { Movie } from '../../../../interfaces/MovieInterface';
 import MovieList from '../movie-list/movie-list';
 import APIService from '../../services/APISevice';
-import './home.css'
 import BlackAndWatchList from '../BlackAndWatchList';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectAuth } from '../../redux/features/modals/authSlice';
+import './home.css'
 
 const Home = () => {
     const [popularMovies, setPopularMovies] = useState<Movie[]>([])
@@ -33,7 +33,6 @@ const Home = () => {
             setDramaMovies(dramaMoviesRes.results);
             setSciFiMovies(sciFiMoviesRes.results);
             setActionMovies(actionMoviesRes.results);
-            
         }
         fetchPopular()
 
