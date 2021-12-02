@@ -18,27 +18,27 @@ const Navbar = () => {
     <div className="nav-bar">
       <div className="nav-areas">
         <NavLink to="/">
-          <img className="logo" src="/logo.svg" alt="logo" />
+          <img className="logo enlarge-on-hover" src="/logo.svg" alt="logo" />
         </ NavLink>
         { auth &&
         <>
         <NavLink to='/recent' 
           style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
-          borderRadius: isActive ? '1rem': '',})} className='navlink-item'>
+          borderRadius: isActive ? '1rem': '',})} className='navlink-item enlarge-on-hover'>
           Recent Activity
         </NavLink>
         <NavLink to='/profile'
           style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
-          borderRadius: isActive ? '1rem': '',})} className='navlink-item'>
+          borderRadius: isActive ? '1rem': '',})} className='navlink-item enlarge-on-hover'>
           Profile
         </NavLink>
         </>
       }
       </div>
       <div className="buttons">
-        {auth && <Button onClick={() => dispatch(toggleFriendsList())}> Friends </Button>}
-        {!auth && <Button onClick={() => dispatch(turnOnLogin())}> Login </Button>}
-        {auth && <Button onClick={handleLogOut}>Log Out</Button>}
+        {auth && <Button className='enlarge-on-hover margin-right' onClick={() => dispatch(toggleFriendsList())}> Friends </Button>}
+        {!auth && <Button className='enlarge-on-hover' onClick={() => dispatch(turnOnLogin())}> Login </Button>}
+        {auth && <Button className='enlarge-on-hover' onClick={handleLogOut}>Log Out</Button>}
       </div>
     </div>
   )

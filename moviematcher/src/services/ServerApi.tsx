@@ -273,9 +273,42 @@ export const ServerApiService = {
       return []
     }
   },
+  getOtherUserWantList: async(id:number, accessToken:string): Promise<FavoriteMovieInterface[]> => {
+    console.log('i got called')
+    try {
+      const response = await fetch(`${BASE_URL}/wants`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({id})
+      })
+      let data = await response.json();
+      return data
+    }catch(err) {
+      console.log(err);
+      console.log('it erred here')
+      return []
+    }
+  },
+  getOtherUserBlackList: async(id:number, accessToken:string): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/blacklist`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({id})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
 }
 
-
-// router.post('/user/blacklist', authMiddleware, addBlacklist);
-// router.delete('/user/blacklist', authMiddleware, deleteBlacklist);
-// router.get('/user/blacklist', authMiddleware, getBlacklist);

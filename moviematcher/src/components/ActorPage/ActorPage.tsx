@@ -7,7 +7,6 @@ import ActorDetails from './ActorDetails/ActorDetails'
 const ActorPage = () => {
   const { id } : any = useParams();
   const [combinedMovies, setCombinedMovies] = useState<Movie[]>([]);
-  console.log(combinedMovies)
   useEffect(() => {
     let isCancelled = false;
     async function fetchPopular () {

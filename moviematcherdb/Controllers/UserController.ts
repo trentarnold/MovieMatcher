@@ -193,6 +193,10 @@ async function getWant (req: RequestInstance, res: Response) {
   try {
     if (req.body && req.user) {
       const wantlist = await fetchWhitelistQuery(req.body.id || req.user.id);
+<<<<<<< HEAD
+      console.log(wantlist)
+=======
+>>>>>>> b7692e24e656846bdabedb7f3d72f7f43348a8ed
       if(wantlist === 'no whitelist'){
       res.status(200).send('User does not have any movie on their Want list');
       } else {
