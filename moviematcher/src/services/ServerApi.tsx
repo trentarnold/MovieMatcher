@@ -1,6 +1,5 @@
 import {AccessTokenResponse, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
-import { Movie } from '../../../interfaces/MovieInterface';
 import { FavoriteMovieInterface } from '../../../interfaces/favoriteMovieInterface'
 import axios from 'axios';
 const BASE_URL = 'http://localhost:3001'

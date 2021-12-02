@@ -27,7 +27,7 @@ export async function setPictureMiddleware(req: RequestInstance, res: Response, 
   try {
     if (!req.files) {
       if (req.body.profile_pic) {delete req.body.profile_pic}
-      const generic = '/generic_profile';
+      const generic = '/generic_profile.png';
       req.body.profile_pic = generic;
       next();
     } else {
