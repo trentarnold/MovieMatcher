@@ -287,7 +287,6 @@ async function updatePicture (req: RequestInstance, res: Response) {
     res.sendStatus(500);
   }
 }
-
 module.exports = {
   updateUser,
   getUser,

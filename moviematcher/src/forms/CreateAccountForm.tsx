@@ -47,7 +47,11 @@ const CreateAccountForm = () => {
     let {accessToken, user} = await ServerApiService.createUser({username:userName, email, password, profile_pic:"https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png"});
     if (accessToken) {
       dispatch(setToken(accessToken));
-      if(pic) await ServerApiService.updateUser(token, pic);
+      if(pic) {
+        const picResponse =  await ServerApiService.changeProfilePicture(accessToken, pic);
+        const filePath = picResponse.data.filePath;
+        await ServerApiService.updateUserInfo(accessToken, 'profile_pic', filePath);
+      }
       dispatch(setUserId(user.id));
       handleClose();
     }else {

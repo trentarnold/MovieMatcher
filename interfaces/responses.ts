@@ -12,3 +12,10 @@ export interface  User {
     createdAt: string,
     updatedAt: string
 }
+
+export interface PictureChange {
+  data:{
+    fileName:string,
+    filePath:string
+  }
+}

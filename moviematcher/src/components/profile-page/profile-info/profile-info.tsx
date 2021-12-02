@@ -15,6 +15,7 @@ type Props = {
 const ProfileInfo:React.FC<Props> = ({profile}) => {
 
   const [pic, setPic] = useState<File>()
+  const [url, setUrl] = useState('')
   const token = useAppSelector(selectAuth)
 
 
@@ -25,28 +26,32 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
   async function updatePicture () {
     try{
       if(pic){
-        const response = await ServerApiService.updateUser(token, pic)
-        console.log(response)
+        const response = await ServerApiService.changeProfilePicture(token, pic)
+        const filePath = response.data.filePath;
+        await ServerApiService.updateUserInfo(token, 'profile_pic', filePath);
+        setUrl(filePath);
       }
     } catch (e) {
       console.log (e);
+      alert('error uploading picture')
     }
   }
-
+ 
   useEffect(() => {
     async function getInfo() {
-      // const info = await ServerApiService.getUser(token)
-      // console.log(info)
+      const info = await ServerApiService.getUser(token)
+      setUrl(info.profile_pic)
+      console.log(info)
     }
     getInfo()
-  }, [token])
+  }, [token, url])
 
   return (
       <div className='profile-info'>
           <div className='profile-info-icons'>
-            <img src={String(profile.profilePic)} alt="profile"/>
+            <img src={`http://localhost:3001${url}`} alt="profile"/>
               <input type="file" onChange={handleChange}/>
-              <button onClick={updatePicture}>button</button>
+              <Button onClick={updatePicture}>Update Photo</Button>
             <div className="profile-info-buttons">
               <Button>Add/Delete</Button>
               <Button>Match</Button>
