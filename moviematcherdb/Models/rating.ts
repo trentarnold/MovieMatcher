@@ -7,13 +7,13 @@ export interface RatingAttributes {
   rating: number;
   createdAt?: Date;
   updatedAt?: Date;
-  dataValues?: RatingAttributes
   type?: string;
 };
 
 export interface RatingInstance
-  extends Model<RatingAttributes>,
-  RatingAttributes {
+extends Model<RatingAttributes>,
+RatingAttributes {
+    dataValues?: RatingAttributes
     }
 
     const Rating = sequelize.define<RatingInstance>('review', {
