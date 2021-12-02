@@ -80,10 +80,10 @@ async function createUser (req:Request,res:Response) {
     if (Existinguser != null) {
       return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
     }
-    const User = await createUserQuery({username, email, password, profile_pic});
-    if(User){
-      const accessToken = jwt.sign({id: User.id}, process.env.SECRET_KEY);
-      res.status(201).send({ User, accessToken}) //returns the created user and their JWT
+    const user = await createUserQuery({username, email, password, profile_pic});
+    if(user){
+      const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
+      res.status(201).send({ user, accessToken}) //returns the created user and their JWT
     }
   }
   catch (err:any) {
