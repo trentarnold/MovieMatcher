@@ -1,10 +1,10 @@
 import { Model, Optional } from 'sequelize';
 import { sequelize, DataTypes } from './index';
-import WatchedMovie from './watched_movie';
-import Rating from './rating';
+import WatchedMovie, { WatchedMovieInstance } from './watched_movie';
+import Rating, { RatingInstance } from './rating';
 import Friend from './friend';
-import WhitelistItem from './whitelist_item';
-import BlacklistItem from './blacklist_item';
+import WhitelistItem, { WhitelistItemInstance } from './whitelist_item';
+import BlacklistItem, { BlacklistItemInstance } from './blacklist_item';
 
 export interface UserAttributes {
   id: number;
@@ -14,6 +14,10 @@ export interface UserAttributes {
   profile_pic: string;
   createdAt?: Date;
   updatedAt?: Date;
+  watched_movies?: WatchedMovieInstance[];
+  ratings?: RatingInstance[];
+  whitelist?: WhitelistItemInstance[];
+  blacklist?: BlacklistItemInstance[];
 };
 
 /*
@@ -27,7 +31,7 @@ interface UserCreationAttributes
 export interface UserInstance
   extends Model<UserAttributes, UserCreationAttributes>,
     UserAttributes {
-      dataValues?: UserAttributes
+      dataValues?: UserAttributes;
     }
 
 const User = sequelize.define<UserInstance>('user', {

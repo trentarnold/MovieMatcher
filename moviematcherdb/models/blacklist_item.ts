@@ -8,7 +8,7 @@ export interface BlacklistItemAttributes {
   updatedAt?: Date;
 };
 
-interface BlacklistItemInstance
+export interface BlacklistItemInstance
   extends Model<BlacklistItemAttributes>,
   BlacklistItemAttributes {
     dataValues?: BlacklistItemAttributes
