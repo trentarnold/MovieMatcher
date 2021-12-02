@@ -1,0 +1,27 @@
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+   
+   }
+   
+   .input {
+     display: flex;
+     justify-content: space-between;
+     max-height: 30px;
+   }
+   
+   .input p {
+     line-height: 40%;
+   }
+   
+   .chat {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 300px;
+    margin-top: 200px;
+    border: 3px solid grey;
+    overflow: auto;
+   }

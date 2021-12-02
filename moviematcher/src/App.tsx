@@ -10,6 +10,7 @@ import LoginForm from './forms/LoginForm';
 import CreateAccountForm from './forms/CreateAccountForm';
 import { useEffect } from 'react';
 import ActorPage from './components/ActorPage/ActorPage';
+import SocketTest from './components/socket-test/socket-test';
 import { useAppDispatch, useAppSelector } from './redux/app/hooks';
 import { ServerApiService } from './services/ServerApi';
 import { selectAuth } from './redux/features/modals/authSlice';
@@ -57,6 +58,7 @@ function App() {
           <Route path='/movieDetails/:id' element={<MoviePage />} />
           <Route path='/actorDetails/:id' element = {<ActorPage />} />
           <Route path='/profile/:id' element = {<ProfilePage />} />
+          <Route path='/socket' element = {<SocketTest />} />
       </Routes>
       <div className="outlet">
         <Outlet />
