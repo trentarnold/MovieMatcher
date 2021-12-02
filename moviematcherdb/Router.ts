@@ -68,7 +68,7 @@ const {
 
 } = require('./Controllers/ActivityController');
 
-router.get('/activity', getActivity)
+router.post('/activity',authMiddleware, getActivity)
 // router.post('/rating', addRating)
 // router.get('/rating', getRating)
 
