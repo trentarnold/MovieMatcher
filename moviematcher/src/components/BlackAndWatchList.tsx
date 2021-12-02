@@ -14,6 +14,7 @@ const BlackAndWatchList = () => {
   const accessToken = useAppSelector(selectAuth);
   const [watchListMovies, setWatchListMovies] = useState<MovieDetailsInterface[]>([]);
   const [blackListedMovies, setBlackListedMovies] = useState<MovieDetailsInterface[]>([]);
+  const [profileName, setProfileName] = useState('')
   const { id } : any = useParams();
   useEffect(() => {
     if(id) return
@@ -56,6 +57,7 @@ useEffect(() => {
 useEffect(() => {
   if(!id) return
   let isCancelled = false;
+
   const getOtherUserFavMovies = async() => {
     const otherUserFavoriteMovies = await ServerApiService.getOtherUserWantList(id, accessToken);
     const ids = otherUserFavoriteMovies.map((movie) => movie.movieid);
@@ -64,7 +66,7 @@ useEffect(() => {
     }))
     if(!isCancelled) {
       setWatchListMovies(favoriteMovies);
-  }
+    }
   }
   getOtherUserFavMovies();
   
@@ -77,6 +79,7 @@ useEffect(() => {
 useEffect(() => {
   if(!id) return
   let isCancelled = false;
+
   const getOtherUserBlackListMovies = async() => {
     const otherUserBlackListMovies = await ServerApiService.getOtherUserBlackList(id, accessToken);
     const ids = otherUserBlackListMovies.map((movie) => movie.movieid);
@@ -85,10 +88,18 @@ useEffect(() => {
     }))
     if(!isCancelled) {
       setBlackListedMovies(favoriteMovies);
+    }
   }
+
+  const getOtherUserInfo = async() =>  {
+    const info = await ServerApiService.getSpecificUser(accessToken, id);
+    if(!isCancelled) {
+      setProfileName(info.username);
+    }  
   }
+
   getOtherUserBlackListMovies();
-  
+  getOtherUserInfo();
   return () => {
       isCancelled = true;
   }
@@ -98,8 +109,8 @@ useEffect(() => {
 
   return (
     <>
-      <FavoriteMovieList criteria="Your Favorite Movies" movieList={watchListMovies}/>
-      <FavoriteMovieList criteria='Your Blacklisted Movies' movieList={blackListedMovies}/>
+      <FavoriteMovieList criteria={id ? `${profileName}'s' Favorite Movies`: "Your Favorite Movies"} movieList={watchListMovies}/>
+      <FavoriteMovieList criteria={id ? `${profileName}'s' Blacklisted Movies` : 'Your Blacklisted Movies'} movieList={blackListedMovies}/>
     </>
   )
 }
