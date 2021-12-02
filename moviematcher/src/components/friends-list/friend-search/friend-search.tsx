@@ -13,6 +13,8 @@ const FriendSearch = () => {
   const friendIds = useAppSelector(selectFriendIds);
   const [query, setQuery] = useState('');
   const [friends, setFriends] = useState<User[]>([]);
+  
+
   function handleChange (e: React.FormEvent<HTMLInputElement>) {
       const input = e.currentTarget.value
       setQuery(input);
@@ -32,12 +34,20 @@ const FriendSearch = () => {
         isCancelled = true;
       }
     }, [accessToken, friendIds])
+  
+  const filterFriends = () => {
+    return friends.filter(friend => {
+      return friend.username.includes(query)
+    }) 
+  }
 
   return (
     <div className="friend-search">
-      <input className="search-bar" value={query} onChange={handleChange}/>
+      <div className="search-bar-container">
+        <input className="search-bar" value={query} placeholder="Search..." onChange={handleChange}/>
+      </div>
       <div className="friend-icons">
-        {friends.map((friend:any) => {
+        {filterFriends().map((friend:any) => {
           return <FriendIcon key={friend.id} user={friend} friend={true} />
         })}
         </div>
