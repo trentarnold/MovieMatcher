@@ -54,9 +54,8 @@ export async function getSpecificUser (req:Request, res:Response) {
 }
 export async function getFriends (req:RequestInstance,res:Response) {
   try{
-    const {User} = req.body;
     if(req.user) {
-      const friends = await findAllFriends(req.user.id);
+      const friends = await findAllFriends(req.body.id | req.user.id);
       if(friends === null){
         res.status(200).send('User has no friends. Loser.')
       } else{
@@ -101,9 +100,9 @@ async function loginUser (req:Request,res:Response) { //needs work
      };
     const validatedUser = await bcrypt.compare(password, user.password);
     if(validatedUser){
-      console.log(validatedUser);
       const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
-        res.status(200).send({accessToken, user}) //returns the user that logged in and their JWT
+      const {id, username, email, profile_pic, createdAt, updatedAt} = user
+        res.status(200).send({accessToken, user:{id, username, email, profile_pic, createdAt, updatedAt} }) //returns the user that logged in and their JWT
     }
     else{
       res.status(400).send({confirmed: false});
