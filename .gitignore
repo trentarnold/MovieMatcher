@@ -42,8 +42,3 @@ dist
 .env.test.local
 .env.production.local
 moviematcherdb/config
-<<<<<<< HEAD
->>>>>>> Controllers
-=======
-
->>>>>>> 790279195edca10a3e4de57acf5bc7742e912744
