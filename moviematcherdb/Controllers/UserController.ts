@@ -40,9 +40,8 @@ export async function getUser (req:RequestInstance, res:Response) {
 export async function getSpecificUser (req:Request, res:Response) {
   try {
     if (req.body) {
-      const specificUser = await fetchUserQuery(req.body.id);
-      console.log(specificUser);
-      res.status(200).send(specificUser);  //returns the queried user
+      const user = await fetchUserQuery(req.body.id);
+      res.status(200).send(user);  //returns the queried user
     } else {
       res.status(500).send({message: "User not found"})
     }
