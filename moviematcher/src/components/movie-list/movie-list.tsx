@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './movie-list.css';
 import MovieThumb from './movie-thumb/movie-thumb';
 import {Movie} from '../../../../interfaces/MovieInterface';
@@ -10,7 +10,19 @@ type Props  = {
 
 const MovieList: React.FC<Props> = ({movieList, criteria}) => {
 
+  function shuffleArray (arr: Movie[]) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+}
+
   const toggle = useAppSelector((state) => state.friendsList.value)
+  
+  //shuffles list of movies so Venom isn't at the beginning of every genre list
+  useEffect(()=>{
+    shuffleArray(movieList)
+  })
 
   //pass it a title and a list of movies through props
   return (

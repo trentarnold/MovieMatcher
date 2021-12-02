@@ -27,6 +27,67 @@ const APIService = {
       return {results:[]};
     }
   },
+
+  getUpcomingMovies: async(): Promise<Results> => {
+    try {
+      const latestMovies = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&page=1')
+      return await latestMovies.json();
+    } catch (e) {
+      console.log(e);
+      return {results:[]};
+    }
+  },
+
+  getHorrorMovies: async(): Promise<Results> => {
+    try{
+      const horrorMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=27&with_watch_monetization_types=flatrate');
+      return await horrorMovies.json();
+    } catch (e) {
+      console.log(e);
+      return {results:[]}
+    }
+  },
+
+  getComedyMovies: async(): Promise<Results> => {
+    try{
+      const comedyMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=35&with_watch_monetization_types=flatrate');
+      return await comedyMovies.json();
+    } catch (e) {
+      console.log(e);
+      return {results:[]}
+    }
+  },
+
+  getActionMovies: async(): Promise<Results> => {
+    try{
+      const actionMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=28&with_watch_monetization_types=flatrate');
+      return await actionMovies.json();
+    } catch (e) {
+      console.log(e);
+      return {results:[]}
+    }
+  },
+
+  getSciFiMovies: async(): Promise<Results> => {
+    try{
+      const sciFiMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=878&with_watch_monetization_types=flatrate');
+      return await sciFiMovies.json();
+    } catch (e) {
+      console.log(e);
+      return {results:[]}
+    }
+  },
+
+  getDramaMovies: async(): Promise<Results> => {
+    try{
+      const dramaMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=18&with_watch_monetization_types=flatrate');
+      return await dramaMovies.json();
+    } catch (e) {
+      console.log(e);
+      return {results:[]}
+    }
+  },
+
   getIndividualMovie: async(id:string): Promise<MovieDetailsInterface>  => {
     try {
       const movie  = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);           
