@@ -1,5 +1,7 @@
 import {AccessTokenResponse, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
+import { Movie } from '../../../interfaces/MovieInterface';
+import { FavoriteMovieInterface } from '../../../interfaces/favoriteMovieInterface'
 import axios from 'axios';
 const BASE_URL = 'http://localhost:3001'
 interface User {
@@ -151,36 +153,62 @@ export const ServerApiService = {
       console.log(e);
       return UserPlaceholder;
     }
+  },
+  addToWatchList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/wants`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  getWatchList: async(accessToken:string): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/wants`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  deleteFromWatchList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/wants`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
   }
 }
-// router.post('/user/friends', authMiddleware, addFriend);
-// router.delete('/user/friends', authMiddleware, deleteFriend);
-// async function addFriend (req:RequestInstance,res:Response) {
-//   try {
-//       if(req.body && req.user){
-//         if(req.user.id === req.body.friendid) return res.status(401).send(`Can't add yourself as a friend.`)
-//      const friend = await addFriendQuery(req.user.id, req.body.friendid)
-//     if(friend != null){
-//       res.status(201).send(friend);
-//     } else {
-//       res.status(401).send(`Friend could not be added.`);
-//     }
-//     }
-//   }
-//   catch (err:any){
-//     console.log(err.message)
-//     res.sendStatus(500)
-//   }
-// }
-// async function deleteFriend (req:RequestInstance,res:Response) {
-//   try {
-//     if(req.body&&req.user){
-//       if(req.user.id === req.body.friendid) return res.status(401).send(`Can't delete yourself as a friend.`)
-//       const deleted = await deleteFriendQuery(req.user.id, req.body.friendid);
-//       if(deleted != null){
-//         res.status(200).send(deleted);
-//       } else {
-//         res.status(401).send('Friend could not be deleted');
-//       }
-//     }
-//   }
+
+
+
+// router.post('/user/wants', authMiddleware, addWant);
+// router.delete('/user/wants', authMiddleware, deleteWant);
+// router.get('/user/wants', authMiddleware, getWant);

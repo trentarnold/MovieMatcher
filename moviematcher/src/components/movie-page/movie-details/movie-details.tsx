@@ -9,7 +9,7 @@ import StarRatings from 'react-star-ratings';
 import ActorsList from '../../actors-list/ActorsList';
 
 const MovieDetails = () => {
-    const { id } : any = useParams();
+    const { id }: any = useParams();
     const [currentMovie, setCurrentMovie] = useState<MovieDetailsInterface>(movieDetailsPlaceHolder)
     const [streamProviders, setStreamProviders] = useState<any>();
     useEffect(() => {

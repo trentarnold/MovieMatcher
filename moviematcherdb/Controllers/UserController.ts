@@ -95,6 +95,7 @@ async function loginUser (req:Request,res:Response) { //needs work
   try {
     const { username, password } = req.body;
     const user = await searchByUsername(username);
+    console.log(user)
     if(user === null){
        return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
      };
