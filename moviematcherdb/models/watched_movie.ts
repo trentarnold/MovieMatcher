@@ -7,6 +7,7 @@ export interface WatchedMovieAttributes {
   friendid?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  type?: string;
 };
 
 export interface WatchedMovieInstance
