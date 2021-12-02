@@ -11,8 +11,8 @@ require('dotenv').config();
 async function updateUser (req:RequestInstance,res:Response) {
   try{
     if(req.body && req.user){
-    const updatedUser = await updateUserQuery(req.user.id, req.body);
-    res.status(201).send(updatedUser); // returns the user after update
+    const user = await updateUserQuery(req.user.id, req.body);
+    res.status(201).send(user); // returns the user after update
     } else {
       res.status(401).send('User could not be updated.')
     }
@@ -129,9 +129,9 @@ async function addFriend (req:RequestInstance,res:Response) {
   try {
       if(req.body && req.user){
         if(req.user.id === req.body.friendid) return res.status(401).send(`Can't add yourself as a friend.`)
-     const friend = await addFriendQuery(req.user.id, req.body.friendid)
-    if(friend != null){
-      res.status(201).send(friend); // returns updated friends list
+     const user = await addFriendQuery(req.user.id, req.body.friendid)
+    if(user != null){
+      res.status(201).send(user); // returns updated friends list
     } else {
       res.status(401).send(`Friend could not be added.`);
     }
