@@ -8,6 +8,7 @@ export interface RatingAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   dataValues?: RatingAttributes
+  type?: string;
 };
 
 export interface RatingInstance

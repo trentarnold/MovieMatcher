@@ -6,6 +6,7 @@ export interface WhitelistItemAttributes {
   movieid: number;
   createdAt?: Date;
   updatedAt?: Date;
+  type?: string;
 };
 
 export interface WhitelistItemInstance
