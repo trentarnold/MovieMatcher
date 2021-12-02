@@ -32,7 +32,7 @@ const Navbar = () => {
         </NavLink>
       </div>
       <div className="buttons">
-        <Button onClick={() => dispatch(toggleFriendsList())}> Friends </Button>
+        {auth && <Button onClick={() => dispatch(toggleFriendsList())}> Friends </Button>}
         {!auth && <Button onClick={() => dispatch(turnOnLogin())}> Login </Button>}
         {auth && <Button onClick={handleLogOut}>Log Out</Button>}
       </div>
