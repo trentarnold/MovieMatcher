@@ -14,7 +14,8 @@ import { useAppDispatch, useAppSelector } from './redux/app/hooks';
 import { ServerApiService } from './services/ServerApi';
 import { selectAuth } from './redux/features/modals/authSlice';
 import { setFriendIds } from './redux/features/user/friendsIdSlice';
-import { User } from '../../interfaces/responses'
+import { User } from '../../interfaces/responses';
+import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
@@ -27,8 +28,14 @@ function App() {
      let ids = userFriends.map((friend:User) => friend.id);
      dispatch(setFriendIds(ids));
     }
+    const fetchFavoriteMovies = async() => {
+      let favoriteMovies  = await ServerApiService.getWatchList(accessToken);
+      let ids = favoriteMovies.map((movie) => movie.movieid)
+      dispatch(setFavoriteMovieIds(ids));
+    }
     if(accessToken) {
       fetchFriends()
+      fetchFavoriteMovies();
     }
   })
  

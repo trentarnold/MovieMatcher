@@ -1,5 +1,7 @@
 import {AccessTokenResponse, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
+import { Movie } from '../../../interfaces/MovieInterface';
+import { FavoriteMovieInterface } from '../../../interfaces/favoriteMovieInterface'
 import axios from 'axios';
 const BASE_URL = 'http://localhost:3001'
 interface User {
@@ -151,9 +153,62 @@ export const ServerApiService = {
       console.log(e);
       return UserPlaceholder;
     }
+  },
+  addToWatchList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/wants`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  getWatchList: async(accessToken:string): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/wants`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  deleteFromWatchList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/wants`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
   }
 }
 
 
 
-
+// router.post('/user/wants', authMiddleware, addWant);
+// router.delete('/user/wants', authMiddleware, deleteWant);
+// router.get('/user/wants', authMiddleware, getWant);
