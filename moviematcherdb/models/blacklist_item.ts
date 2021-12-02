@@ -6,6 +6,7 @@ export interface BlacklistItemAttributes {
   movieid: number;
   createdAt?: Date;
   updatedAt?: Date;
+  type?: string;
 };
 
 export interface BlacklistItemInstance
