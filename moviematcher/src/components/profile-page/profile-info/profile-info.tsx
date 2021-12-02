@@ -35,8 +35,8 @@ const ProfileInfo:React.FC<Props> = ({profile}) => {
 
   useEffect(() => {
     async function getInfo() {
-      const info = await ServerApiService.getUser(token)
-      console.log(info)
+      // const info = await ServerApiService.getUser(token)
+      // console.log(info)
     }
     getInfo()
   }, [token])

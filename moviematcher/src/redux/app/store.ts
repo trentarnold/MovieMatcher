@@ -6,6 +6,7 @@ import friendsListReducer from '../features/modals/friendsListSlice'
 import authReducer from '../features/modals/authSlice'
 import userIdReducer from '../features/user/userIdSlice'
 import friendIdsReducer from '../features/user/friendsIdSlice'
+import  favoriteMovieIdsReducer  from '../features/user/watchListIds';
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -14,7 +15,8 @@ export const store = configureStore({
     friendsList: friendsListReducer,
     auth: authReducer,
     userId: userIdReducer,
-    friendIds: friendIdsReducer
+    friendIds: friendIdsReducer,
+    favoriteMovieIds: favoriteMovieIdsReducer
   },
 });
 

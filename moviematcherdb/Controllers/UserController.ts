@@ -11,8 +11,8 @@ require('dotenv').config();
 async function updateUser (req:RequestInstance,res:Response) {
   try{
     if(req.body && req.user){
-    const updatedUser = await updateUserQuery(req.user.id, req.body);
-    res.status(201).send(updatedUser); // returns the user after update
+    const user = await updateUserQuery(req.user.id, req.body);
+    res.status(201).send(user); // returns the user after update
     } else {
       res.status(401).send('User could not be updated.')
     }
@@ -40,9 +40,8 @@ export async function getUser (req:RequestInstance, res:Response) {
 export async function getSpecificUser (req:Request, res:Response) {
   try {
     if (req.body) {
-      const specificUser = await fetchUserQuery(req.body.id);
-      console.log(specificUser);
-      res.status(200).send(specificUser);  //returns the queried user
+      const user = await fetchUserQuery(req.body.id);
+      res.status(200).send(user);  //returns the queried user
     } else {
       res.status(500).send({message: "User not found"})
     }
@@ -96,6 +95,7 @@ async function loginUser (req:Request,res:Response) { //needs work
   try {
     const { username, password } = req.body;
     const user = await searchByUsername(username);
+    console.log(user)
     if(user === null){
        return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
      };
@@ -130,9 +130,9 @@ async function addFriend (req:RequestInstance,res:Response) {
   try {
       if(req.body && req.user){
         if(req.user.id === req.body.friendid) return res.status(401).send(`Can't add yourself as a friend.`)
-     const friend = await addFriendQuery(req.user.id, req.body.friendid)
-    if(friend != null){
-      res.status(201).send(friend); // returns updated friends list
+     const user = await addFriendQuery(req.user.id, req.body.friendid)
+    if(user != null){
+      res.status(201).send(user); // returns updated friends list
     } else {
       res.status(401).send(`Friend could not be added.`);
     }
