@@ -8,7 +8,7 @@ import MoviePage from './components/movie-page/movie-page';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import LoginForm from './forms/LoginForm';
 import CreateAccountForm from './forms/CreateAccountForm';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ActorPage from './components/ActorPage/ActorPage';
 import { useAppDispatch, useAppSelector } from './redux/app/hooks';
 import { ServerApiService } from './services/ServerApi';
@@ -16,13 +16,30 @@ import { selectAuth } from './redux/features/modals/authSlice';
 import { setFriendIds } from './redux/features/user/friendsIdSlice';
 import { User } from '../../interfaces/responses';
 import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
-import { setBlackListIds } from './redux/features/user/blackListids'
+import { setBlackListIds } from './redux/features/user/blackListids';
+import io, { Socket } from 'socket.io-client'
+import { setLoggedInUser} from './redux/features/user/loggedInUsers'
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
+  let socketRef = useRef<any>();
   useEffect(() => {
     document.title = "Movie Matcher"
-  }, []);
+    if(accessToken) {
+      const getYourUserInfo = async() => {
+        let yourUserInfo =  await ServerApiService.getUser(accessToken);
+        socketRef.current = io('http://localhost:3001',  { transports : ['websocket'] });  
+        socketRef.current.emit('login',  yourUserInfo.username);
+        socketRef.current.on('loggedInUsers', (loggedInUsers:string[]) => {
+          dispatch(setLoggedInUser(loggedInUsers));
+        })
+      }
+      getYourUserInfo()
+
+    }
+  }, [accessToken]);
+
+
   useEffect(() => {
     const fetchFriends = async() => {
      let userFriends = await ServerApiService.getFriends(accessToken);

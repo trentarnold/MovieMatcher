@@ -7,6 +7,7 @@ import { ServerApiService } from '../../../services/ServerApi'
 import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks'
 import { selectAuth } from '../../../redux/features/modals/authSlice'
 import {setFriendIds} from '../../../redux/features/user/friendsIdSlice'
+import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers';
 type Props = {
     user: User,
     friend: boolean,
@@ -15,7 +16,8 @@ type Props = {
 const FriendIcon:React.FC<Props> = ({user, friend}) => {
     const accessToken = useAppSelector(selectAuth);
     const navigate = useNavigate();
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+    const loggedInUsers = useAppSelector(selectLoggedInUser);
     const handleMatch = () => {
         console.log('match')
     };
@@ -52,7 +54,7 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
                   <button onClick={handleProfile}>Profile</button>
               </div>
             </div>
-            <div className="online-status"></div>
+            <div className={loggedInUsers.includes(user.username) ?  "online-status" : 'offline-status'}></div>
         </div>
     )
 }

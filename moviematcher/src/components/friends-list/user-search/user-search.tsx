@@ -7,6 +7,7 @@ import { selectFriendIds } from '../../../redux/features/user/friendsIdSlice'
 import { selectUserId } from '../../../redux/features/user/userIdSlice'
 import { ServerApiService } from '../../../services/ServerApi'
 import './user-search.css'
+import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers'
 
 const UserSearch = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -14,7 +15,7 @@ const UserSearch = () => {
     const accessToken = useAppSelector(selectAuth);
     const friendIds = useAppSelector(selectFriendIds);
     const yourId = useAppSelector(selectUserId);
-
+    const loggedInUsers = useAppSelector(selectLoggedInUser)
     function handleChange (e: React.FormEvent<HTMLInputElement>) {
       const input = e.currentTarget.value
       setQuery(input);
@@ -23,8 +24,12 @@ const UserSearch = () => {
       let isCancelled = false;
       const fetchUsers = async() => {
        let otherUsers = await ServerApiService.getAllUsers(accessToken);
+       let sortedArray:User[] = otherUsers.sort((a, b) => {
+        if(loggedInUsers.includes(a.username) && loggedInUsers.includes(b.username)) return 0
+        return loggedInUsers.includes(a.username) ? -1 : 1
+       })
        if(!isCancelled) {
-         setUsers(otherUsers)
+         setUsers(sortedArray)
        }
       }
       if(accessToken) {
@@ -33,7 +38,7 @@ const UserSearch = () => {
       return () => {
         isCancelled = true;
       }
-    }, [accessToken, friendIds])
+    }, [accessToken, friendIds, loggedInUsers])
 
     const filterUsers = () => {
       return users.filter(user => {
