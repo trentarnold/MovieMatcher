@@ -8,7 +8,7 @@ import MoviePage from './components/movie-page/movie-page';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import LoginForm from './forms/LoginForm';
 import CreateAccountForm from './forms/CreateAccountForm';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ActorPage from './components/ActorPage/ActorPage';
 import { useAppDispatch, useAppSelector } from './redux/app/hooks';
 import { ServerApiService } from './services/ServerApi';
@@ -16,13 +16,58 @@ import { selectAuth } from './redux/features/modals/authSlice';
 import { setFriendIds } from './redux/features/user/friendsIdSlice';
 import { User } from '../../interfaces/responses';
 import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
-import { setBlackListIds } from './redux/features/user/blackListids'
+import { setBlackListIds } from './redux/features/user/blackListids';
+import io, { Socket } from 'socket.io-client';
+import { setLoggedInUser} from './redux/features/user/loggedInUsers';
+import { setSocketRef, selectSocketRef } from './redux/features/socket/socketRefSlice';
+import { useNavigate } from 'react-router-dom';
+import  MovieMatch  from './components/MovieMatch/MovieMatch'
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
+  const navigate = useNavigate();
+  const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>();
+  interface ServerToClientEvents {
+    noArg: () => void;
+    basicEmit: (a: number, b: string, c: Buffer) => void;
+    withAck: (d: string, callback: (e: number) => void) => void;
+    message: () => void;
+    loggedInUsers: (loggedInUsers:string[]) => void;
+    invite: (room:string) => void;
+    accepted: (room:string) => void;
+  }
+  interface ClientToServerEvents {
+    login: (username:string) => void;
+    accepted: (room:string) => void;
+  }
+  
+
   useEffect(() => {
     document.title = "Movie Matcher"
-  }, []);
+
+    if(accessToken) {
+      const getYourUserInfo = async() => {
+        let yourUserInfo =  await ServerApiService.getUser(accessToken);
+        socketRef.current = io('http://localhost:3001',  { transports : ['websocket'] });  
+        socketRef.current.emit('login',  yourUserInfo.username);
+        socketRef.current.on('loggedInUsers', (loggedInUsers:string[]) => {
+          dispatch(setLoggedInUser(loggedInUsers));
+        })
+        socketRef.current.on('invite', (room:string) => {
+          // alert('you have been invited to ' + room)
+          if(socketRef.current) socketRef.current.emit('accepted', room)
+        })
+        socketRef.current.on('accepted', (room:string) => {
+          console.log(room)
+          navigate(`/movieMatch/${room}`)
+        })
+        dispatch(setSocketRef(socketRef.current))
+      }
+      getYourUserInfo()
+    }
+  }, [accessToken]);
+
+
   useEffect(() => {
     const fetchFriends = async() => {
      let userFriends = await ServerApiService.getFriends(accessToken);
@@ -40,11 +85,12 @@ function App() {
       dispatch(setBlackListIds(ids));
     }
     if(accessToken) {
+      console.log('this is the access token')
       fetchFriends();
       fetchFavoriteMovies();
       fetchBlackListMovies();
     }
-  })
+  }, [accessToken])
  
   return (
     <div className="App">
@@ -57,6 +103,7 @@ function App() {
           <Route path='/movieDetails/:id' element={<MoviePage />} />
           <Route path='/actorDetails/:id' element = {<ActorPage />} />
           <Route path='/profile/:id' element = {<ProfilePage />} />
+          <Route path ='/movieMatch/:room' element = {<MovieMatch />} />
       </Routes>
       <div className="outlet">
         <Outlet />

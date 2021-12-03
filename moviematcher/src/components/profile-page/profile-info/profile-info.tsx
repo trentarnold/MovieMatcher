@@ -51,7 +51,6 @@ const ProfileInfo= () => {
     }
     
     if (params.id){
-      console.log('Params: ' + params.id);
       getOtherUserInfo(Number(params.id));
     } else  {
       getInfo();

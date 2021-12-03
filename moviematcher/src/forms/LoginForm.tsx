@@ -41,7 +41,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       const response = await ServerApiService.userLogin(username, password);
-      console.log(response)
+      console.log("response from server on log in" + response)
       if (response.accessToken) {
         const authToken = response.accessToken;
         dispatch(setToken(authToken));

@@ -5,6 +5,8 @@ import UserSearch from './user-search/user-search'
 import { useAppSelector } from '../../redux/app/hooks'
 import { selectAuth } from '../../redux/features/modals/authSlice'
 
+
+
 const FriendsList = () => {
   
   const auth = useAppSelector(selectAuth)
