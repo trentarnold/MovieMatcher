@@ -23,9 +23,13 @@ import { setLoggedInUser} from './redux/features/user/loggedInUsers';
 import { setSocketRef, selectSocketRef } from './redux/features/socket/socketRefSlice';
 import { useNavigate } from 'react-router-dom';
 import  MovieMatch  from './components/MovieMatch/MovieMatch'
+<<<<<<< HEAD
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+=======
+import { setRatings } from './redux/features/user/ratingsSlice';
+>>>>>>> 5753f49e85a03ef5ad2a6b3730f3b5ba6303bb9d
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
@@ -93,11 +97,19 @@ function App() {
       let ids = blackListMovies.map((movie) => movie.movieid);
       dispatch(setBlackListIds(ids));
     }
+    const fetchRatings = async() => {
+      let ratingsFull = await ServerApiService.getUserRatings(accessToken);
+      let ratings = ratingsFull.map(rating => {
+        return {rating: rating.rating, movieid: rating.movieid}
+      })
+      dispatch(setRatings(ratings))
+    }
     if(accessToken) {
       console.log('this is the access token')
       fetchFriends();
       fetchFavoriteMovies();
       fetchBlackListMovies();
+      fetchRatings()
     }
   }, [accessToken])
  

@@ -57,13 +57,14 @@ router.post('/user/movieCount', authMiddleware, movieWatchCount)
 //Action Controller Routes
 const {
   getActivity,
-//   addRating,
-//   getRating,
-
+  addRating,
+  deleteRating,
+  getRatings
 } = require('./Controllers/ActivityController');
 
 router.post('/activity',authMiddleware, getActivity)
-// router.post('/rating', addRating)
-// router.get('/rating', getRating)
+router.post('/rating', authMiddleware, addRating)
+router.delete('/rating', authMiddleware, deleteRating)
+router.get('/rating/:movieID?', authMiddleware, getRatings)
 
 module.exports = router;

@@ -3,5 +3,14 @@ export interface FavoriteMovieInterface {
   id: number,
   movieid: number,
   uid: number
-  updatedAt: string
+  updatedAt: string,
+}
+
+export interface MovieWithRatingInterface {
+  createdAt: string,
+  id: number,
+  movieid: number,
+  uid: number
+  updatedAt: string,
+  rating: number
 }
