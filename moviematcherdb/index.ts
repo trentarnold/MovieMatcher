@@ -7,7 +7,6 @@ const fileUpload = require('express-fileupload');
 import { connectDB } from './models';
 import { Request, Response } from 'express';
 import { Server, Socket } from "socket.io";
-// import fetch from 'node-fetch'
 import axios from 'axios';
 import { Movie } from '../interfaces/movieInterface';
 const { createServer } = require("http");
@@ -66,13 +65,11 @@ io.on("connection", (socket: Socket) => {
     delete users[socket.id];
     const loggedInUsers = Object.values(users);
     io.emit('loggedInUsers', loggedInUsers);
-    console.log('user disconnected')
   })
   socket.on('logout', () => {
     delete users[socket.id];
     const loggedInUsers = Object.values(users);
     io.emit('loggedInUsers', loggedInUsers);
-    console.log('user disconnected')
   })
   socket.on('invite', ({room, otherUserName}) => {
     let socketId = Object.keys(users).find(key => users[key] === otherUserName);
@@ -85,12 +82,13 @@ io.on("connection", (socket: Socket) => {
     await socket.join(room);
     io.in(room).emit('accepted', room);
   })
+  socket.on('denied', (room) => {
+    socket.to(room).emit('denied')
+  })
 
   socket.on('join',async(room) =>{
-    //make an array of movies
     const response =  await axios.get('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US');
     const movieArray = response.data.results
-    //send array
     io.in(room).emit('movies', movieArray)
   })
   socket.on('foundMutualMovie', (room:string, movie:Movie)=>{

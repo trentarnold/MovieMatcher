@@ -5,10 +5,11 @@ import Home from './components/home/home';
 import RecentActivity from './components/recent-activity/recent-activity';
 import ProfilePage from './components/profile-page/profile-page';
 import MoviePage from './components/movie-page/movie-page';
+import InviteToast from './components/invite-toast/invite-toast';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import LoginForm from './forms/LoginForm';
 import CreateAccountForm from './forms/CreateAccountForm';
-import { useEffect, useRef, useState } from 'react';
+import { ReactText, useEffect, useRef, useState } from 'react';
 import ActorPage from './components/ActorPage/ActorPage';
 import { useAppDispatch, useAppSelector } from './redux/app/hooks';
 import { ServerApiService } from './services/ServerApi';
@@ -22,12 +23,19 @@ import { setLoggedInUser} from './redux/features/user/loggedInUsers';
 import { setSocketRef, selectSocketRef } from './redux/features/socket/socketRefSlice';
 import { useNavigate } from 'react-router-dom';
 import  MovieMatch  from './components/MovieMatch/MovieMatch'
+<<<<<<< HEAD
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+=======
 import { setRatings } from './redux/features/user/ratingsSlice';
+>>>>>>> 5753f49e85a03ef5ad2a6b3730f3b5ba6303bb9d
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const navigate = useNavigate();
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>();
+  const toastRef = useRef<ReactText>('');
   interface ServerToClientEvents {
     noArg: () => void;
     basicEmit: (a: number, b: string, c: Buffer) => void;
@@ -36,6 +44,7 @@ function App() {
     loggedInUsers: (loggedInUsers:string[]) => void;
     invite: (room:string) => void;
     accepted: (room:string) => void;
+    denied: (room:string) => void;
   }
   interface ClientToServerEvents {
     login: (username:string) => void;
@@ -54,9 +63,12 @@ function App() {
         socketRef.current.on('loggedInUsers', (loggedInUsers:string[]) => {
           dispatch(setLoggedInUser(loggedInUsers));
         })
-        socketRef.current.on('invite', (room:string) => {
-          // alert('you have been invited to ' + room)
-          if(socketRef.current) socketRef.current.emit('accepted', room)
+        socketRef.current.on('invite', (room:string, ) => {
+          const openToast = () => toastRef.current = toast(<InviteToast room={room} toastRef = {toastRef.current}/>)
+            openToast();
+        })
+        socketRef.current.on('denied', (room:string) => {
+          toast('You got denied bitch')
         })
         socketRef.current.on('accepted', (room:string) => {
           console.log(room)
@@ -119,6 +131,14 @@ function App() {
       </div>
       <LoginForm />
       <CreateAccountForm />
+      <ToastContainer 
+        position ='top-center'
+        autoClose={30000}
+        closeOnClick={false}
+        draggable
+        pauseOnHover
+        theme='dark'
+         />
     </div>
   );
 }
