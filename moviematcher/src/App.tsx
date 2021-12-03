@@ -22,6 +22,7 @@ import { setLoggedInUser} from './redux/features/user/loggedInUsers';
 import { setSocketRef, selectSocketRef } from './redux/features/socket/socketRefSlice';
 import { useNavigate } from 'react-router-dom';
 import  MovieMatch  from './components/MovieMatch/MovieMatch'
+import { setRatings } from './redux/features/user/ratingsSlice';
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
@@ -84,11 +85,19 @@ function App() {
       let ids = blackListMovies.map((movie) => movie.movieid);
       dispatch(setBlackListIds(ids));
     }
+    const fetchRatings = async() => {
+      let ratingsFull = await ServerApiService.getUserRatings(accessToken);
+      let ratings = ratingsFull.map(rating => {
+        return {rating: rating.rating, movieid: rating.movieid}
+      })
+      dispatch(setRatings(ratings))
+    }
     if(accessToken) {
       console.log('this is the access token')
       fetchFriends();
       fetchFavoriteMovies();
       fetchBlackListMovies();
+      fetchRatings()
     }
   }, [accessToken])
  

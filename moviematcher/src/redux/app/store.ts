@@ -10,6 +10,7 @@ import  favoriteMovieIdsReducer  from '../features/user/watchListIds';
 import blackListIdsReducer from '../features/user/blackListids';
 import loggedInUsersReducer from '../features/user/loggedInUsers';
 import socketRefReducer from '../features/socket/socketRefSlice';
+import ratingsReducer from '../features/user/ratingsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     blackListIds: blackListIdsReducer,
     loggedInUser: loggedInUsersReducer,
     socketRef: socketRefReducer,
+    ratings: ratingsReducer
   },
 });
 

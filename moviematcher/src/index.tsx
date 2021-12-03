@@ -20,6 +20,7 @@ import favoriteMovieIdsReducer, {favoriteMovieIdsState} from './redux/features/u
 import blackListIdsReducer, {blackListIdsState} from './redux/features/user/blackListids';
 import loggedInUserReducer, {loggedInUserState} from './redux/features/user/loggedInUsers'
 import socketRefReducer, {socketRefState} from './redux/features/socket/socketRefSlice'
+import ratingsReducer, { ratingsState } from './redux/features/user/ratingsSlice';
 
 const persistConfig = {
   key: 'root',
@@ -37,6 +38,7 @@ interface IAppState {
   blackListIds: blackListIdsState;
   loggedInUser: loggedInUserState;
   socketRef: socketRefState;
+  ratings: ratingsState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -50,6 +52,7 @@ const rootReducer = combineReducers<IAppState>({
   blackListIds: blackListIdsReducer,
   loggedInUser: loggedInUserReducer,
   socketRef: socketRefReducer,
+  ratings: ratingsReducer,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);

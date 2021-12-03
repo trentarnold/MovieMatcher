@@ -1,6 +1,6 @@
 import {AccessTokenResponse, PictureChange, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
-import { FavoriteMovieInterface } from '../../../interfaces/favoriteMovieInterface'
+import { FavoriteMovieInterface, MovieWithRatingInterface } from '../../../interfaces/favoriteMovieInterface'
 import axios from 'axios';
 import { access } from 'fs';
 const BASE_URL = 'http://localhost:3001'
@@ -310,5 +310,21 @@ export const ServerApiService = {
       return []
     }
   },
+  getUserRatings: async(accessToken: string): Promise<MovieWithRatingInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/rating`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      })
+      return await response.json()
+    } catch(err) {
+      console.log(err)
+      return []
+    }
+  }
 }
 
