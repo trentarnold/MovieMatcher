@@ -1,12 +1,9 @@
 import { fetchUserActivityQuery } from './userQueries';
 import { findAllFriendsID } from './friendsQueries';
-import { userActivityInterface } from '../../../interfaces/activityQueryInterface';
 import { WatchedMovieAttributes } from '../watched_movie';
 import { RatingAttributes } from '../rating';
 import { WhitelistItemAttributes } from '../whitelist_item';
-import { BlacklistItemAttributes, BlacklistItemInstance } from '../blacklist_item';
-
-import { connectDB } from "../index";
+import { BlacklistItemAttributes } from '../blacklist_item';
 
 export async function recentActivityQuery(id: number) {
   const date = new Date();
@@ -64,12 +61,6 @@ export async function recentActivityQuery(id: number) {
     activityArr.sort((a, b) => {
       return Number(b.createdAt) - Number(a.createdAt);
     })
-  console.log(activityArr)
+  return activityArr;
 }
 
-async function run() {
-  await connectDB()
-  console.log(await recentActivityQuery(1), 'func')
-}
-
-run()

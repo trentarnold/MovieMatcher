@@ -44,34 +44,26 @@ router.post('/blacklist', authMiddleware, getBlacklist);
 
 
 //Movie Controller Routes
-// const {
-//   getMoviesbyService,
-//   getMoviesbyDirector,
-//   getMoviesbyCast,
-//   getMoviesbyGenre,
-//   getMoviesbyPopularity
+const {
+getWatchedMovie,
+addWatchedMovie,
+movieWatchCount
 
-// } = require('./Controllers/MovieController');
-
-// router.get('/movies/service', getMoviesbyService);
-// router.get('/movies/director', getMoviesbyDirector);
-// router.get('/movies/cast', getMoviesbyCast);
-// router.get('/movies/genre', getMoviesbyGenre);
-// router.get('/movies/popular', getMoviesbyPopularity);
-//router.get('/movies/castDetails', getCastDetails);
+} = require('./Controllers/MovieController');
+router.post('/user/watched', authMiddleware, getWatchedMovie)
+router.post('/user/addWatched', authMiddleware, addWatchedMovie)
+router.post('/user/movieCount', authMiddleware, movieWatchCount)
 
 //Action Controller Routes
-// const {
-//   addtoActivity,
-//   getActivity,
+const {
+  getActivity,
 //   addRating,
 //   getRating,
 
-// } = require('./Controllers/ActivityController');
+} = require('./Controllers/ActivityController');
 
-// router.post('/activity', addtoActivity)
-// router.get('/activity', getActivity)
-// router.post('/activity', addRating)
-// router.get('/activity', getRating)
+router.post('/activity',authMiddleware, getActivity)
+// router.post('/rating', addRating)
+// router.get('/rating', getRating)
 
 module.exports = router;
