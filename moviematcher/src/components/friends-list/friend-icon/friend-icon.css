@@ -35,6 +35,15 @@
     min-width: 8px;
     border-radius: 100%;
 }
+.offline-status {
+    align-self: flex-end;
+    background-color: rgb(88, 88, 88);
+    margin-bottom: 4px;
+    margin-right: 4px;
+    min-height: 8px;
+    min-width: 8px;
+    border-radius: 100%;
+}
 
 .user-icon-buttons button{
   max-width: fit-content;
