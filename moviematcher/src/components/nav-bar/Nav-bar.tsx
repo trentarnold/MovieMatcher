@@ -4,13 +4,16 @@ import { useAppDispatch, useAppSelector  } from '../../redux/app/hooks';
 import { turnOnLogin } from '../../redux/features/modals/loginSlice';
 import { toggleFriendsList } from '../../redux/features/modals/friendsListSlice'
 import { clearToken, selectAuth } from '../../redux/features/modals/authSlice';
+import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
 
 import './nav-bar.css'
 const Navbar = () => {
   const auth = useAppSelector(selectAuth)
+  const socket = useAppSelector(selectSocketRef)
   const dispatch = useAppDispatch()
 
   const handleLogOut = () =>{
+    socket.emit('logout')
     dispatch(clearToken())
   }
   

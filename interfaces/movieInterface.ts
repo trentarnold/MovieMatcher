@@ -9,7 +9,7 @@ export interface Movie {
     popularity: Number,
     poster_path: String,
     release_date: String,
-    title: String,
+    title: string,
     video: Boolean,
     vote_average: number,
     vote_count: number
