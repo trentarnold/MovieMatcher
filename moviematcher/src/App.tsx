@@ -25,7 +25,6 @@ import { useNavigate } from 'react-router-dom';
 import  MovieMatch  from './components/MovieMatch/MovieMatch'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import { setRatings } from './redux/features/user/ratingsSlice';
 import { selectMovieFilter, turnOnMovieFilter } from './redux/features/modals/movieFilterSlice';
 import FilterForm from './forms/filterForm';
