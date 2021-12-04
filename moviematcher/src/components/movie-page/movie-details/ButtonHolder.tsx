@@ -12,7 +12,7 @@ import StarRatings from 'react-star-ratings';
 type Props = {
   movie:MovieDetailsInterface
 }
-const ButtonHolder: React.FC<Props>  = ({movie}) => {
+const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
@@ -52,16 +52,12 @@ const ButtonHolder: React.FC<Props>  = ({movie}) => {
     })
     return currMovieRating;
   }
-  const handleAddRating = () => {
-    // ServerApiService.addRating(movie.id, )
-    console.log('please fix me')
-  }
   const handleDeleteRating = () => {
     ServerApiService.removeRating(accessToken, movie.id)
     dispatch(removeRating(movie.id))
   }
   return (
-    <div className='movie-details-button-holder'>
+    <div className='movie-details-button-holder' style={{marginTop: "1.5rem"}}>
       <Button 
         style={{backgroundColor:'transparent'}}
         className='enlarge-on-hover'
@@ -87,7 +83,7 @@ const ButtonHolder: React.FC<Props>  = ({movie}) => {
             starRatedColor='gold'
           />
           </Button> 
-        : <Button onClick={handleAddRating}>Rate</Button>}
+        : <Button onClick={() => setRatingModalToggle(true)}>Rate</Button>}
     </div>
   )
 }
