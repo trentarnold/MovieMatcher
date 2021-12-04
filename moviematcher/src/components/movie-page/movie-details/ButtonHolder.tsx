@@ -46,7 +46,7 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
   }
   const checkRatings = () => {
     let currMovieRating;
-    userRatings.map(item => {
+    userRatings.map((item: {rating: Number, movieid: number}) => {
       if (item.movieid === movie.id) currMovieRating = item.rating;
       return item.rating;
     })
@@ -64,7 +64,7 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
         onClick={handleAddToWatchList}
       >
         {favoriteMovieIds.includes(movie.id) ? <FaTimes color='red' /> : <FaPlus color='green'/>}
-        <span style={{fontStyle:'italic', marginLeft:'5px'}}>{favoriteMovieIds.includes(movie.id) ? 'Remove WatchList' :'Add to WatchList' } </span>
+        <span style={{fontStyle:'italic', marginLeft:'5px'}}>{favoriteMovieIds.includes(movie.id) ? 'No Longer Interested' :'Want to Watch' } </span>
       </Button>
       <Button
         style={{backgroundColor:'transparent'}}

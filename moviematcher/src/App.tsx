@@ -26,6 +26,7 @@ import  MovieMatch  from './components/MovieMatch/MovieMatch'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setRatings } from './redux/features/user/ratingsSlice';
+import { setActivities } from './redux/features/user/activitiesSlice';
 import { setUserName } from './redux/features/user/yourUserName'
 function App() {
   const dispatch = useAppDispatch();
@@ -100,6 +101,9 @@ function App() {
       })
       dispatch(setRatings(ratings))
     }
+    const fetchActivities = async() => {
+      let activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
@@ -109,6 +113,7 @@ function App() {
       fetchFavoriteMovies();
       fetchBlackListMovies();
       fetchRatings();
+      fetchActivities();
       getUsername();
     }
   }, [accessToken])

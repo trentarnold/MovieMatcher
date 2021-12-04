@@ -1,36 +1,73 @@
-import React, {useState} from 'react'
-import MovieThumb from '../../movie-list/movie-thumb/movie-thumb'
+import React, {useState, useEffect} from 'react'
+import moment from 'moment'
 import './activity-card.css'
-import { Movie } from '../../../../../interfaces/MovieInterface'
+import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
+import {IProfileInfo} from '../../../../../interfaces/userInterface';
+import { ServerApiService } from '../../../services/ServerApi';
+import APIService from '../../../services/APISevice';
+import { useAppSelector } from '../../../redux/app/hooks';
+import { selectAuth } from '../../../redux/features/modals/authSlice';
+import { selectUserId } from '../../../redux/features/user/userIdSlice';
 
-const ActivityCard = () => {
+const ActivityCard = ({activity}: any) => {
+    const accessToken = useAppSelector(selectAuth);
+    const userID = useAppSelector(selectUserId);
+    const [doer, setDoer] = useState<IProfileInfo>()
+    const [friend, setFriend] = useState<IProfileInfo>();
+    const [movie, setMovie] = useState<MovieDetailsInterface>();
 
-    const [username] = useState<string>('TestUsername');
-    const [time] = useState<number>(Date.now());
-    const [mockMovie] = useState<Movie>({
-        adult: false,
-        backdrop_path: "/dK12GIdhGP6NPGFssK2Fh265jyr.jpg",
-        genre_ids: [ 28, 35, 80],
-        id: 512195,
-        original_language: "en",
-        original_title: "Red Notice",
-        overview: "An Interpol-issued Red Notice is a global alert to hunt and capture the world's most wanted. But when a daring heist brings together the FBI's top profiler and two rival criminals, there's no telling what will happen.",
-        popularity: 5865.04,
-        poster_path: "/wdE6ewaKZHr62bLqCn7A2DiGShm.jpg",
-        release_date: "2021-11-04",
-        title: "Red Notice",
-        video: false,
-        vote_average: 6.9,
-        vote_count: 1514})
+    useEffect(() => {
+        async function fetchData() {
+            const movie = await APIService.getIndividualMovie(activity.movieid)
+            setMovie(movie);
+            const doer = await ServerApiService.getSpecificUser(accessToken, activity.uid)
+            if (doer.id === userID) doer.username = 'You';
+            setDoer(doer);
+            if (activity.friendid) {
+                const friend = await ServerApiService.getSpecificUser(accessToken, activity.friendid);
+                if (friend.id === userID) friend.username = 'You';
+                setFriend(friend)
+            }
+        }
+        fetchData()
+    }, [])
+
+    function outputActivity() {
+        if (doer && movie) {
+            switch (activity.type){
+                case 'whitelist':
+                    return doer.username === 'You' 
+                        ? <p>{doer.username} added {movie.original_title} to your Watchlist</p>
+                        : <p>{doer.username} added {movie.original_title} to thier Watchlist</p>
+                case 'blacklist':
+                    return doer.username === 'You' 
+                        ? <p>{doer.username} added {movie.original_title} to your Blacklist</p>
+                        : <p>{doer.username} added {movie.original_title} to thier Blacklist</p>
+                case 'rating':
+                    return activity.rating > 1
+                        ? <p>{doer.username} rated {movie.original_title} {activity.rating} stars</p>
+                        : <p>{doer.username} rated {movie.original_title} {activity.rating} star</p>
+                case 'watched_movie':
+                    return friend 
+                        ? <p>{doer.username} watched {movie.original_title} with {friend.username}</p>
+                        : <p>{doer.username} watched {movie.original_title}</p>
+            }
+        } else return <div>Loading</div>
+    }
 
     return (
         <div className="activity-card">
+            <div>
+                {movie 
+                    ? <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" style={{height: "6rem"}}></img>
+                    : <div />
+                }
+            </div>
             <div className="activity-info">
-                <p>{username} watched {mockMovie.original_title} </p>
-                <p>{String(time)}</p>
+                {outputActivity()}
+                <p>{moment(activity.createdAt).format('dddd MMM D, YYYY')}</p>
             </div>
             <div className="activity-movie-thumb"></div>
-            <MovieThumb movie={mockMovie}/> 
         </div>
     )
 }
