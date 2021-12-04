@@ -17,6 +17,11 @@ import authReducer, {authState} from './redux/features/modals/authSlice'
 import userIdReducer, {userIdState} from './redux/features/user/userIdSlice'
 import friendIdReducer, {friendIdsState} from './redux/features/user/friendsIdSlice'
 import favoriteMovieIdsReducer, {favoriteMovieIdsState} from './redux/features/user/watchListIds';
+import blackListIdsReducer, {blackListIdsState} from './redux/features/user/blackListids';
+import loggedInUserReducer, {loggedInUserState} from './redux/features/user/loggedInUsers'
+import socketRefReducer, {socketRefState} from './redux/features/socket/socketRefSlice'
+import ratingsReducer, { ratingsState } from './redux/features/user/ratingsSlice';
+
 const persistConfig = {
   key: 'root',
   storage,
@@ -30,6 +35,10 @@ interface IAppState {
   userId: userIdState;
   friendIds: friendIdsState;
   favoriteMovieIds: favoriteMovieIdsState;
+  blackListIds: blackListIdsState;
+  loggedInUser: loggedInUserState;
+  socketRef: socketRefState;
+  ratings: ratingsState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -40,6 +49,10 @@ const rootReducer = combineReducers<IAppState>({
   userId: userIdReducer,
   friendIds: friendIdReducer,
   favoriteMovieIds: favoriteMovieIdsReducer,
+  blackListIds: blackListIdsReducer,
+  loggedInUser: loggedInUserReducer,
+  socketRef: socketRefReducer,
+  ratings: ratingsReducer,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);

@@ -1,17 +1,19 @@
 import { Model } from 'sequelize';
 import { sequelize, DataTypes } from './index';
 
-interface WatchedMovieAttributes {
+export interface WatchedMovieAttributes {
   uid: number;
   movieid: number;
   friendid?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  type?: string;
 };
 
-interface WatchedMovieInstance
+export interface WatchedMovieInstance
   extends Model<WatchedMovieAttributes>,
     WatchedMovieAttributes {
-      createdAt?: Date;
-      updatedAt?: Date;
+      dataValues?: WatchedMovieAttributes
     }
 
     const WatchedMovie = sequelize.define<WatchedMovieInstance>('watched_movie', {

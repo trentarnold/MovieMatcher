@@ -1,30 +1,55 @@
-const Movie = require('../Models/')
+import { RequestInstance } from '../middleware/authMiddleware'
+import {Request, Response} from 'express';
+import { addWatchedMovieQuery, fetchWatchedMoviesQuery, timesWatchedMovieQuery } from '../models/queries/movieQueries';
+
 require('dotenv').config();
-const apiKey = process.env.APIKey;
-function getMoviesbyService(serviceID: number) {
-  `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_providers=${serviceID}`
+
+async function getWatchedMovie (req:RequestInstance,res:Response) {
+  try {
+    if(req.user && req.body) {
+      const watchedMovies = await fetchWatchedMoviesQuery(req.body.id || req.user.id);
+      if(watchedMovies === 'no movies'){
+        res.status(200).send('User has not added any watched movies.')
+      }
+      res.status(200).send(watchedMovies); // returns all watched movies
+    }
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500);
+  }
 }
 
-function getMoviesbyDirector(directorID:number) {
-  `https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_people=${directorID}&with_watch_providers=Netflix%2C%20Hulu%2C%20Amazon%2BVideo&with_watch_monetization_types=free`
+async function addWatchedMovie (req:RequestInstance,res:Response) {
+  try {
+    if(req.user && req.body){
+      if(!req.body.friendID) req.body.friendID = 0;
+      if(!req.body.createdDate) req.body.createdDate = new Date (Date.now());
+      const movie = await addWatchedMovieQuery(req.user.id, req.body.movieID, req.body.friendID, req.body.createdDate)
+      res.status(200).send(movie); //returns movies watched with new movie added
+    }
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500);
+  }
 }
 
-function getMoviesbyCast(castID: number) {
-  `https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_cast=${castID}&with_watch_providers=Netflix%2C%20Hulu%2C%20Amazon%2BVideo&with_watch_monetization_types=free`
+async function movieWatchCount (req:RequestInstance,res:Response) {
+  try {
+    if(req.user && req.body){
+      const count = await timesWatchedMovieQuery(req.user.id, req.body.movieID)
+      const countstr = count.toString();
+      res.status(200).send(countstr); //returns string of num of times movie was watched
+    }
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500);
+  }
 }
-
-function getMoviesbyGenre(genreID: number) {
-  `https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false&page=1&with_genres=${genreID}`
-}
-
-function getMoviesbyPopularity(){
-  `https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false&page=1`
-}
-
 module.exports = {
-  getMoviesbyService,
-  getMoviesbyDirector,
-  getMoviesbyCast,
-  getMoviesbyGenre,
-  getMoviesbyPopularity
+  getWatchedMovie,
+  addWatchedMovie,
+  movieWatchCount
 }

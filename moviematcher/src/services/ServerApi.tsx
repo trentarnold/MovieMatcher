@@ -1,8 +1,8 @@
-import {AccessTokenResponse, User as UserInterface} from '../../../interfaces/responses'
+import {AccessTokenResponse, PictureChange, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
-import { Movie } from '../../../interfaces/MovieInterface';
-import { FavoriteMovieInterface } from '../../../interfaces/favoriteMovieInterface'
+import { FavoriteMovieInterface, MovieWithRatingInterface } from '../../../interfaces/favoriteMovieInterface'
 import axios from 'axios';
+import { access } from 'fs';
 const BASE_URL = 'http://localhost:3001'
 interface User {
   username:string,
@@ -91,7 +91,7 @@ export const ServerApiService = {
   getSpecificUser: async(accessToken:string, id:number): Promise<UserInterface> => {
     try{
       const response = await fetch(`${BASE_URL}/user/otherUser`, {
-        method: 'GET',
+        method: 'POST',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -139,11 +139,11 @@ export const ServerApiService = {
       return [UserPlaceholder]
     }
   },
-  updateUser: async(accessToken:string, image:File): Promise<UserInterface> => {
+  changeProfilePicture: async(accessToken:string, image:File): Promise<PictureChange> => {
     try {
       const fd= new FormData();
       fd.append('image', image)
-      return await axios.post(`${BASE_URL}/user/picture`, fd, {
+      return await axios.put(`${BASE_URL}/user/profile`, fd, {
         headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${accessToken}`
@@ -151,7 +151,7 @@ export const ServerApiService = {
       });
     } catch (e) {
       console.log(e);
-      return UserPlaceholder;
+      return {data: {fileName: "", filePath:""}};
     }
   },
   addToWatchList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
@@ -204,11 +204,127 @@ export const ServerApiService = {
       console.log(err);
       return []
     }
+  },
+  updateUserInfo: async(accessToken:string, key:string, value:string): Promise<UserInterface> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/profile`,{
+        method:'PUT',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({[key]:value})
+      })
+      return await response.json();
+    } catch (e) {
+      console.log(e)
+      return {id:0, username: '', password:'', email:'',profile_pic:'',createdAt:'', updatedAt:''}
+    }
+  },
+  addToBlackList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/blacklist`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  getBlackList: async(accessToken:string): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/blacklist`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  deleteFromBlackList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/blacklist`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({movieID})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  getOtherUserWantList: async(id:number, accessToken:string): Promise<FavoriteMovieInterface[]> => {
+    console.log('i got called')
+    try {
+      const response = await fetch(`${BASE_URL}/wants`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({id})
+      })
+      let data = await response.json();
+      return data
+    }catch(err) {
+      console.log(err);
+      console.log('it erred here')
+      return []
+    }
+  },
+  getOtherUserBlackList: async(id:number, accessToken:string): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/blacklist`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({id})
+      })
+      return await response.json();
+    }catch(err) {
+      console.log(err);
+      return []
+    }
+  },
+  getUserRatings: async(accessToken: string): Promise<MovieWithRatingInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/rating`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      })
+      return await response.json()
+    } catch(err) {
+      console.log(err)
+      return []
+    }
   }
 }
 
-
-
-// router.post('/user/wants', authMiddleware, addWant);
-// router.delete('/user/wants', authMiddleware, deleteWant);
-// router.get('/user/wants', authMiddleware, getWant);

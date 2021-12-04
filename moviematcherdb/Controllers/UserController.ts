@@ -45,7 +45,6 @@ export async function getSpecificUser (req:Request, res:Response) {
     } else {
       res.status(500).send({message: "User not found"})
     }
-
   }
   catch (err:any) {
     console.log(err.message)
@@ -54,9 +53,8 @@ export async function getSpecificUser (req:Request, res:Response) {
 }
 export async function getFriends (req:RequestInstance,res:Response) {
   try{
-    const {User} = req.body;
     if(req.user) {
-      const friends = await findAllFriends(req.user.id);
+      const friends = await findAllFriends(req.body.id || req.user.id);
       if(friends === null){
         res.status(200).send('User has no friends. Loser.')
       } else{
@@ -73,12 +71,8 @@ export async function getFriends (req:RequestInstance,res:Response) {
 async function createUser (req:Request,res:Response) {
   try {
     let {username, email, password, profile_pic} = req.body;
-     const hash = await bcrypt.hash(password, 10);
-     password = hash;
-    const Existinguser = await searchByUsername(username);
-    if (Existinguser != null) {
-      return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
-    }
+    const hash = await bcrypt.hash(password, 10);
+    password = hash;
     const user = await createUserQuery({username, email, password, profile_pic});
     if(user){
       const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
@@ -95,15 +89,14 @@ async function loginUser (req:Request,res:Response) { //needs work
   try {
     const { username, password } = req.body;
     const user = await searchByUsername(username);
-    console.log(user)
     if(user === null){
        return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
      };
     const validatedUser = await bcrypt.compare(password, user.password);
     if(validatedUser){
-      console.log(validatedUser);
       const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
-        res.status(200).send({accessToken, user}) //returns the user that logged in and their JWT
+      const {id, username, email, profile_pic, createdAt, updatedAt} = user
+        res.status(200).send({accessToken, user:{id, username, email, profile_pic, createdAt, updatedAt} }) //returns the user that logged in and their JWT
     }
     else{
       res.status(400).send({confirmed: false});
@@ -198,8 +191,8 @@ async function deleteWant (req:RequestInstance,res:Response) {
 
 async function getWant (req: RequestInstance, res: Response) {
   try {
-    if (req.user) {
-      const wantlist = await fetchWhitelistQuery(req.user.id);
+    if (req.body && req.user) {
+      const wantlist = await fetchWhitelistQuery(req.body.id || req.user.id);
       if(wantlist === 'no whitelist'){
       res.status(200).send('User does not have any movie on their Want list');
       } else {
@@ -249,8 +242,8 @@ async function deleteBlacklist (req:RequestInstance,res:Response) {
 
 async function getBlacklist (req: RequestInstance, res: Response) {
   try {
-    if (req.user) {
-      const Blacklist = await fetchBlacklistQuery(req.user.id);
+    if (req.body && req.user) {
+      const Blacklist = await fetchBlacklistQuery(req.body.id || req.user.id);
       if(Blacklist === 'no blacklist'){
       res.status(200).send('User does not have any movie on their Blacklist');
       } else {
@@ -263,29 +256,6 @@ async function getBlacklist (req: RequestInstance, res: Response) {
     res.sendStatus(500)
   }
 
-}
-
-async function updatePicture (req: RequestInstance, res: Response) {
-  try{
-    if (req.files === null) {
-      return res.status(400).send('No file sent');
-    }
-    const date = String(Date.now());
-    const directory = path.join(__dirname, `../public/`);
-      if(req.files) {
-        const newImage = req.files.image;
-        newImage.mv(directory + date + newImage.name, (e: Error) => {
-        res.status(201).json({fileName: date + newImage.name, filePath:`/${date + newImage.name}`});
-        if(e) {
-          console.log(e);
-          return res.status(500);
-        }
-      })
-     }
-  } catch (e) {
-    console.log(e);
-    res.sendStatus(500);
-  }
 }
 
 module.exports = {
@@ -304,5 +274,4 @@ module.exports = {
   deleteBlacklist,
   getBlacklist,
   getSpecificUser,
-  updatePicture,
 }

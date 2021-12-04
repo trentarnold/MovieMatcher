@@ -7,6 +7,12 @@ import authReducer from '../features/modals/authSlice'
 import userIdReducer from '../features/user/userIdSlice'
 import friendIdsReducer from '../features/user/friendsIdSlice'
 import  favoriteMovieIdsReducer  from '../features/user/watchListIds';
+import blackListIdsReducer from '../features/user/blackListids';
+import loggedInUsersReducer from '../features/user/loggedInUsers';
+import socketRefReducer from '../features/socket/socketRefSlice';
+import ratingsReducer from '../features/user/ratingsSlice'
+import movieFilterReducer from '../features/modals/movieFilterSlice'
+
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -16,7 +22,12 @@ export const store = configureStore({
     auth: authReducer,
     userId: userIdReducer,
     friendIds: friendIdsReducer,
-    favoriteMovieIds: favoriteMovieIdsReducer
+    favoriteMovieIds: favoriteMovieIdsReducer,
+    blackListIds: blackListIdsReducer,
+    loggedInUser: loggedInUsersReducer,
+    socketRef: socketRefReducer,
+    ratings: ratingsReducer,
+    movieFilter: movieFilterReducer,
   },
 });
 

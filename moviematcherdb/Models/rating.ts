@@ -1,17 +1,19 @@
 import { Model } from 'sequelize';
 import { sequelize, DataTypes } from './index';
 
-interface RatingAttributes {
+export interface RatingAttributes {
   uid: number;
   movieid: number;
   rating: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  type?: string;
 };
 
-interface RatingInstance
-  extends Model<RatingAttributes>,
-  RatingAttributes {
-      createdAt?: Date;
-      updatedAt?: Date;
+export interface RatingInstance
+extends Model<RatingAttributes>,
+RatingAttributes {
+    dataValues?: RatingAttributes
     }
 
     const Rating = sequelize.define<RatingInstance>('review', {

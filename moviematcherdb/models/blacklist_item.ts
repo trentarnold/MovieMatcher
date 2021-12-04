@@ -6,9 +6,10 @@ export interface BlacklistItemAttributes {
   movieid: number;
   createdAt?: Date;
   updatedAt?: Date;
+  type?: string;
 };
 
-interface BlacklistItemInstance
+export interface BlacklistItemInstance
   extends Model<BlacklistItemAttributes>,
   BlacklistItemAttributes {
     dataValues?: BlacklistItemAttributes

@@ -4,20 +4,23 @@ import { Movie } from '../../../../../interfaces/MovieInterface'
 import {Button} from '@chakra-ui/react'
 import StarRatings from 'react-star-ratings';
 import {  useNavigate } from "react-router-dom";
-import { FaPlus, FaMinus} from 'react-icons/fa';
+import { FaPlus, FaMinus, FaTimes, FaSkull} from 'react-icons/fa';
 import { ServerApiService } from '../../../services/ServerApi';
 import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
-import { selectFavoriteMovieIds, setFavoriteMovieIds } from '../../../redux/features/user/watchListIds'
+import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } from '../../../redux/features/user/watchListIds'
+import { selectBlackListIds, setBlackListIds, removeBlackListIds } from '../../../redux/features/user/blackListids';
+import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
 
 type Props = {
-  movie:Movie;
+  movie:Movie | MovieDetailsInterface;
 }
 const MovieThumb:React.FC<Props> = ({movie}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
+  const blackListIds = useAppSelector(selectBlackListIds);
   const reduceToFiveStarRating = (averageVote:number):number => {
     return (averageVote / 2);
   }
@@ -26,16 +29,31 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
     if(favoriteMovieIds.includes(movie.id)){
        watchList = await ServerApiService.deleteFromWatchList(accessToken, movie.id);
     }else {
+      if(blackListIds.includes(movie.id)) {
+        dispatch(removeBlackListIds(movie.id))
+      }
        watchList = await ServerApiService.addToWatchList(accessToken, movie.id);
     }
     let ids = watchList.map((movie) => movie.movieid)
     dispatch(setFavoriteMovieIds(ids));
   }
-
+  const handleBlackList = async() => {
+    let blackList;
+    if(blackListIds.includes(movie.id)){
+      blackList = await ServerApiService.deleteFromBlackList(accessToken, movie.id);
+    }else {
+      if(favoriteMovieIds.includes(movie.id)) {
+        dispatch(removeFavoriteMovieIds(movie.id))
+      }
+      blackList = await ServerApiService.addToBlackList(accessToken, movie.id);
+    }
+    let ids = blackList.map((movie) => movie.movieid)
+    dispatch(setBlackListIds(ids));
+  }
     return (
         <div className="movie-thumb">
             <div className='movie-thumb-img-background'>
-              <p> {movie.title}</p>
+              <p className='movie-thumb-title'> {movie.title}</p>
               <StarRatings
                   rating={reduceToFiveStarRating(movie.vote_average)}
                   starDimension="20px"
@@ -52,12 +70,14 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
                       className='enlarge-on-hover'
                       onClick={handleAddToWatchList}
                       >
-                    {favoriteMovieIds.includes(movie.id) ? <FaMinus color='red' /> : <FaPlus color='green'/>}
-                     <span style={{fontStyle:'italic'}}>{favoriteMovieIds.includes(movie.id) ? 'Remove WatchList' :'Add to WatchList' } </span>
+                    {favoriteMovieIds.includes(movie.id) ? <FaTimes color='red' /> : <FaPlus color='green'/>}
+                     <span style={{fontStyle:'italic', marginLeft:'5px'}}>{favoriteMovieIds.includes(movie.id) ? 'Remove WatchList' :'Add to WatchList' } </span>
               </Button>
               <Button style={{backgroundColor:'transparent'}}
-                      className='enlarge-on-hover'>
-                    <FaMinus color='red'/> <span style={{fontStyle:'italic'}}>Add to BlackList</span>
+                      className='enlarge-on-hover'
+                      onClick={handleBlackList}>
+                    { blackListIds.includes(movie.id) ? <FaMinus color='red'/> : <FaSkull color='red' /> }
+                    <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
               </Button>
             </div>  
             <img className='movie-thumb-img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt='movie poster' />   

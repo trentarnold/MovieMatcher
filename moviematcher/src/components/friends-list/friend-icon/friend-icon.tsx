@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './friend-icon.css';
 import {IUser} from '../../../../../interfaces/userInterface';
 import { User } from '../../../../../interfaces/responses';
@@ -7,17 +7,24 @@ import { ServerApiService } from '../../../services/ServerApi'
 import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks'
 import { selectAuth } from '../../../redux/features/modals/authSlice'
 import {setFriendIds} from '../../../redux/features/user/friendsIdSlice'
+import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers';
+import { selectSocketRef } from '../../../redux/features/socket/socketRefSlice'
+
 type Props = {
     user: User,
     friend: boolean,
 }
 
 const FriendIcon:React.FC<Props> = ({user, friend}) => {
+    const [username, setUsername] = useState('')
     const accessToken = useAppSelector(selectAuth);
     const navigate = useNavigate();
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+    const loggedInUsers = useAppSelector(selectLoggedInUser);
+    const socket = useAppSelector(selectSocketRef);
+
     const handleMatch = () => {
-        console.log('match')
+        socket.emit('invite', {room:`${username}${user.username}`, otherUserName: user.username})
     };
 
     const handleAdd = async() => {
@@ -34,9 +41,26 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
         navigate(`/profile/${user.id}`);
     };
 
+    const determinePicture = () =>{
+      if (user.profile_pic === 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png') {
+          return user.profile_pic
+      } else return `http://localhost:3001${user.profile_pic}`
+    }
+
+    useEffect(() => {
+      async function getUsername () {
+        const info = await ServerApiService.getUser(accessToken);
+        setUsername(info.username);
+      }
+      if(accessToken){
+          console.log('called')
+          getUsername();
+      }
+    }, [accessToken]);
+
     return (
         <div className="friend-icon">
-            <img src={user.profile_pic} alt="profile"/>
+            <img src={determinePicture()} alt="profile"/>
             <div className="user-icon-middle">
               <p>{user.username}</p>
               <div className="user-icon-buttons">
@@ -46,7 +70,7 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
                   <button onClick={handleProfile}>Profile</button>
               </div>
             </div>
-            <div className="online-status"></div>
+            <div className={loggedInUsers.includes(user.username) ?  "online-status" : 'offline-status'}></div>
         </div>
     )
 }

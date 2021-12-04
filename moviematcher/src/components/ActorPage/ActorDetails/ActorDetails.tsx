@@ -21,6 +21,9 @@ const ActorDetails = () => {
         isCancelled = true
     }
   }, [id])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
   return (
   <div>
       <div className='movie-details-container center'>
