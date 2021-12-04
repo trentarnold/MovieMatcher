@@ -21,12 +21,8 @@ import blackListIdsReducer, {blackListIdsState} from './redux/features/user/blac
 import loggedInUserReducer, {loggedInUserState} from './redux/features/user/loggedInUsers'
 import socketRefReducer, {socketRefState} from './redux/features/socket/socketRefSlice'
 import ratingsReducer, { ratingsState } from './redux/features/user/ratingsSlice';
-<<<<<<< HEAD
 import movieFilterReducer, {MovieFilterState} from './redux/features/modals/movieFilterSlice'
-
-=======
 import matchedMovieReducer, {MatchedMovieState} from './redux/features/modals/matchedMovie'
->>>>>>> 141d12ae50dc01ab82f87cbbb3614aca4c78d43a
 const persistConfig = {
   key: 'root',
   storage,
@@ -44,11 +40,8 @@ interface IAppState {
   loggedInUser: loggedInUserState;
   socketRef: socketRefState;
   ratings: ratingsState;
-<<<<<<< HEAD
   movieFilter: MovieFilterState;
-=======
   matchedMovie: MatchedMovieState;
->>>>>>> 141d12ae50dc01ab82f87cbbb3614aca4c78d43a
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -63,12 +56,9 @@ const rootReducer = combineReducers<IAppState>({
   loggedInUser: loggedInUserReducer,
   socketRef: socketRefReducer,
   ratings: ratingsReducer,
-<<<<<<< HEAD
   movieFilter: movieFilterReducer,
-=======
   matchedMovie: matchedMovieReducer,
   
->>>>>>> 141d12ae50dc01ab82f87cbbb3614aca4c78d43a
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);
