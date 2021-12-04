@@ -1,21 +1,50 @@
 .friends-list {
+    background-color: rgb(0, 15, 31);
     z-index: 100;
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    top:75px;
+    top:85px;
     right:0;
     z-index: 10;
-    background-color: rgb(0, 15, 31);
+    min-width: 250px;
     width:15vw;
     height: 90%;
     border-left: 3px solid grey;
+    overflow-y: scroll;
 }
 
-.friend-icons {
-    height: 100%;
+.friends-list-toggle {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: space-around;
+    margin: 5px;
+    position: sticky;
+    top:0;
+    background-color: rgb(0, 15, 31);
+    margin: 5px;
+}
+
+.friends-list-toggle button {
+    background-color: rgb(41, 41, 75);
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    transition: 0.35s;
+}
+
+.friends-list-toggle button:hover {
+    border: 0;
+    color: rgb(41, 41, 75);
+    background-color: white;
+}
+
+.friends-list-toggle button:active {
+    border: 0;
+    color: white;
+    background-color: rgb(69, 69, 131);
+}
+
+.friends-list {
+    height: 100%;
+    overflow-y: auto;
 }

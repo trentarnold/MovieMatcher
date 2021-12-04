@@ -40,4 +40,3 @@ dist
 .env.test.local
 .env.production.local
 moviematcherdb/config
-

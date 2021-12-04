@@ -1,12 +1,15 @@
 import {Request, Response} from 'express';
+import { recentActivityQuery } from '../models/queries/activityQueries';
+import { getRatingsByIDQuery, getRatingsByMovieQuery, addRatingQuery, deleteRatingQuery } from '../models/queries/ratingQuery';
+import { RequestInstance } from '../middleware/authMiddleware'
+import { userInfo } from 'os';
 
-async function addtoActivity (req:Request,res:Response) {
-  try{
-    const newActivity = await db.Activity.create(req.body);
-    if(newActivity){
-      res.status(201).send(newActivity);
-    } else {
-      res.status(400).send(`Couldn't make new Activity`);
+
+async function getActivity (req:RequestInstance,res:Response) {
+  try {
+    if(req.body && req.user){
+    const activity = await recentActivityQuery(req.body.id || req.user.id);
+    res.status(200).send(activity); //returns array of activities
     }
   }
   catch (err:any) {
@@ -15,23 +18,11 @@ async function addtoActivity (req:Request,res:Response) {
   }
 }
 
-async function getActivity (req:Request,res:Response) {
+async function addRating (req:RequestInstance,res:Response) {
   try {
-    const {user} = req.body;
-   // const activity = await db.Activity.findAll( {where: }) waiting on DB to fill search in.
-   res.status(200).send(activity);
-  }
-  catch (err:any) {
-    console.log(err.message)
-    res.sendStatus(500);
-  }
-}
-
-async function addRating (req:Request,res:Response) {
-  try {
-    const newRating = await db.Ratings.create(req.body);
-    if(newRating){
-      res.status(201).send(newRating);
+    if(req.user && req.body){
+      const ratings = await addRatingQuery(req.user.id, req.body.movieID, req.body.rating);
+      res.status(201).send(ratings);
     } else {
       res.status(400).send(`Couldn't add rating`);
     }
@@ -42,15 +33,31 @@ async function addRating (req:Request,res:Response) {
   }
 }
 
-async function getRating (req:Request,res:Response) {
+async function deleteRating (req:RequestInstance,res:Response) {
   try {
-    const {User, Movie} = req.body;
-   // const rating = await db.Rating.findOne({ where: }) //Waiting on DB for search.
-   if(rating){
-    res.status(201).send(rating);
-   } else {
-     res.status(400).send(`Rating couldn't be found...`)
-   }
+    if(req.user && req.body){
+      const ratings = await deleteRatingQuery(req.user.id, req.body.movieID);
+      res.status(201).send(ratings);
+    } else {
+      res.status(400).send(`Couldn't delete rating`);
+    }
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500);
+  }
+}
+
+async function getRatings (req:RequestInstance,res:Response) {
+  try {
+    if(req.user){
+      let ratings;
+      if (req.params.movieID) ratings = await getRatingsByMovieQuery(Number(req.params.movieID))
+      else ratings = await getRatingsByIDQuery(req.user.id);
+      res.status(200).send(ratings);
+    } else {
+      res.status(400).send(`Ratings couldn't be found for user`)
+    }
   }
   catch (err:any) {
     console.log(err.message)
@@ -59,9 +66,8 @@ async function getRating (req:Request,res:Response) {
 }
 
 module.exports = {
-  addtoActivity,
   getActivity,
   addRating,
-  getRating,
-
+  deleteRating,
+  getRatings
 }

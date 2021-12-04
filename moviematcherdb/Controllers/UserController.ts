@@ -1,14 +1,21 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 import {Request, Response } from 'express';
+import { RequestInstance } from '../middleware/authMiddleware'
+import { addFriendQuery, deleteFriendQuery, findAllFriends } from '../models/queries/friendsQueries';
+import { createUserQuery, fetchUserQuery, getAllPeopleQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
+import {addWhitelistQuery, fetchWhitelistQuery, deleteWhitelistQuery,fetchBlacklistQuery, addBlacklistQuery, deleteBlacklistQuery } from '../models/queries/listQueries'
+require('dotenv').config();
 
-async function updateUser (req:Request,res:Response) {
+async function updateUser (req:RequestInstance,res:Response) {
   try{
-    const { username, value, newValue }  =req.body;
-    await db.User.findOne({ where: {username: username}}).then(user => {
-      user.update({ [value]: newValue });
-    })
-    res.status(201).send('User updated');
+    if(req.body && req.user){
+    const user = await updateUserQuery(req.user.id, req.body);
+    res.status(201).send(user); // returns the user after update
+    } else {
+      res.status(401).send('User could not be updated.')
+    }
   }
   catch (err:any){
     console.log(err.message)
@@ -16,23 +23,44 @@ async function updateUser (req:Request,res:Response) {
   }
 }
 
-async function getUser (req:Request,res:Response) {
+export async function getUser (req:RequestInstance, res:Response) {
   try {
-    const { username } = req.body;
-    const match = await db.User.findOne({ where: { username: username } });
-    res.status(200).send(match);
+    if (req.user) {
+      res.status(200).send(req.user)
+    } else {
+      res.status(500).send({message: "User not authorized"})
+    }
+
   }
   catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
 }
-
-async function getFriends (req:Request,res:Response) {
+export async function getSpecificUser (req:Request, res:Response) {
+  try {
+    if (req.body) {
+      const user = await fetchUserQuery(req.body.id);
+      res.status(200).send(user);  //returns the queried user
+    } else {
+      res.status(500).send({message: "User not found"})
+    }
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500)
+  }
+}
+export async function getFriends (req:RequestInstance,res:Response) {
   try{
-    const {User} = req.body;
-    //const friends = await db.Friends.findAll( { where: }) waiting on DB info to complete search
-    res.status(200).send(JSON.stringify(friends));
+    if(req.user) {
+      const friends = await findAllFriends(req.body.id || req.user.id);
+      if(friends === null){
+        res.status(200).send('User has no friends. Loser.')
+      } else{
+        res.status(200).send(friends); //returns friends list
+      }
+    }
   }
   catch (err:any){
     console.log(err.message);
@@ -42,18 +70,13 @@ async function getFriends (req:Request,res:Response) {
 
 async function createUser (req:Request,res:Response) {
   try {
-    const {username, email, password} = req.body;
-    const hash = await bcrypt.hast(password, 10);
-    const user = await db.User.findOne({ where: { username: username}});
-    if(user) return res.status(409).send({ error: '409', message: 'Username in use, please pick another username.' });
-    const newUser = await db.User.create({
-      username,
-      email,
-      password //need to update with db schema
-    });
-    if(newUser){
-      const accessToken = jwt.sign({_id: newUser.id}, SECRET_KEY);
-      res.status(201).send({ confirmed: true, accessToken})
+    let {username, email, password, profile_pic} = req.body;
+    const hash = await bcrypt.hash(password, 10);
+    password = hash;
+    const user = await createUserQuery({username, email, password, profile_pic});
+    if(user){
+      const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
+      res.status(201).send({ user, accessToken}) //returns the created user and their JWT
     }
   }
   catch (err:any) {
@@ -62,22 +85,22 @@ async function createUser (req:Request,res:Response) {
   }
 }
 
-async function loginUser (req:Request,res:Response) {
+async function loginUser (req:Request,res:Response) { //needs work
   try {
     const { username, password } = req.body;
-    const user = await db.User.findOne({where: { username: `${username}`}});
-    if(!user){
-      return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
-    };
-    /*const validatedUser = await bcrypt.compare(password, user.password);
+    const user = await searchByUsername(username);
+    if(user === null){
+       return res.status(409).send({ error: '409' , message: 'Invalid login, please try again.'});
+     };
+    const validatedUser = await bcrypt.compare(password, user.password);
     if(validatedUser){
-      //const accessToken = jwt.sign({_id: user.id}, SECRET_KEY);
-        res.status(200).send({
-         db fields here
-         })
+      const accessToken = jwt.sign({id: user.id}, process.env.SECRET_KEY);
+      const {id, username, email, profile_pic, createdAt, updatedAt} = user
+        res.status(200).send({accessToken, user:{id, username, email, profile_pic, createdAt, updatedAt} }) //returns the user that logged in and their JWT
     }
     else{
-      res.status(400).send({confirmed: false)}*/
+      res.status(400).send({confirmed: false});
+    }
   }
   catch (err:any) {
     console.log(err.message)
@@ -85,13 +108,27 @@ async function loginUser (req:Request,res:Response) {
   }
 }
 
-async function addFriend (req:Request,res:Response) {
+async function getAllPeople (req: Request, res: Response){
+  try{
+    const people = await getAllPeopleQuery();
+    res.status(201).send(people); //returns all users
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500);
+  }
+}
+
+async function addFriend (req:RequestInstance,res:Response) {
   try {
-    const friend = await db.Friends.create(req.body)
-    if(friend){
-      res.status(201).send('Friend added!');
+      if(req.body && req.user){
+        if(req.user.id === req.body.friendid) return res.status(401).send(`Can't add yourself as a friend.`)
+     const user = await addFriendQuery(req.user.id, req.body.friendid)
+    if(user != null){
+      res.status(201).send(user); // returns updated friends list
     } else {
       res.status(401).send(`Friend could not be added.`);
+    }
     }
   }
   catch (err:any){
@@ -100,26 +137,16 @@ async function addFriend (req:Request,res:Response) {
   }
 }
 
-async function deleteFriend (req:Request,res:Response) {
+async function deleteFriend (req:RequestInstance,res:Response) {
   try {
-    const {id} = req.body;
-    const friend =  await db.Friends.findOne({ where: {id: id}});
-    await friend.destroy();
-    res.status(200).send('Friend removed.');
-  }
-  catch (err:any) {
-    console.log(err.message)
-    res.sendStatus(500)
-  }
-}
-
-async function addWant (req:Request,res:Response) {
-  try {
-    const Want = await db.Wants.create(req.body);
-    if(Want) {
-      res.status(201).send('Want added');
-    } else {
-      res.status(401).send(`Couldn't add want.`)
+    if(req.body&&req.user){
+      if(req.user.id === req.body.friendid) return res.status(401).send(`Can't delete yourself as a friend.`)
+      const remaining = await deleteFriendQuery(req.user.id, req.body.friendid);
+      if(remaining != null){
+        res.status(200).send(remaining); // returns remaining friends
+      } else {
+        res.status(401).send('Friend could not be deleted');
+      }
     }
   }
   catch (err:any) {
@@ -128,12 +155,16 @@ async function addWant (req:Request,res:Response) {
   }
 }
 
-async function deleteWant (req:Request,res:Response) {
+async function addWant (req:RequestInstance,res:Response) {
   try {
-    const { id } = req.body; //need to check this with many-many tables.
-    const want = await db.Wants.findOne({ where: { id: id }});
-    await want.destroy();
-    res.status(200).send('Want removed')
+    if(req.body && req.user) {
+      const Want = await addWhitelistQuery(req.user.id, req.body.movieID);
+      if(Want === 'already exists'){
+        res.status(201).send('Movie is already on Want list.')
+      } else{
+        res.status(201).send(Want); //Returns Want list with new movie added
+    }
+   }
   }
   catch (err:any) {
     console.log(err.message)
@@ -141,13 +172,15 @@ async function deleteWant (req:Request,res:Response) {
   }
 }
 
-async function addBlacklist (req:Request,res:Response){
+async function deleteWant (req:RequestInstance,res:Response) {
   try {
-    const newBlacklist = await db.Blacklist.create(req.body);
-    if(newBlacklist) {
-      res.status(201).send('Blacklist added');
-    } else {
-      res.status(401).send(`Couldn't add blacklist.`)
+    if(req.body && req.user){
+    const deleted = await deleteWhitelistQuery(req.user.id, req.body.movieID);
+      if(deleted === 'does not exist'){
+        res.status(201).send('Movie is not in Want list.');
+      } else {
+        res.status(201).send(deleted); //returns want list after removing movie
+      }
     }
   }
   catch (err:any) {
@@ -156,12 +189,16 @@ async function addBlacklist (req:Request,res:Response){
   }
 }
 
-async function deleteBlacklist (req:Request,res:Response) {
+async function getWant (req: RequestInstance, res: Response) {
   try {
-    const { id } = req.body; //need to check this with many-many tables.
-    const blackList = await db.Blacklist.findOne({ where: {id: id}});
-    await blackList.destroy();
-    res.status(200).send('Blacklist removed');
+    if (req.body && req.user) {
+      const wantlist = await fetchWhitelistQuery(req.body.id || req.user.id);
+      if(wantlist === 'no whitelist'){
+      res.status(200).send('User does not have any movie on their Want list');
+      } else {
+        res.status(201).send(wantlist); //sends want list
+      }
+    }
   }
   catch (err:any) {
     console.log(err.message)
@@ -169,14 +206,56 @@ async function deleteBlacklist (req:Request,res:Response) {
   }
 }
 
-function updateProfilePic (req:Request,res:Response) {
+async function addBlacklist (req:RequestInstance,res:Response){
   try {
-
+    if(req.body && req.user) {
+      const Blacklistitem = await addBlacklistQuery(req.user.id, req.body.movieID);
+      if(Blacklistitem === 'already exists'){
+        res.status(201).send('Movie is already on Blacklist.')
+      } else{
+        res.status(201).send(Blacklistitem); //Returns Blacklist with new movie added
+    }
+   }
   }
   catch (err:any) {
     console.log(err.message)
     res.sendStatus(500)
   }
+}
+
+async function deleteBlacklist (req:RequestInstance,res:Response) {
+  try {
+    if(req.body && req.user){
+      const deleted = await deleteBlacklistQuery(req.user.id, req.body.movieID);
+        if(deleted === 'does not exist'){
+          res.status(201).send('Movie is not in Blacklist.');
+        } else {
+          res.status(201).send(deleted); //returns Blacklist after removing movie
+        }
+      }
+    }
+    catch (err:any) {
+      console.log(err.message)
+      res.sendStatus(500)
+    }
+}
+
+async function getBlacklist (req: RequestInstance, res: Response) {
+  try {
+    if (req.body && req.user) {
+      const Blacklist = await fetchBlacklistQuery(req.body.id || req.user.id);
+      if(Blacklist === 'no blacklist'){
+      res.status(200).send('User does not have any movie on their Blacklist');
+      } else {
+        res.status(201).send(Blacklist); //sends Blacklist
+      }
+    }
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500)
+  }
+
 }
 
 module.exports = {
@@ -185,11 +264,14 @@ module.exports = {
   getFriends,
   createUser,
   loginUser,
+  getAllPeople,
   addFriend,
   deleteFriend,
   addWant,
   deleteWant,
+  getWant,
   addBlacklist,
   deleteBlacklist,
-  updateProfilePic
+  getBlacklist,
+  getSpecificUser,
 }

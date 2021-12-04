@@ -1,16 +1,18 @@
 import { Model } from 'sequelize';
 import { sequelize, DataTypes } from './index';
 
-interface BlacklistItemAttributes {
+export interface BlacklistItemAttributes {
   uid: number;
   movieid: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  type?: string;
 };
 
-interface BlacklistItemInstance
+export interface BlacklistItemInstance
   extends Model<BlacklistItemAttributes>,
   BlacklistItemAttributes {
-      createdAt?: Date;
-      updatedAt?: Date;
+    dataValues?: BlacklistItemAttributes
     }
 
     const BlacklistItem = sequelize.define<BlacklistItemInstance>('blacklist_item', {

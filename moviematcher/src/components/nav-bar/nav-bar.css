@@ -2,29 +2,29 @@
     z-index: 100;
     position: sticky;
     top: 0;
-    height: 75px;
+    height: 85px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: rgb(0, 0, 92);
-    box-shadow: 0 0 3px;
+    border-bottom: 3px solid grey;
 }
 
 .logo {
 height: 70px;
-color:grey
+color:grey;
 }
 
 .nav-areas {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    font-size: 1.6rem;
 }
-
-.nav-areas p {
-  margin: 15px;
+.navlink-item {
+    margin: 5vw;
 }
-
 .buttons {
     margin: 15px;
 }
@@ -32,4 +32,7 @@ color:grey
 .buttons button {
     margin:5px;
     background-color: rgb(59, 59, 143);
+}
+.enlarge-on-hover.margin-right {
+    margin-right: 40px;
 }

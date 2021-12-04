@@ -31,7 +31,7 @@
   position: relative;
   height: 30vh;
   width: 21vh;
-  background: linear-gradient(0.25turn, rgba(24, 24, 24, 0.95), rgba(0, 35, 88, 0.6), rgba(24, 24, 24, 0.95));;
+  background: linear-gradient(0.25turn, rgba(24, 24, 24, 0.95), rgba(0, 73, 182, 0.6), rgba(24, 24, 24, 0.95));;
   z-index: 10;
   opacity: 0;
   text-align: center;
@@ -46,6 +46,10 @@
   border: none;
   font-style: italic;
   font-weight: 100;
+}
+.movie-thumb-title {
+  color:white;
+  font-size: 1.2rem;
 }
 
 /* .enlarge-on-hover:hover {

@@ -24,8 +24,7 @@
   align-items: center; 
 }
 .movie-details-information-container {
-  min-height: 400px;
-  max-height: fit-content;
+  height: 400px;
   display: flex;
   flex-direction: column;
   margin-left: 20px;
@@ -33,6 +32,7 @@
   background: linear-gradient(rgb(0, 15, 31), rgb(29, 70, 110), rgb(0, 15, 31));
   padding:10px;
   justify-content: space-between;
+  overflow-y: scroll;
 }
 .movie-details-release-date {
   color:white;
@@ -44,6 +44,7 @@
 .movie-details-button-holder {
   display: flex;
   justify-content: space-around;
+  margin-top: 10px;
 }
 .movie-details-release-runtime {
   display: flex;

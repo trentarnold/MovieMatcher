@@ -1,12 +1,76 @@
-import React from 'react'
-import './friend-icon.css'
+import React, { useEffect, useState } from 'react';
+import './friend-icon.css';
+import {IUser} from '../../../../../interfaces/userInterface';
+import { User } from '../../../../../interfaces/responses';
+import {  useNavigate } from "react-router-dom";
+import { ServerApiService } from '../../../services/ServerApi'
+import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks'
+import { selectAuth } from '../../../redux/features/modals/authSlice'
+import {setFriendIds} from '../../../redux/features/user/friendsIdSlice'
+import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers';
+import { selectSocketRef } from '../../../redux/features/socket/socketRefSlice'
 
-const FriendIcon = () => {
+type Props = {
+    user: User,
+    friend: boolean,
+}
+
+const FriendIcon:React.FC<Props> = ({user, friend}) => {
+    const [username, setUsername] = useState('')
+    const accessToken = useAppSelector(selectAuth);
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const loggedInUsers = useAppSelector(selectLoggedInUser);
+    const socket = useAppSelector(selectSocketRef);
+
+    const handleMatch = () => {
+        socket.emit('invite', {room:`${username}${user.username}`, otherUserName: user.username})
+    };
+
+    const handleAdd = async() => {
+        const friendsList = await ServerApiService.addFriend(accessToken, user.id);
+        let ids = friendsList.map((friend:User) => friend.id);
+        dispatch(setFriendIds(ids));
+    };
+    const handleRemove = async() => {
+        const friendsList = await ServerApiService.removeFriend(accessToken, user.id);
+        let ids = friendsList.map((friend:User) => friend.id);
+        dispatch(setFriendIds(ids));
+    }
+    const handleProfile = () => {
+        navigate(`/profile/${user.id}`);
+    };
+
+    const determinePicture = () =>{
+      if (user.profile_pic === 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png') {
+          return user.profile_pic
+      } else return `http://localhost:3001${user.profile_pic}`
+    }
+
+    useEffect(() => {
+      async function getUsername () {
+        const info = await ServerApiService.getUser(accessToken);
+        setUsername(info.username);
+      }
+      if(accessToken){
+          console.log('called')
+          getUsername();
+      }
+    }, [accessToken]);
+
     return (
         <div className="friend-icon">
-            <img src="/pictures/cowboy.png" />
-            <p>Name</p>
-            <div className="online-status"></div>
+            <img src={determinePicture()} alt="profile"/>
+            <div className="user-icon-middle">
+              <p>{user.username}</p>
+              <div className="user-icon-buttons">
+                  {friend && <button onClick={handleMatch}>Match</button>}
+                  {friend && <button onClick={handleRemove}> Remove </button>}
+                  {!friend && <button onClick={handleAdd}>Add</button>}
+                  <button onClick={handleProfile}>Profile</button>
+              </div>
+            </div>
+            <div className={loggedInUsers.includes(user.username) ?  "online-status" : 'offline-status'}></div>
         </div>
     )
 }

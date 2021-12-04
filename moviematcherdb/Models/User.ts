@@ -1,17 +1,23 @@
 import { Model, Optional } from 'sequelize';
 import { sequelize, DataTypes } from './index';
-import WatchedMovie from './watched_movie';
-import Rating from './rating';
+import WatchedMovie, { WatchedMovieInstance } from './watched_movie';
+import Rating, { RatingInstance } from './rating';
 import Friend from './friend';
-import WhitelistItem from './whitelist_item';
-import BlacklistItem from './blacklist_item';
+import WhitelistItem, { WhitelistItemInstance } from './whitelist_item';
+import BlacklistItem, { BlacklistItemInstance } from './blacklist_item';
 
-interface UserAttributes {
+export interface UserAttributes {
   id: number;
   username: string;
   email: string;
   password: string;
   profile_pic: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  watched_movies?: WatchedMovieInstance[];
+  ratings?: RatingInstance[];
+  whitelist?: WhitelistItemInstance[];
+  blacklist?: BlacklistItemInstance[];
 };
 
 /*
@@ -22,11 +28,10 @@ interface UserAttributes {
 interface UserCreationAttributes
   extends Optional<UserAttributes, 'id'> {}
 
-interface UserInstance
+export interface UserInstance
   extends Model<UserAttributes, UserCreationAttributes>,
     UserAttributes {
-      createdAt?: Date;
-      updatedAt?: Date;
+      dataValues?: UserAttributes;
     }
 
 const User = sequelize.define<UserInstance>('user', {
@@ -49,7 +54,7 @@ const User = sequelize.define<UserInstance>('user', {
     allowNull: false
   },
   profile_pic: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: true
   },
 })

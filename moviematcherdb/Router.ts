@@ -1,67 +1,70 @@
 const express = require('express');
-const router = express.Router();
-
+export const router = express.Router();
+import { authMiddleware } from "./middleware/authMiddleware";
+import { checkUsernameMiddleware } from "./middleware/checkUsernameMiddleware";
+import { setPictureMiddleware, updatePictureMiddleware } from "./middleware/pictureMiddleware";
 
 
 //User Controller Routes
 const {
-  updateUser,
-  getUser,
-  getFriends,
-  createUser,
-  loginUser,
-  addFriend,
-  deleteFriend,
-  findFriends,
-  addWant,
-  deleteWant,
-  addBlacklist,
-  deleteBlacklist,
-  updateProfilePic
+   updateUser,
+   getUser,
+   getFriends,
+   createUser,
+   loginUser,
+   getAllPeople,
+   addFriend,
+   deleteFriend,
+   getSpecificUser,
+   addWant,
+   deleteWant,
+   getWant,
+   addBlacklist,
+   deleteBlacklist,
+   getBlacklist,
 } = require('./Controllers/UserController');
 
-router.put('/user/profile/:type/:add', updateUser);
-router.get('/user/profile', getUser);
-router.get('/user/friends', getFriends);
-router.post('/user/create', createUser);
+router.put('/user/profile',authMiddleware, updatePictureMiddleware, updateUser);
+router.get('/user/profile', authMiddleware, getUser);
+router.post('/user/otherUser', authMiddleware, getSpecificUser) // Not for user calls, internal use only!
+router.get('/user/allPeople', authMiddleware, getAllPeople)
+router.get('/user/friends',authMiddleware, getFriends);
+router.post('/user/create', checkUsernameMiddleware, setPictureMiddleware ,createUser);
 router.post('/user/login', loginUser);
-router.put('/user/friends', addFriend);
-router.delete('/user/friends', deleteFriend);
-router.post('/user/wants', addWant);
-router.delete('/user/wants', deleteWant);
-router.post('/user/blacklist', addBlacklist);
-router.delete('/user/blacklist', deleteBlacklist);
-router.put('/user/profile', updateProfilePic);
+router.post('/user/friends', authMiddleware, addFriend);
+router.delete('/user/friends', authMiddleware, deleteFriend);
+router.post('/user/wants', authMiddleware, addWant);
+router.delete('/user/wants', authMiddleware, deleteWant);
+router.get('/user/wants', authMiddleware, getWant);
+router.post('/wants', authMiddleware, getWant);
+router.post('/user/blacklist', authMiddleware, addBlacklist);
+router.delete('/user/blacklist', authMiddleware, deleteBlacklist);
+router.get('/user/blacklist', authMiddleware, getBlacklist);
+router.post('/blacklist', authMiddleware, getBlacklist);
+
 
 //Movie Controller Routes
 const {
-  getMoviesbyService,
-  getMoviesbyDirector,
-  getMoviesbyCast,
-  getMoviesbyGenre,
-  getMoviesbyPopularity
+getWatchedMovie,
+addWatchedMovie,
+movieWatchCount
 
 } = require('./Controllers/MovieController');
-
-router.get('/movies/service', getMoviesbyService);
-router.get('/movies/director', getMoviesbyDirector);
-router.get('/movies/cast', getMoviesbyCast);
-router.get('/movies/genre', getMoviesbyGenre);
-router.get('/movies/popular', getMoviesbyPopularity);
-//router.get('/movies/castDetails', getCastDetails);
+router.post('/user/watched', authMiddleware, getWatchedMovie)
+router.post('/user/addWatched', authMiddleware, addWatchedMovie)
+router.post('/user/movieCount', authMiddleware, movieWatchCount)
 
 //Action Controller Routes
 const {
-  addtoActivity,
   getActivity,
   addRating,
-  getRating,
+  deleteRating,
+  getRatings
+} = require('./Controllers/ActivityController');
 
-} = require('./Controllers/ActionsController');
+router.post('/activity',authMiddleware, getActivity)
+router.post('/rating', authMiddleware, addRating)
+router.delete('/rating', authMiddleware, deleteRating)
+router.get('/rating/:movieID?', authMiddleware, getRatings)
 
-router.post('/activity', addtoActivity)
-router.get('/activity', getActivity)
-router.post('/activity', addRating)
-router.get('/activity', getRating)
-
-export default router;
+module.exports = router;

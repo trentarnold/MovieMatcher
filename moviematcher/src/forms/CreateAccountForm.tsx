@@ -13,30 +13,51 @@ import {
   InputGroup,
   Input,
   ModalHeader,
+  DarkMode,
   Avatar } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/hooks';
 import { FaLock, FaUserAlt, FaUserTag} from 'react-icons/fa';
 import { selectCreateAccount, turnOffCreateAccount } from '../redux/features/modals/createAccountSlice';
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { turnOnLogin } from '../redux/features/modals/loginSlice';
+import { ServerApiService } from '../services/ServerApi';
+import { setToken, selectAuth } from '../redux/features/modals/authSlice';
+import { setUserId } from '../redux/features/user/userIdSlice';
 
 const CreateAccountForm = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [pic, setPic] = useState<File>()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const open = useAppSelector(selectCreateAccount);
+  const token = useAppSelector(selectAuth)
   const dispatch = useAppDispatch()
-
+  
   useEffect(() => {
     if(open) {
       onOpen()
     }
   }, [open])
 
+
+
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleClose()
+    if (userName.match(/ /g) || userName.length > 16) {
+      return alert('Username must be less than 16 characters cannot contain spaces')
+    }
+    let {accessToken, user} = await ServerApiService.createUser({username:userName, email, password, profile_pic:''});
+    if (accessToken) {
+      dispatch(setToken(accessToken));
+      if(pic) {
+        await ServerApiService.changeProfilePicture(accessToken, pic);
+      }
+      dispatch(setUserId(user.id));
+      handleClose();
+    }else {
+      alert('invalid username or password')
+    }
     setUserName('');
     setEmail('');
     setPassword('');
@@ -47,13 +68,15 @@ const CreateAccountForm = () => {
     onClose()
   }
 
+
     return (
+      <DarkMode >
       <Modal isOpen={isOpen}  onClose = {handleClose} isCentered>
       <ModalOverlay/>
-      <ModalContent style={{borderRadius:'2rem'}}>
-      <ModalHeader bgColor='navy' color='white'  style={{display:'flex', flexDirection:'column', 
+      <ModalContent style={{borderRadius:'2rem', color:'white'}}>
+      <ModalHeader bgColor='rgb(0, 0, 92)' color='white'  style={{display:'flex', flexDirection:'column', 
                     justifyContent:'center', alignItems:'center', borderTopLeftRadius:'2rem', borderTopRightRadius:'2rem'}}>
-              <Avatar size='lg' bg='navy'/>
+              <Avatar size='lg' bg='rgb(0, 0, 92)'/>
               <div> Create Account! </div>
       </ModalHeader >
       <form onSubmit = {(e:React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
@@ -63,7 +86,7 @@ const CreateAccountForm = () => {
                 <InputGroup>
                   <InputLeftElement
                       pointerEvents="none"
-                      children={<FaUserAlt color="gray.300" />}
+                      children={<FaUserAlt />}
                     />
                   <Input 
                     autoFocus
@@ -109,6 +132,14 @@ const CreateAccountForm = () => {
                   </Input>
                 </InputGroup> 
               </FormControl>
+              <FormControl>
+                <FormLabel forhtml='profilePicture'> Profile Picture </FormLabel>
+                  <Input type='file' onChange = {
+                    (e: React.FormEvent<HTMLInputElement>) => {
+                      if (e.currentTarget.files) setPic(e.currentTarget.files[0])
+                    }
+                  }></Input>
+              </FormControl>
             </ ModalBody>
             <ModalFooter>
               <Button mr={3} onClick={() => {
@@ -120,6 +151,7 @@ const CreateAccountForm = () => {
           </form>
         </ModalContent>
     </Modal>
+    </DarkMode>
     )
 }
 

@@ -7,9 +7,10 @@ import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
 import { movieDetailsPlaceHolder } from '../../../moviePlaceholder';
 import StarRatings from 'react-star-ratings';
 import ActorsList from '../../actors-list/ActorsList';
+import ButtonHolder from './ButtonHolder';
 
 const MovieDetails = () => {
-    const { id } : any = useParams();
+    const { id }: any = useParams();
     const [currentMovie, setCurrentMovie] = useState<MovieDetailsInterface>(movieDetailsPlaceHolder)
     const [streamProviders, setStreamProviders] = useState<any>();
     useEffect(() => {
@@ -33,6 +34,10 @@ const MovieDetails = () => {
         }
     }, [id])
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, )
+    
     const reduceToFiveStarRating = (averageVote:number):number => {
         return (averageVote / 2);
       }
@@ -57,7 +62,7 @@ const MovieDetails = () => {
                         <div style ={{textAlign:'center'}}>Stream On:</div>
                         {streamProviders &&
                         <div className='movie-details-stream-providers'>
-                            {streamProviders && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'></img>)
+                            {streamProviders && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'/>)
                             }
                         </div>
                         }
@@ -68,7 +73,7 @@ const MovieDetails = () => {
                                     <div> 
                                         {company.logo_path && index < 5? 
                                             <div>
-                                            <img className ='movie-details-company-logo'src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}></img>
+                                            <img className ='movie-details-company-logo'src={`https://image.tmdb.org/t/p/w500${company.logo_path}`} alt="production company"/>
                                             </div> 
                                             : ''
                                         }
@@ -81,13 +86,10 @@ const MovieDetails = () => {
                             <div className='movie-details-release-date'> <span style={{color:'grey', fontStyle:'italic'}}> Released on:  </span>{currentMovie.release_date}</div>
                             <div className='movie-details-runtime'> <span style={{color:'grey', fontStyle:'italic'}}> Runtime: </span> {currentMovie.runtime} Minutes</div>
                         </div>
-                        <div className='movie-details-button-holder'>
-                            <Button>Add to Watchlist</Button>
-                            <Button>Rate</Button> 
-                        </div>
+                        <ButtonHolder movie = {currentMovie} />
                     </div>
                     <div>
-                        <img className='movie-details-image' src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`}></img>
+                        <img className='movie-details-image' src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`} alt="movie poster"/>
                     </div>
             </div>
             <ActorsList id ={id}/>
