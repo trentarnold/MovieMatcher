@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import APIService from '../../../services/APISevice';
 import { useParams } from 'react-router';
-import { ActorDetailsInterface } from '../../../../../interfaces/ActorDetails';
+import ActorDetailsInterface from '../../../../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../../../actorDetailsPlaceholder';
 import './ActorDetails.css'
 const ActorDetails = () => {

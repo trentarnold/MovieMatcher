@@ -106,6 +106,7 @@ function App() {
     const fetchActivities = async() => {
       let activities = await ServerApiService.getActivities(accessToken);
       dispatch(setActivities(activities));
+    }
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
