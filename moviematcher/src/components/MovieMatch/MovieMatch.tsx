@@ -9,13 +9,10 @@ import './MovieMatch.css'
 import MovieRatingDetails from './MovieRatingDetails/MovieRatingDetails';
 import MovieThumb from '../movie-list/movie-thumb/movie-thumb';
 import { FaThumbsUp, FaThumbsDown} from 'react-icons/fa';
-<<<<<<< HEAD
 import { turnOnMovieFilter } from '../../redux/features/modals/movieFilterSlice';
-=======
-import { useAppDispatch } from '../../redux/app/hooks';
 import { turnOnMatchedMovie } from '../../redux/features/modals/matchedMovie';
 import MatchedMovieModal from './MatchedMovieModal/MatchedMovieModal';
->>>>>>> 141d12ae50dc01ab82f87cbbb3614aca4c78d43a
+
 const MovieMatch = () => {
   const { room } = useParams()
   const socket = useAppSelector(selectSocketRef);
@@ -23,12 +20,8 @@ const MovieMatch = () => {
   const [currentMovie, setCurrentMovie] = useState<Movie>(moviePlaceholder);
   const [acceptedMovies, setAcceptedMovie] = useState<Movie[]>([])
   const [titles, setTitles] = useState<string[]>([]);
-<<<<<<< HEAD
   const dispatch = useAppDispatch()
 
-=======
-  const dispatch = useAppDispatch();
->>>>>>> 141d12ae50dc01ab82f87cbbb3614aca4c78d43a
 
   useEffect(()=>{
     socket.emit('join', room);
