@@ -20,7 +20,17 @@ import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { selectMovieFilter, turnOffMovieFilter } from '../redux/features/modals/movieFilterSlice';
 import { selectSocketRef } from '../redux/features/socket/socketRefSlice';
 import { useEffect, useState } from 'react'
-import ActorDetailsInterface from '../../../interfaces/ActorDetails'
+import './filterForm.css'
+
+interface ActorResult {
+  adult?:boolean,
+  gender: number,
+  id: number,
+  known_for_department: string,
+  name:string,
+  popularity:number,
+  profile_path: string,
+}
 
 const streamProviders = [{
     display_priority: 1,
@@ -88,19 +98,27 @@ const FilterForm = () => {
 
     const [genres, setGenres] = useState<string[]>([]);
     const [avoidGenres, setAvoidGenres] = useState<string[]>([]);
-    const [cast, setCast] = useState<ActorDetailsInterface[]>([]);
+    const [cast, setCast] = useState<string[]>([]);
+    const [castIds, setCastIds] = useState<number[]>([]);
     const [providers, setProviders] = useState<string[]>([]);
-
-
+    const [query, setQuery] = useState<string>('')
+    const [queryResults, setQueryResults] = useState<ActorResult[]>([])
+ 
     const handleClose = () => {
         dispatch(turnOffMovieFilter())
         onClose();
     }
 
     const handleSubmit = () => {
+      console.log('providers')
       console.log(providers)
+      console.log('genres')
       console.log(genres)
+      console.log('avoided genres')
       console.log(avoidGenres)
+      console.log('cast')
+      console.log(cast)
+      handleClose()
     }
 
     const handleAddToggle = (genreId: string) => {
@@ -150,11 +168,44 @@ const FilterForm = () => {
       }
     }
 
+    const handleQueryChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+      setQuery(e.currentTarget.value)
+    }
+
+    const handleActorSubmit = (query:string) => {
+      setCast([...cast, query]);
+      setQuery('');
+    }
+
+    const handleActorClick = (id:number, name: string) => {
+      handleActorSubmit(name)
+      setCastIds([...castIds, id])
+    }
+
     useEffect(() => {
         if(open) {
             onOpen()
         }
     }, [open])
+
+    useEffect(() =>{
+      async function searchActors () {
+        try {
+          const response = await fetch(`https://api.themoviedb.org/3/search/person?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&query=${query}&page=1&include_adult=false`)
+          const res = await response.json()
+          setQueryResults(res.results)
+        } catch (e) {
+          console.log(e)
+        }
+      }
+
+
+      if (query.length > 1) {
+        //replace this with function from api service
+        searchActors()
+
+      }
+    }, [query])
 
     return (
       <DarkMode>
@@ -416,8 +467,14 @@ const FilterForm = () => {
                   <FormLabel htmlFor='actor' textAlign="center" mb="2px" mt="10px">
                    Include Actor
                   </FormLabel>
-                  <Input type="text" id='actor' width="350px" margin="auto"/>
+                  {cast.length > 0 && cast.map(actor=> <p>{actor}</p>) }
+                  <Input type="text" id='actor' width="350px" value={query} onChange={handleQueryChange} margin="auto"/>
                   {/* add actor to a list in the component that renders actor cards for each item */}
+                  {query.length > 2 &&
+                  <div className='filter-search-results'>
+                    {queryResults.map(actor => <p onClick={()=> handleActorClick(actor.id, actor.name)} key={actor.id}>{actor.name}</p>)}
+                  </div>
+                  }
                 </Flex>
 
                 <Flex flexDirection="column" mt="10px">
@@ -425,9 +482,10 @@ const FilterForm = () => {
                    Stream Providers
                   </FormLabel>
                   <div className='movie-details-stream-providers'>
+                    {/* conditionally render / map stream providers for both users */}
                         {streamProviders && streamProviders.map((provider:any) => {
                             return(
-                                <div style={{display: 'flex', flexDirection:"column", justifyContent: "center" }}>
+                                <div key={provider.provider_id} style={{display: 'flex', flexDirection:"column", justifyContent: "center" }}>
                                 <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name}/>
                                 <Switch onChange={() => handleStreamingSwitch(provider.provider_id)} id={provider.provider_name} />
                                 </div>
@@ -435,10 +493,9 @@ const FilterForm = () => {
                             })
                         }
                     </div>
-                  {/* conditionally render / map stream providers for both users */}
                 </Flex>
                 <Flex justifyContent='space-between' margin="10px">
-                  <Button onClick={handleSubmit}>Apply Filters</Button>
+                  <Button onClick={handleSubmit} >Apply Filters</Button>
                 </Flex>
               </FormControl>
           </ModalBody>
