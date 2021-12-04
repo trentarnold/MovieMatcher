@@ -4,9 +4,11 @@ import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
 import { Movie } from '../../../../interfaces/MovieInterface';
 import { useParams } from 'react-router';
 import { Button } from '@chakra-ui/button';
-import MovieThumb from '../movie-list/movie-thumb/movie-thumb';
 import { moviePlaceholder } from '../../moviePlaceholder';
 import './MovieMatch.css'
+import MovieRatingDetails from './MovieRatingDetails/MovieRatingDetails';
+import MovieThumb from '../movie-list/movie-thumb/movie-thumb';
+import { FaThumbsUp, FaThumbsDown} from 'react-icons/fa';
 const MovieMatch = () => {
   const { room } = useParams()
   const socket = useAppSelector(selectSocketRef);
@@ -14,6 +16,7 @@ const MovieMatch = () => {
   const [currentMovie, setCurrentMovie] = useState<Movie>(moviePlaceholder);
   const [acceptedMovies, setAcceptedMovie] = useState<Movie[]>([])
   const [titles, setTitles] = useState<string[]>([]);
+
 
   useEffect(()=>{
     socket.emit('join', room);
@@ -42,7 +45,7 @@ const MovieMatch = () => {
   //acceptedMovies.filter(movie => movie.title === currentMovie.title).length > 0
 
   const handleAccept = () => {
-    if (titles.includes(currentMovie.title)) {
+    if (acceptedMovies.filter(movie => movie.title === currentMovie.title).length > 0) {
       socket.emit('foundMutualMovie', room, currentMovie)
     } else {
       socket.emit('acceptMovie', room, currentMovie)
@@ -62,17 +65,15 @@ const MovieMatch = () => {
         <div className="accepted-movie-array">
           <h1>Accepted Movies</h1>
           {acceptedMovies.length &&
-          acceptedMovies.map(movie => <h1 key={movie.id}>{movie.title}</h1>)
-          }
-          {/* {acceptedMovies.length &&
           acceptedMovies.map(movie => <MovieThumb movie={movie}/>)
-          } */}
+          }
         </div>
-        <h1>{currentMovie.title}</h1>
-        <MovieThumb movie={currentMovie}/>
+
+          <MovieRatingDetails currentMovie = {currentMovie}/>
+    
         <div className="movie-match-buttons">
-          <Button onClick={handleAccept}>Accept</Button>
-          <Button onClick={handleDeny}>Deny</Button>
+          <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover' onClick={handleAccept}><FaThumbsUp color='green' size='4em' /></Button>
+          <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover'  onClick={handleDeny}><FaThumbsDown color='red' size='4em'  /></Button>
         </div>
       </div>}
     </div>

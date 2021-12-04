@@ -9,3 +9,8 @@
     overflow: auto;
     max-width: 80vw;
 }
+.movie-match-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 50vw;
+}
