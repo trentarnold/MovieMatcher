@@ -25,7 +25,7 @@ const MovieMatch = () => {
       setCurrentMovie(movies[0])
     }))
     socket.on('acceptMovie', (movie:Movie)=>{
-      setAcceptedMovie([...acceptedMovies, movie]);
+      setAcceptedMovie(acceptedMovies => [...acceptedMovies, movie]);
       setTitles((titles) => [...titles, movie.title]);
     })
     socket.on('foundMutualMovie', (room:string, movie:Movie) => {
@@ -62,20 +62,28 @@ const MovieMatch = () => {
     <div className="movie-match-container">
       {currentMovie && 
       <div>
-        <div className="accepted-movie-array">
-          <h1>Accepted Movies</h1>
-          {acceptedMovies.length &&
-          acceptedMovies.map(movie => <MovieThumb movie={movie}/>)
-          }
-        </div>
-
-          <MovieRatingDetails currentMovie = {currentMovie}/>
-    
+        <MovieRatingDetails currentMovie = {currentMovie} handleAccept = {handleAccept} handleDeny = {handleDeny}/>
         <div className="movie-match-buttons">
-          <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover' onClick={handleAccept}><FaThumbsUp color='green' size='4em' /></Button>
-          <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover'  onClick={handleDeny}><FaThumbsDown color='red' size='4em'  /></Button>
+          <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover' onClick={handleAccept}>
+            <div className='movie-rating-button'> 
+              <FaThumbsUp color='green' size='4em' /> 
+              <span className='movie-rating-button-span'>I'll Watch it</span>
+            </div> 
+          </Button>
+          <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover'  onClick={handleDeny}>
+          <div className='movie-rating-button'> 
+            <FaThumbsDown color='red' size='4em'  /> 
+            <span className='movie-rating-button-span'>Not a chance</span>
+          </div>
+          </Button>
         </div>
       </div>}
+      <h1>Accepted Movies:</h1>
+      <div className="accepted-movie-array">
+        {acceptedMovies.length > 0 &&
+        acceptedMovies.map(movie => <MovieThumb movie={movie}/>)
+        }
+      </div>
     </div>
   )
 }
