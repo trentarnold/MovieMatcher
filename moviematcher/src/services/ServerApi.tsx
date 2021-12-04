@@ -325,6 +325,40 @@ export const ServerApiService = {
       console.log(err)
       return []
     }
-  }
+  },
+  addRating: async(accessToken: string, movieID: number, rating: number): Promise<MovieWithRatingInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/rating`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ movieID, rating })
+      })
+      return await response.json();
+    } catch (err) {
+      console.log(err)
+      return []
+    }
+  },
+  removeRating: async(accessToken: string, movieID: number): Promise<MovieWithRatingInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/rating`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ movieID })
+      })
+      return await response.json();
+    } catch (err) {
+      console.log(err)
+      return []
+    }
+  },
 }
 

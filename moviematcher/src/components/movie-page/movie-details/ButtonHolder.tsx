@@ -7,7 +7,7 @@ import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } f
 import { selectBlackListIds, removeBlackListIds, setBlackListIds } from '../../../redux/features/user/blackListids';
 import { ServerApiService } from '../../../services/ServerApi';
 import { FaPlus, FaMinus, FaTimes, FaSkull} from 'react-icons/fa';
-import { selectRatings } from '../../../redux/features/user/ratingsSlice';
+import { selectRatings, removeRating } from '../../../redux/features/user/ratingsSlice';
 import StarRatings from 'react-star-ratings';
 type Props = {
   movie:MovieDetailsInterface
@@ -52,6 +52,14 @@ const ButtonHolder: React.FC<Props>  = ({movie}) => {
     })
     return currMovieRating;
   }
+  const handleAddRating = () => {
+    // ServerApiService.addRating(movie.id, )
+    console.log('please fix me')
+  }
+  const handleDeleteRating = () => {
+    ServerApiService.removeRating(accessToken, movie.id)
+    dispatch(removeRating(movie.id))
+  }
   return (
     <div className='movie-details-button-holder'>
       <Button 
@@ -70,16 +78,16 @@ const ButtonHolder: React.FC<Props>  = ({movie}) => {
         <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
       </Button>
       {checkRatings() 
-        ? <Button>
-            You rated: 
-            <StarRatings 
-              rating={checkRatings()}
-              starDimension="2rem"
-              starSpacing="1px"
-              starRatedColor='gold'
-            />
+        ? <Button title="click to delete rating" onClick={handleDeleteRating}>
+          You rated: 
+          <StarRatings 
+            rating={checkRatings()}
+            starDimension="1.5rem"
+            starSpacing="1px"
+            starRatedColor='gold'
+          />
           </Button> 
-        : <Button>Rate</Button>}
+        : <Button onClick={handleAddRating}>Rate</Button>}
     </div>
   )
 }

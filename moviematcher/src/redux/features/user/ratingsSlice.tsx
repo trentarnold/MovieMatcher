@@ -27,8 +27,8 @@ export const ratingsSlice = createSlice({
     addRating: (state, action:PayloadAction<ratingInterface>) => {
       state.value = [...state.value, action.payload];
     },
-    removeRating: (state, action: PayloadAction<ratingInterface>) => {
-      state.value = state.value.filter(movieID => movieID !== action.payload)
+    removeRating: (state, action: PayloadAction<number>) => {
+      state.value = state.value.filter(item => item.movieid !== action.payload)
     }
   } 
 });
