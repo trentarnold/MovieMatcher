@@ -9,6 +9,7 @@ import { ServerApiService } from '../../../services/ServerApi';
 import { FaPlus, FaMinus, FaTimes, FaSkull} from 'react-icons/fa';
 import { selectRatings, removeRating } from '../../../redux/features/user/ratingsSlice';
 import StarRatings from 'react-star-ratings';
+import { setActivities } from '../../../redux/features/user/activitiesSlice';
 type Props = {
   movie:MovieDetailsInterface
 }
@@ -29,6 +30,8 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
        watchList = await ServerApiService.addToWatchList(accessToken, movie.id);
     }
     let ids = watchList.map((movie) => movie.movieid)
+    const activities = await ServerApiService.getActivities(accessToken);
+    dispatch(setActivities(activities));
     dispatch(setFavoriteMovieIds(ids));
   }
   const handleBlackList = async() => {
@@ -42,6 +45,8 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
       blackList = await ServerApiService.addToBlackList(accessToken, movie.id);
     }
     let ids = blackList.map((movie) => movie.movieid)
+    const activities = await ServerApiService.getActivities(accessToken);
+    dispatch(setActivities(activities));
     dispatch(setBlackListIds(ids));
   }
   const checkRatings = () => {
@@ -52,8 +57,10 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
     })
     return currMovieRating;
   }
-  const handleDeleteRating = () => {
+  const handleDeleteRating = async () => {
     ServerApiService.removeRating(accessToken, movie.id)
+    const activities = await ServerApiService.getActivities(accessToken);
+    dispatch(setActivities(activities));
     dispatch(removeRating(movie.id))
   }
   return (

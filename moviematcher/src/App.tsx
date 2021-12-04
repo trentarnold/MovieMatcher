@@ -119,7 +119,7 @@ function App() {
       fetchActivities();
       getUsername();
     }
-  }, [accessToken])
+  }, [accessToken]);
  
   return (
     <div className="App">
