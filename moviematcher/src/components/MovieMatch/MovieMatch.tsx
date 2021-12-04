@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { useAppSelector } from '../../redux/app/hooks';
+import { useAppSelector, useAppDispatch } from '../../redux/app/hooks';
 import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
 import { Movie } from '../../../../interfaces/MovieInterface';
 import { useParams } from 'react-router';
@@ -9,6 +9,7 @@ import './MovieMatch.css'
 import MovieRatingDetails from './MovieRatingDetails/MovieRatingDetails';
 import MovieThumb from '../movie-list/movie-thumb/movie-thumb';
 import { FaThumbsUp, FaThumbsDown} from 'react-icons/fa';
+import { turnOnMovieFilter } from '../../redux/features/modals/movieFilterSlice';
 const MovieMatch = () => {
   const { room } = useParams()
   const socket = useAppSelector(selectSocketRef);
@@ -16,10 +17,12 @@ const MovieMatch = () => {
   const [currentMovie, setCurrentMovie] = useState<Movie>(moviePlaceholder);
   const [acceptedMovies, setAcceptedMovie] = useState<Movie[]>([])
   const [titles, setTitles] = useState<string[]>([]);
+  const dispatch = useAppDispatch()
 
 
   useEffect(()=>{
     socket.emit('join', room);
+    dispatch(turnOnMovieFilter())
     socket.on('movies', ((movies: Movie[]) => {
       setMovies(movies)
       setCurrentMovie(movies[0])

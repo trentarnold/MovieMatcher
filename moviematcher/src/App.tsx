@@ -27,6 +27,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { setRatings } from './redux/features/user/ratingsSlice';
+import { selectMovieFilter, turnOnMovieFilter } from './redux/features/modals/movieFilterSlice';
+import FilterForm from './forms/filterForm';
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
@@ -128,6 +130,7 @@ function App() {
       </div>
       <LoginForm />
       <CreateAccountForm />
+      <FilterForm />
       <ToastContainer 
         position ='top-center'
         autoClose={30000}
