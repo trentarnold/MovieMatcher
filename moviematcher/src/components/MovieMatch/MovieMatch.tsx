@@ -9,6 +9,9 @@ import './MovieMatch.css'
 import MovieRatingDetails from './MovieRatingDetails/MovieRatingDetails';
 import MovieThumb from '../movie-list/movie-thumb/movie-thumb';
 import { FaThumbsUp, FaThumbsDown} from 'react-icons/fa';
+import { useAppDispatch } from '../../redux/app/hooks';
+import { turnOnMatchedMovie } from '../../redux/features/modals/matchedMovie';
+import MatchedMovieModal from './MatchedMovieModal/MatchedMovieModal';
 const MovieMatch = () => {
   const { room } = useParams()
   const socket = useAppSelector(selectSocketRef);
@@ -16,7 +19,7 @@ const MovieMatch = () => {
   const [currentMovie, setCurrentMovie] = useState<Movie>(moviePlaceholder);
   const [acceptedMovies, setAcceptedMovie] = useState<Movie[]>([])
   const [titles, setTitles] = useState<string[]>([]);
-
+  const dispatch = useAppDispatch();
 
   useEffect(()=>{
     socket.emit('join', room);
@@ -29,7 +32,7 @@ const MovieMatch = () => {
       setTitles((titles) => [...titles, movie.title]);
     })
     socket.on('foundMutualMovie', (room:string, movie:Movie) => {
-      alert(`Match on ${movie.title}`)
+      dispatch(turnOnMatchedMovie())
     })
   }, [])
 
@@ -84,6 +87,7 @@ const MovieMatch = () => {
         acceptedMovies.map(movie => <MovieThumb movie={movie}/>)
         }
       </div>
+      <MatchedMovieModal currentMovie = {currentMovie}/>
     </div>
   )
 }
