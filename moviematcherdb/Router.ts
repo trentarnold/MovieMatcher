@@ -47,12 +47,14 @@ router.post('/blacklist', authMiddleware, getBlacklist);
 const {
 getWatchedMovie,
 addWatchedMovie,
-movieWatchCount
+movieWatchCount,
+APIServiceHandler
 
 } = require('./Controllers/MovieController');
 router.post('/user/watched', authMiddleware, getWatchedMovie)
 router.post('/user/addWatched', authMiddleware, addWatchedMovie)
 router.post('/user/movieCount', authMiddleware, movieWatchCount)
+router.post('/movies/APIservice?:params', APIServiceHandler )
 
 //Action Controller Routes
 const {
