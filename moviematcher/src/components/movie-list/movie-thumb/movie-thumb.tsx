@@ -11,6 +11,7 @@ import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } from '../../../redux/features/user/watchListIds'
 import { selectBlackListIds, setBlackListIds, removeBlackListIds } from '../../../redux/features/user/blackListids';
 import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
+import { setActivities } from '../../../redux/features/user/activitiesSlice';
 
 type Props = {
   movie:Movie | MovieDetailsInterface;
@@ -35,6 +36,8 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
        watchList = await ServerApiService.addToWatchList(accessToken, movie.id);
     }
     let ids = watchList.map((movie) => movie.movieid)
+    const activities = await ServerApiService.getActivities(accessToken);
+    dispatch(setActivities(activities));
     dispatch(setFavoriteMovieIds(ids));
   }
   const handleBlackList = async() => {
@@ -48,6 +51,8 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
       blackList = await ServerApiService.addToBlackList(accessToken, movie.id);
     }
     let ids = blackList.map((movie) => movie.movieid)
+    const activities = await ServerApiService.getActivities(accessToken);
+    dispatch(setActivities(activities));
     dispatch(setBlackListIds(ids));
   }
     return (
