@@ -10,23 +10,32 @@ import MovieRatingDetails from './MovieRatingDetails/MovieRatingDetails';
 import MovieThumb from '../movie-list/movie-thumb/movie-thumb';
 import { FaThumbsUp, FaThumbsDown} from 'react-icons/fa';
 import { turnOnMovieFilter } from '../../redux/features/modals/movieFilterSlice';
-import { turnOnMatchedMovie } from '../../redux/features/modals/matchedMovie';
+import { turnOnMatchedMovie, turnOffMatchedMovie } from '../../redux/features/modals/matchedMovie';
 import MatchedMovieModal from './MatchedMovieModal/MatchedMovieModal';
+import { selectUserName } from '../../redux/features/user/yourUserName';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 const MovieMatch = () => {
   const { room } = useParams()
   const socket = useAppSelector(selectSocketRef);
+  const userName = useAppSelector(selectUserName);
+  const [otherUserName, setOtherUserName] = useState('')
   const [movies, setMovies] = useState<Movie[]>([]);
   const [currentMovie, setCurrentMovie] = useState<Movie>(moviePlaceholder);
-  const [acceptedMovies, setAcceptedMovie] = useState<Movie[]>([])
+  const [matchedMovie, setMatchedMovie] = useState<Movie>(moviePlaceholder);
+  const [acceptedMovies, setAcceptedMovie] = useState<Movie[]>([]);
+  const [bothAccept, setBothAccept] = useState(false);
+  const [showOtherFriendAccept, setshowOtherFriendAccept] = useState(false);
   const [titles, setTitles] = useState<string[]>([]);
-  const dispatch = useAppDispatch()
-
-
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  
   useEffect(()=>{
     socket.emit('join', room);
-    dispatch(turnOnMovieFilter())
-    socket.on('movies', ((movies: Movie[]) => {
+    socket.on('movies', ((movies: Movie[], room:string) => {
+      const users = room.split('+');
+      users[0] === userName ? setOtherUserName(users[1]) : setOtherUserName(users[0]);
       setMovies(movies)
       setCurrentMovie(movies[0])
     }))
@@ -35,8 +44,24 @@ const MovieMatch = () => {
       setTitles((titles) => [...titles, movie.title]);
     })
     socket.on('foundMutualMovie', (room:string, movie:Movie) => {
+      setMatchedMovie(movie);
       dispatch(turnOnMatchedMovie())
     })
+    socket.on('declineWatchMovie', (userName:string) => {
+      toast(`${userName} no longer wants to watch this movie`)
+      dispatch(turnOffMatchedMovie())
+      setBothAccept(false);
+    })
+    socket.on('otherUserAccepted', (userName:string) => {
+      setBothAccept(true);
+      setshowOtherFriendAccept(true);
+    })
+    socket.on('bothUsersAccepted', () => {
+      navigate('/recent');
+      dispatch(turnOffMatchedMovie());
+      setBothAccept(false);
+    })
+
   }, [])
 
   const handleDeny = () => {
@@ -63,6 +88,18 @@ const MovieMatch = () => {
       }
     }
   }
+  const acceptWatchMovie =() => {
+    if(!bothAccept) {
+      socket.emit('otherUserAccepted', room, userName)
+    }else {
+      socket.emit('bothUsersAccepted', room) 
+    }
+  }
+  const declineWatchMovie = () => {
+    dispatch(turnOffMatchedMovie());
+    socket.emit('declineWatchMovie', userName, room)
+    setBothAccept(false);
+  }
 
   return (
     <div className="movie-match-container">
@@ -87,10 +124,11 @@ const MovieMatch = () => {
       <h1>Accepted Movies:</h1>
       <div className="accepted-movie-array">
         {acceptedMovies.length > 0 &&
-        acceptedMovies.map(movie => <MovieThumb movie={movie}/>)
+        acceptedMovies.map(movie => <MovieThumb key={movie.id} movie={movie}/>)
         }
       </div>
-      <MatchedMovieModal currentMovie = {currentMovie}/>
+      <MatchedMovieModal  currentMovie = {matchedMovie} otherUserName = {otherUserName} showOtherFriendAccept = {showOtherFriendAccept}
+                          declineWatchMovie = {declineWatchMovie} acceptWatchMovie = {acceptWatchMovie}/>
     </div>
   )
 }

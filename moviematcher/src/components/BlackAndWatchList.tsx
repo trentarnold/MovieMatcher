@@ -20,7 +20,7 @@ const BlackAndWatchList = () => {
     if(id) return
     let isCancelled = false;
     const getFavoriteMovies = async() => {
-       let favoriteMovies = await Promise.all(favoriteMovieIds.map(async(id) => {
+      let favoriteMovies = await Promise.all(favoriteMovieIds.map(async(id) => {
             return await APIService.getIndividualMovie(id.toString())
         }))
         if(!isCancelled) {
@@ -39,7 +39,7 @@ useEffect(() => {
   if(id) return
   let isCancelled = false;
   const getBlackListedMovies = async() => {
-     let blackListedMovies = await Promise.all(blackListIds.map(async(id) => {
+    let blackListedMovies = await Promise.all(blackListIds.map(async(id) => {
           return await APIService.getIndividualMovie(id.toString())
       }))
       if(!isCancelled) {
@@ -109,8 +109,14 @@ useEffect(() => {
 
   return (
     <>
-      <FavoriteMovieList criteria={id ? `${profileName}'s' Favorite Movies`: "Your Favorite Movies"} movieList={watchListMovies}/>
-      <FavoriteMovieList criteria={id ? `${profileName}'s' Blacklisted Movies` : 'Your Blacklisted Movies'} movieList={blackListedMovies}/>
+      {watchListMovies.length
+        ? <FavoriteMovieList criteria={id ? `${profileName}'s' Favorite Movies`: "Your Favorite Movies"} movieList={watchListMovies}/>
+        : <div />
+      }
+      {blackListedMovies.length 
+        ? <FavoriteMovieList criteria={id ? `${profileName}'s' Blacklisted Movies` : 'Your Blacklisted Movies'} movieList={blackListedMovies}/>
+        : <div />
+      }
     </>
   )
 }

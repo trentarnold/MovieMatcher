@@ -1,6 +1,7 @@
 import {AccessTokenResponse, PictureChange, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
 import { FavoriteMovieInterface, MovieWithRatingInterface } from '../../../interfaces/favoriteMovieInterface'
+import { activityInterface } from '../../../interfaces/activityInterface';
 import axios from 'axios';
 import { access } from 'fs';
 const BASE_URL = 'http://localhost:3001'
@@ -360,5 +361,22 @@ export const ServerApiService = {
       return []
     }
   },
+  getActivities: async(accessToken: string, id?: number): Promise<activityInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/activity`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ id: id || "" })
+      })
+      return await response.json();
+    } catch (err) {
+      console.log(err)
+      return []
+    }
+  }
 }
 
