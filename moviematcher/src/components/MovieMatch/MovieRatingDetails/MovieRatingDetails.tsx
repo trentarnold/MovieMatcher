@@ -57,14 +57,15 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
                 </div>
                 <div className='movie-details-description'>{currentMovie.overview}</div>
                 <div className='movie-details-genres'>
-                        {movieDetails.genres.map(genre => <div> {genre.name}</div>)}
+                        {movieDetails.genres.map(genre => <div key={genre.id}> {genre.name}</div>)}
                 </div>
 
                 {streamProviders &&
                 <>
                   <div style ={{textAlign:'center'}}>Stream On:</div>
                   <div className='movie-details-stream-providers'>
-                      {streamProviders.length && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'/>)
+                      {streamProviders.length && streamProviders.map((provider:any) => <img key={provider.id} className = 'movie-details-stream-provider'
+                       src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'/>)
                       }
                   </div>
                 </>
@@ -75,7 +76,7 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
                         return (
                             <div> 
                                 {company.logo_path && index < 5? 
-                                    <div>
+                                    <div key={company.id}>
                                     <img className ='movie-details-company-logo'src={`https://image.tmdb.org/t/p/w500${company.logo_path}`} alt="production company"/>
                                     </div> 
                                     : ''

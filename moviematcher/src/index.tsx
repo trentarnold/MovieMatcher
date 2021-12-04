@@ -21,7 +21,8 @@ import blackListIdsReducer, {blackListIdsState} from './redux/features/user/blac
 import loggedInUserReducer, {loggedInUserState} from './redux/features/user/loggedInUsers'
 import socketRefReducer, {socketRefState} from './redux/features/socket/socketRefSlice'
 import ratingsReducer, { ratingsState } from './redux/features/user/ratingsSlice';
-import matchedMovieReducer, {MatchedMovieState} from './redux/features/modals/matchedMovie'
+import matchedMovieReducer, {MatchedMovieState} from './redux/features/modals/matchedMovie';
+import userNameReducer, { UserNameState} from './redux/features/user/yourUserName'
 const persistConfig = {
   key: 'root',
   storage,
@@ -40,6 +41,7 @@ interface IAppState {
   socketRef: socketRefState;
   ratings: ratingsState;
   matchedMovie: MatchedMovieState;
+  userName: UserNameState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -55,7 +57,7 @@ const rootReducer = combineReducers<IAppState>({
   socketRef: socketRefReducer,
   ratings: ratingsReducer,
   matchedMovie: matchedMovieReducer,
-  
+  userName: userNameReducer,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);
