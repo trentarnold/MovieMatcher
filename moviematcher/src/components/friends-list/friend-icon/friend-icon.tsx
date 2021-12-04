@@ -9,6 +9,7 @@ import { selectAuth } from '../../../redux/features/modals/authSlice'
 import {setFriendIds} from '../../../redux/features/user/friendsIdSlice'
 import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers';
 import { selectSocketRef } from '../../../redux/features/socket/socketRefSlice'
+import { selectUserName } from '../../../redux/features/user/yourUserName';
 
 type Props = {
     user: User,
@@ -16,15 +17,15 @@ type Props = {
 }
 
 const FriendIcon:React.FC<Props> = ({user, friend}) => {
-    const [username, setUsername] = useState('')
+    // const [username, setUsername] = useState('')
+    const username = useAppSelector(selectUserName);
     const accessToken = useAppSelector(selectAuth);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const loggedInUsers = useAppSelector(selectLoggedInUser);
     const socket = useAppSelector(selectSocketRef);
-
     const handleMatch = () => {
-        socket.emit('invite', {room:`${username}${user.username}`, otherUserName: user.username})
+        socket.emit('invite', {room:`${username}+${user.username}`, otherUserName: user.username, username})
     };
 
     const handleAdd = async() => {
@@ -47,16 +48,16 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
       } else return `http://localhost:3001${user.profile_pic}`
     }
 
-    useEffect(() => {
-      async function getUsername () {
-        const info = await ServerApiService.getUser(accessToken);
-        setUsername(info.username);
-      }
-      if(accessToken){
-          console.log('called')
-          getUsername();
-      }
-    }, [accessToken]);
+    // useEffect(() => {
+    //   async function getUsername () {
+    //     const info = await ServerApiService.getUser(accessToken);
+    //     setUsername(info.username);
+    //   }
+    //   if(accessToken){
+    //       console.log('called')
+    //       getUsername();
+    //   }
+    // }, [accessToken]);
 
     return (
         <div className="friend-icon">
