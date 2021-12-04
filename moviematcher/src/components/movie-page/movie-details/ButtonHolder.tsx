@@ -7,6 +7,8 @@ import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } f
 import { selectBlackListIds, removeBlackListIds, setBlackListIds } from '../../../redux/features/user/blackListids';
 import { ServerApiService } from '../../../services/ServerApi';
 import { FaPlus, FaMinus, FaTimes, FaSkull} from 'react-icons/fa';
+import { selectRatings } from '../../../redux/features/user/ratingsSlice';
+import StarRatings from 'react-star-ratings';
 type Props = {
   movie:MovieDetailsInterface
 }
@@ -15,6 +17,7 @@ const ButtonHolder: React.FC<Props>  = ({movie}) => {
   const accessToken = useAppSelector(selectAuth);
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
   const blackListIds = useAppSelector(selectBlackListIds);
+  const userRatings = useAppSelector(selectRatings);
   const handleAddToWatchList = async() => {
     let watchList;
     if(favoriteMovieIds.includes(movie.id)){
@@ -41,6 +44,14 @@ const ButtonHolder: React.FC<Props>  = ({movie}) => {
     let ids = blackList.map((movie) => movie.movieid)
     dispatch(setBlackListIds(ids));
   }
+  const checkRatings = () => {
+    let currMovieRating;
+    userRatings.map(item => {
+      if (item.movieid === movie.id) currMovieRating = item.rating;
+      return item.rating;
+    })
+    return currMovieRating;
+  }
   return (
     <div className='movie-details-button-holder'>
       <Button 
@@ -58,7 +69,17 @@ const ButtonHolder: React.FC<Props>  = ({movie}) => {
         { blackListIds.includes(movie.id) ? <FaMinus color='red'/> : <FaSkull color='red' /> }
         <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
       </Button>
-      <Button>Rate</Button> 
+      {checkRatings() 
+        ? <Button>
+            You rated: 
+            <StarRatings 
+              rating={checkRatings()}
+              starDimension="2rem"
+              starSpacing="1px"
+              starRatedColor='gold'
+            />
+          </Button> 
+        : <Button>Rate</Button>}
     </div>
   )
 }

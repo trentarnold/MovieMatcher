@@ -13,6 +13,7 @@ import {
   InputGroup,
   Input,
   ModalHeader,
+  DarkMode,
   Avatar } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/hooks';
 import { FaLock, FaUserAlt, FaUserTag} from 'react-icons/fa';
@@ -69,12 +70,13 @@ const CreateAccountForm = () => {
 
 
     return (
+      <DarkMode >
       <Modal isOpen={isOpen}  onClose = {handleClose} isCentered>
       <ModalOverlay/>
-      <ModalContent style={{borderRadius:'2rem'}}>
-      <ModalHeader bgColor='navy' color='white'  style={{display:'flex', flexDirection:'column', 
+      <ModalContent style={{borderRadius:'2rem', color:'white'}}>
+      <ModalHeader bgColor='rgb(0, 0, 92)' color='white'  style={{display:'flex', flexDirection:'column', 
                     justifyContent:'center', alignItems:'center', borderTopLeftRadius:'2rem', borderTopRightRadius:'2rem'}}>
-              <Avatar size='lg' bg='navy'/>
+              <Avatar size='lg' bg='rgb(0, 0, 92)'/>
               <div> Create Account! </div>
       </ModalHeader >
       <form onSubmit = {(e:React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
@@ -84,7 +86,7 @@ const CreateAccountForm = () => {
                 <InputGroup>
                   <InputLeftElement
                       pointerEvents="none"
-                      children={<FaUserAlt color="gray.300" />}
+                      children={<FaUserAlt />}
                     />
                   <Input 
                     autoFocus
@@ -130,11 +132,14 @@ const CreateAccountForm = () => {
                   </Input>
                 </InputGroup> 
               </FormControl>
-              <Input type='file' onChange = {
-                (e: React.FormEvent<HTMLInputElement>) => {
-                  if (e.currentTarget.files) setPic(e.currentTarget.files[0])
-                }
-              }></Input>
+              <FormControl>
+                <FormLabel forhtml='profilePicture'> Profile Picture </FormLabel>
+                  <Input type='file' onChange = {
+                    (e: React.FormEvent<HTMLInputElement>) => {
+                      if (e.currentTarget.files) setPic(e.currentTarget.files[0])
+                    }
+                  }></Input>
+              </FormControl>
             </ ModalBody>
             <ModalFooter>
               <Button mr={3} onClick={() => {
@@ -146,6 +151,7 @@ const CreateAccountForm = () => {
           </form>
         </ModalContent>
     </Modal>
+    </DarkMode>
     )
 }
 
