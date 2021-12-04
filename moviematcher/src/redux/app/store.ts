@@ -10,7 +10,8 @@ import  favoriteMovieIdsReducer  from '../features/user/watchListIds';
 import blackListIdsReducer from '../features/user/blackListids';
 import loggedInUsersReducer from '../features/user/loggedInUsers';
 import socketRefReducer from '../features/socket/socketRefSlice';
-import ratingsReducer from '../features/user/ratingsSlice'
+import ratingsReducer from '../features/user/ratingsSlice';
+import activitiesReducer from '../features/user/activitiesSlice';
 import movieFilterReducer from '../features/modals/movieFilterSlice'
 import matchedMovieReduced from '../features/modals/matchedMovie'
 export const store = configureStore({
@@ -27,6 +28,7 @@ export const store = configureStore({
     loggedInUser: loggedInUsersReducer,
     socketRef: socketRefReducer,
     ratings: ratingsReducer,
+    activities: activitiesReducer,
     movieFilter: movieFilterReducer,
     matchedMovie: matchedMovieReduced,
   },

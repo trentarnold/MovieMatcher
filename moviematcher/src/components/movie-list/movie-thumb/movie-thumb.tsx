@@ -71,7 +71,7 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
                       onClick={handleAddToWatchList}
                       >
                     {favoriteMovieIds.includes(movie.id) ? <FaTimes color='red' /> : <FaPlus color='green'/>}
-                     <span style={{fontStyle:'italic', marginLeft:'5px'}}>{favoriteMovieIds.includes(movie.id) ? 'Remove WatchList' :'Add to WatchList' } </span>
+                     <span style={{fontStyle:'italic', marginLeft:'5px'}}>{favoriteMovieIds.includes(movie.id) ? 'Remove Wantlist' :'Want to Watch' } </span>
               </Button>
               <Button style={{backgroundColor:'transparent'}}
                       className='enlarge-on-hover'
