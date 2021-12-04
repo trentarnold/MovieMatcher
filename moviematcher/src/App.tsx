@@ -26,6 +26,8 @@ import  MovieMatch  from './components/MovieMatch/MovieMatch'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setRatings } from './redux/features/user/ratingsSlice';
+import { selectMovieFilter, turnOnMovieFilter } from './redux/features/modals/movieFilterSlice';
+import FilterForm from './forms/filterForm';
 import { setActivities } from './redux/features/user/activitiesSlice';
 import { setUserName } from './redux/features/user/yourUserName'
 function App() {
@@ -104,6 +106,7 @@ function App() {
     const fetchActivities = async() => {
       let activities = await ServerApiService.getActivities(accessToken);
       dispatch(setActivities(activities));
+    }
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
@@ -136,6 +139,7 @@ function App() {
       </div>
       <LoginForm />
       <CreateAccountForm />
+      <FilterForm />
       <ToastContainer 
         position ='top-center'
         autoClose={30000}

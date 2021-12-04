@@ -4,7 +4,7 @@ import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails'
 import { Observable } from 'redux';
 import { ActorListInterface } from '../../../interfaces/ActorList'
 import { actorListPlaceholder } from '../actorListPlaceholder';
-import { ActorDetailsInterface } from '../../../interfaces/ActorDetails';
+import ActorDetailsInterface from '../../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
 const BASE_URL = 'http://localhost:3001/'
 

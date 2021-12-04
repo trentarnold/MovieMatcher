@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import { useAppSelector, useAppDispatch } from '../../redux/app/hooks';
 import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
 import { Movie } from '../../../../interfaces/MovieInterface';
 import { useParams } from 'react-router';
@@ -8,12 +9,13 @@ import './MovieMatch.css'
 import MovieRatingDetails from './MovieRatingDetails/MovieRatingDetails';
 import MovieThumb from '../movie-list/movie-thumb/movie-thumb';
 import { FaThumbsUp, FaThumbsDown} from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../../redux/app/hooks';
+import { turnOnMovieFilter } from '../../redux/features/modals/movieFilterSlice';
 import { turnOnMatchedMovie, turnOffMatchedMovie } from '../../redux/features/modals/matchedMovie';
 import MatchedMovieModal from './MatchedMovieModal/MatchedMovieModal';
 import { selectUserName } from '../../redux/features/user/yourUserName';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+
 const MovieMatch = () => {
   const { room } = useParams()
   const socket = useAppSelector(selectSocketRef);
@@ -28,6 +30,7 @@ const MovieMatch = () => {
   const [titles, setTitles] = useState<string[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  
   useEffect(()=>{
     socket.emit('join', room);
     socket.on('movies', ((movies: Movie[], room:string) => {

@@ -1,0 +1,8 @@
+.filter-search-results {
+background-color: white;
+color:black;
+max-height: 100px;
+border-radius: 20px;
+padding:7px;
+overflow-y: scroll;
+}
