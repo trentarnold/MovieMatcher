@@ -22,7 +22,6 @@ const ActorsList:React.FC<Props>  = ({id}) => {
           const filteredActorList = actorListIDS.cast.filter((actor, index, self) =>
             index === self.findIndex((selfActor) => selfActor.id === actor.id)
           );
-          
           if(!isCancelled) {
           setActorList(filteredActorList);
           }
