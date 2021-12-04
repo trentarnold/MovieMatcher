@@ -88,7 +88,7 @@ const APIService = {
     }
   },
 
-  getIndividualMovie: async(id:string): Promise<MovieDetailsInterface>  => {
+  getIndividualMovie: async(id:string | number): Promise<MovieDetailsInterface>  => {
     try {
       const movie  = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);           
       return await movie.json()
