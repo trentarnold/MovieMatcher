@@ -8,11 +8,20 @@ import { movieDetailsPlaceHolder } from '../../../moviePlaceholder';
 import StarRatings from 'react-star-ratings';
 import ActorsList from '../../actors-list/ActorsList';
 import ButtonHolder from './ButtonHolder';
+import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
+import { selectAuth } from '../../../redux/features/modals/authSlice';
+import RateMovieModal from './RateMovieModal';
+import { ServerApiService } from '../../../services/ServerApi';
+import { addRating } from '../../../redux/features/user/ratingsSlice';
 
 const MovieDetails = () => {
     const { id }: any = useParams();
+    const accessToken = useAppSelector(selectAuth);
     const [currentMovie, setCurrentMovie] = useState<MovieDetailsInterface>(movieDetailsPlaceHolder)
     const [streamProviders, setStreamProviders] = useState<any>();
+    const [newRating, setNewRating] = useState<number>(0)
+    const [ratingModalToggle, setRatingModalToggle] = useState<boolean>(false)
+    const dispatch = useAppDispatch();
     useEffect(() => {
         let isCancelled = false;
         async function fetchMovie () {
@@ -22,10 +31,10 @@ const MovieDetails = () => {
             }
         }
         async function fetchStreamProviders () {
-           const fetchedStreamProviders = await APIService.getStreamProviders(id);  
-           if(!isCancelled && fetchedStreamProviders.US) {
-               setStreamProviders(fetchedStreamProviders.US.flatrate);
-           }
+            const fetchedStreamProviders = await APIService.getStreamProviders(id);  
+            if(!isCancelled && fetchedStreamProviders.US) {
+                setStreamProviders(fetchedStreamProviders.US.flatrate);
+            }
         } 
         fetchMovie();
         fetchStreamProviders();
@@ -36,13 +45,25 @@ const MovieDetails = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, )
+    }, )
     
     const reduceToFiveStarRating = (averageVote:number):number => {
         return (averageVote / 2);
-      }
+    }
+    function handleRatingSubmit() {
+        ServerApiService.addRating(accessToken, currentMovie.id, newRating);
+        dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
+        setNewRating(0);
+    }
     return (
-        <div>
+        <div style={{marginTop: "1.5rem"}}>
+            {ratingModalToggle ? <RateMovieModal 
+                rating={newRating} 
+                setNewRating={setNewRating} 
+                setRatingModalToggle={setRatingModalToggle} 
+                submitRating={handleRatingSubmit}
+                movie={currentMovie}
+                /> : <div />}
             <div className='movie-details-container'>
                     <div className='movie-details-information-container'>
                         <div className ='movie-details-title-container'>
@@ -52,7 +73,7 @@ const MovieDetails = () => {
                             starDimension="2rem"
                             starSpacing="1px"
                             starRatedColor='gold'
-                             />
+                        />
                         <div style={{color:'white', marginLeft:'10px'}}>({currentMovie.vote_count})</div>
                         </div>
                         <div className='movie-details-description'>{currentMovie.overview}</div>
@@ -86,9 +107,9 @@ const MovieDetails = () => {
                             <div className='movie-details-release-date'> <span style={{color:'grey', fontStyle:'italic'}}> Released on:  </span>{currentMovie.release_date}</div>
                             <div className='movie-details-runtime'> <span style={{color:'grey', fontStyle:'italic'}}> Runtime: </span> {currentMovie.runtime} Minutes</div>
                         </div>
-                        <ButtonHolder movie = {currentMovie} />
+                        {accessToken ? <ButtonHolder setRatingModalToggle={setRatingModalToggle} setNewRating={setNewRating} movie={currentMovie} /> : <div />}
                     </div>
-                    <div>
+                    <div style={{ margin: "1.5rem 0"}}>
                         <img className='movie-details-image' src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`} alt="movie poster"/>
                     </div>
             </div>

@@ -7,12 +7,12 @@ import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } f
 import { selectBlackListIds, removeBlackListIds, setBlackListIds } from '../../../redux/features/user/blackListids';
 import { ServerApiService } from '../../../services/ServerApi';
 import { FaPlus, FaMinus, FaTimes, FaSkull} from 'react-icons/fa';
-import { selectRatings } from '../../../redux/features/user/ratingsSlice';
+import { selectRatings, removeRating } from '../../../redux/features/user/ratingsSlice';
 import StarRatings from 'react-star-ratings';
 type Props = {
   movie:MovieDetailsInterface
 }
-const ButtonHolder: React.FC<Props>  = ({movie}) => {
+const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
@@ -52,8 +52,12 @@ const ButtonHolder: React.FC<Props>  = ({movie}) => {
     })
     return currMovieRating;
   }
+  const handleDeleteRating = () => {
+    ServerApiService.removeRating(accessToken, movie.id)
+    dispatch(removeRating(movie.id))
+  }
   return (
-    <div className='movie-details-button-holder'>
+    <div className='movie-details-button-holder' style={{marginTop: "1.5rem"}}>
       <Button 
         style={{backgroundColor:'transparent'}}
         className='enlarge-on-hover'
@@ -70,16 +74,16 @@ const ButtonHolder: React.FC<Props>  = ({movie}) => {
         <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
       </Button>
       {checkRatings() 
-        ? <Button>
-            You rated: 
-            <StarRatings 
-              rating={checkRatings()}
-              starDimension="2rem"
-              starSpacing="1px"
-              starRatedColor='gold'
-            />
+        ? <Button title="click to delete rating" onClick={handleDeleteRating}>
+          You rated: 
+          <StarRatings 
+            rating={checkRatings()}
+            starDimension="1.5rem"
+            starSpacing="1px"
+            starRatedColor='gold'
+          />
           </Button> 
-        : <Button>Rate</Button>}
+        : <Button onClick={() => setRatingModalToggle(true)}>Rate</Button>}
     </div>
   )
 }

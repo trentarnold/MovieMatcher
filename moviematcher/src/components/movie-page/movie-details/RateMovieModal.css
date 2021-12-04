@@ -1,0 +1,44 @@
+.rating-modal {
+  background-color: rgba(100, 100, 100, 0.7);
+  position:absolute;
+  padding:0;
+  margin:0;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  z-index: 25;
+}
+
+.rating-modal-input {
+  background-color: rgb(0, 1, 70);
+  position: relative;
+  z-index: 26;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 20rem;
+  margin: 15rem auto;
+}
+
+.modal-movie-title {
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.rating-modal-input button {
+  margin-top: 1rem;
+  background-color: rgb(110, 110, 110);
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+}
+
+.rating-modal-input button:hover {
+  transform: scale(1.25);
+  color: rgb(0, 1, 70);
+  background-color: rgb(110, 110, 110);
+}
