@@ -14,6 +14,7 @@ import ratingsReducer from '../features/user/ratingsSlice';
 import activitiesReducer from '../features/user/activitiesSlice';
 import movieFilterReducer from '../features/modals/movieFilterSlice'
 import matchedMovieReduced from '../features/modals/matchedMovie'
+import userNameReducer from '../features/user/yourUserName'
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -31,6 +32,7 @@ export const store = configureStore({
     activities: activitiesReducer,
     movieFilter: movieFilterReducer,
     matchedMovie: matchedMovieReduced,
+    userName: userNameReducer,
   },
 });
 

@@ -27,6 +27,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setRatings } from './redux/features/user/ratingsSlice';
 import { setActivities } from './redux/features/user/activitiesSlice';
+import { setUserName } from './redux/features/user/yourUserName'
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
@@ -39,7 +40,7 @@ function App() {
     withAck: (d: string, callback: (e: number) => void) => void;
     message: () => void;
     loggedInUsers: (loggedInUsers:string[]) => void;
-    invite: (room:string) => void;
+    invite: (room:string, otherUserName:string, username:string) => void;
     accepted: (room:string) => void;
     denied: (room:string) => void;
   }
@@ -60,15 +61,14 @@ function App() {
         socketRef.current.on('loggedInUsers', (loggedInUsers:string[]) => {
           dispatch(setLoggedInUser(loggedInUsers));
         })
-        socketRef.current.on('invite', (room:string, ) => {
-          const openToast = () => toastRef.current = toast(<InviteToast room={room} toastRef = {toastRef.current}/>)
+        socketRef.current.on('invite', (room:string, otherUserName:string, username ) => {
+          const openToast = () => toastRef.current = toast(<InviteToast room={room} toastRef = {toastRef.current} otherUserName={username}/>)
             openToast();
         })
         socketRef.current.on('denied', (room:string) => {
           toast('You got denied bitch')
         })
         socketRef.current.on('accepted', (room:string) => {
-          console.log(room)
           navigate(`/movieMatch/${room}`)
         })
         dispatch(setSocketRef(socketRef.current))
@@ -104,14 +104,17 @@ function App() {
     const fetchActivities = async() => {
       let activities = await ServerApiService.getActivities(accessToken);
       dispatch(setActivities(activities));
+    async function getUsername () {
+      const info = await ServerApiService.getUser(accessToken);
+      dispatch(setUserName(info.username));
     }
     if(accessToken) {
-      console.log('this is the access token')
       fetchFriends();
       fetchFavoriteMovies();
       fetchBlackListMovies();
       fetchRatings();
       fetchActivities();
+      getUsername();
     }
   }, [accessToken])
  

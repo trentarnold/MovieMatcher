@@ -7,10 +7,11 @@ import { toast } from 'react-toastify'
 type Props = {
     room: string,
     toastRef: ReactText,
+    otherUserName:string
 }
 
 
-const InviteToast:React.FC<Props> = ({toastRef, room}) => {
+const InviteToast:React.FC<Props> = ({toastRef, room, otherUserName}) => {
     const socket = useAppSelector(selectSocketRef);
 
     const handleAcceptInvite = () => {
@@ -24,7 +25,7 @@ const InviteToast:React.FC<Props> = ({toastRef, room}) => {
     }
     return (
         <div className="invite-toast">
-            <p>You've been invited to a match in room {room}</p>
+            <p>{`${otherUserName} has invited you to match!`}</p>
             <Button onClick={handleAcceptInvite}>Accept</Button>
             <Button onClick={handleDenyInvite}>Deny</Button>
         </div>
