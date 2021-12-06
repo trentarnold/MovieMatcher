@@ -12,7 +12,7 @@ import {
   import { useDisclosure } from '@chakra-ui/hooks';
   import { useAppDispatch, useAppSelector } from '../../../redux/app/hooks';
   import { selectMatchedMovie, turnOffMatchedMovie } from '../../../redux/features/modals/matchedMovie';
-  import { Movie } from '../../../../../interfaces/MovieInterface';
+  import { Movie } from '../../../../../interfaces/movieInterface';
   import StarRatings from 'react-star-ratings';
   type Props = {
     currentMovie : Movie,

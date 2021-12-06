@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import './MovieRatingDetails.css'
 import APIService from '../../../services/APISevice'
-import { Movie } from '../../../../../interfaces/MovieInterface'
+import { Movie } from '../../../../../interfaces/movieInterface'
 import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
 import { movieDetailsPlaceHolder } from '../../../moviePlaceholder'
 import StarRatings from 'react-star-ratings';

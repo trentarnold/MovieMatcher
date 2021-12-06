@@ -2,7 +2,7 @@ import MovieList from '../movie-list/movie-list';
 import MovieDetails from './movie-details/movie-details';
 import React, {useState, useEffect} from 'react';
 import APIService from '../../services/APISevice';
-import { Movie } from '../../../../interfaces/MovieInterface';
+import { Movie } from '../../../../interfaces/movieInterface';
 import { useParams } from 'react-router';
 const MoviePage = () => {
   const { id } : any = useParams();

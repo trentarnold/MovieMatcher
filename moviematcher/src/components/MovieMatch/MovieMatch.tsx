@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { useAppSelector, useAppDispatch } from '../../redux/app/hooks';
 import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
-import { Movie } from '../../../../interfaces/MovieInterface';
+import { Movie } from '../../../../interfaces/movieInterface';
 import { useParams } from 'react-router';
 import { Button } from '@chakra-ui/button';
 import { moviePlaceholder } from '../../moviePlaceholder';
