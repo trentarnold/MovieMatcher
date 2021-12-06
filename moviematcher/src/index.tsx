@@ -23,7 +23,8 @@ import socketRefReducer, {socketRefState} from './redux/features/socket/socketRe
 import ratingsReducer, { ratingsState } from './redux/features/user/ratingsSlice';
 import matchedMovieReducer, {MatchedMovieState} from './redux/features/modals/matchedMovie'
 import activitiesReducer, { activitiesState } from './redux/features/user/activitiesSlice';
-import userNameReducer, { UserNameState} from './redux/features/user/yourUserName'
+import userNameReducer, { UserNameState} from './redux/features/user/yourUserName';
+import activityListModalReducer, {ActivityListModalState} from './redux/features/modals/activityListModal'
 const persistConfig = {
   key: 'root',
   storage,
@@ -44,6 +45,7 @@ interface IAppState {
   activities: activitiesState;
   matchedMovie: MatchedMovieState;
   userName: UserNameState;
+  activityListModal: ActivityListModalState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -61,6 +63,7 @@ const rootReducer = combineReducers<IAppState>({
   activities: activitiesReducer,
   matchedMovie: matchedMovieReducer,
   userName: userNameReducer,
+  activityListModal: activityListModalReducer,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);

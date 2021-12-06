@@ -28,6 +28,7 @@ const MovieMatch = () => {
   const [titles, setTitles] = useState<string[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  console.log(matchedMovie.id, otherUserName, 'this is from matchedmovie')
   useEffect(()=>{
     socket.emit('join', room);
     socket.on('movies', ((movies: Movie[], room:string) => {
@@ -44,8 +45,8 @@ const MovieMatch = () => {
       setMatchedMovie(movie);
       dispatch(turnOnMatchedMovie())
     })
-    socket.on('declineWatchMovie', (userName:string) => {
-      toast(`${userName} no longer wants to watch ${matchedMovie.title}`)
+    socket.on('declineWatchMovie', (userName:string, title:string) => {
+      toast(`${userName} no longer wants to watch ${title}`)
       dispatch(turnOffMatchedMovie())
       setBothAccept(false);
     })
@@ -53,8 +54,10 @@ const MovieMatch = () => {
       setBothAccept(true);
       setshowOtherFriendAccept(true);
     })
-    socket.on('bothUsersAccepted', () => {
-      navigate('/recent');
+    socket.on('bothUsersAccepted', (otherUserName:string, movieId:string, room:string) => {
+      const users = room.split('+');
+      users[0] === userName ? navigate(`/recent/${movieId}/${users[1]}`) : navigate(`/recent/${movieId}/${users[0]}`);
+      // navigate(`/recent/${movieId}/${otherUserName}`);
       dispatch(turnOffMatchedMovie());
       setBothAccept(false);
     })
@@ -89,12 +92,12 @@ const MovieMatch = () => {
     if(!bothAccept) {
       socket.emit('otherUserAccepted', room, userName)
     }else {
-      socket.emit('bothUsersAccepted', room) 
+      socket.emit('bothUsersAccepted', room, userName, matchedMovie.id) 
     }
   }
   const declineWatchMovie = () => {
     dispatch(turnOffMatchedMovie());
-    socket.emit('declineWatchMovie', userName, room)
+    socket.emit('declineWatchMovie', userName, room, matchedMovie.title)
     setBothAccept(false);
   }
 
