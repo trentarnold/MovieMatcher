@@ -1,7 +1,7 @@
 import MovieList from '../movie-list/movie-list';
 import  {useState, useEffect} from 'react';
 import APIService from '../../services/APISevice';
-import { Movie } from '../../../../interfaces/MovieInterface';
+import { Movie } from '../../../../interfaces/movieInterface';
 import { useParams } from 'react-router';
 import ActorDetails from './ActorDetails/ActorDetails'
 const ActorPage = () => {

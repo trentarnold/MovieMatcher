@@ -24,7 +24,8 @@ import ratingsReducer, { ratingsState } from './redux/features/user/ratingsSlice
 import movieFilterReducer, {MovieFilterState} from './redux/features/modals/movieFilterSlice'
 import matchedMovieReducer, {MatchedMovieState} from './redux/features/modals/matchedMovie'
 import activitiesReducer, { activitiesState } from './redux/features/user/activitiesSlice';
-import userNameReducer, { UserNameState} from './redux/features/user/yourUserName'
+import userNameReducer, { UserNameState} from './redux/features/user/yourUserName';
+import activityListModalReducer, {ActivityListModalState} from './redux/features/modals/activityListModal'
 import  roomNameReducer, {roomNameState}  from './redux/features/modals/roomNameSlice';
 import { SocketContext, socket } from './socket';
 
@@ -49,6 +50,7 @@ interface IAppState {
   activities: activitiesState;
   matchedMovie: MatchedMovieState;
   userName: UserNameState;
+  activityListModal: ActivityListModalState;
   roomName: roomNameState;
 }
 
@@ -68,6 +70,7 @@ const rootReducer = combineReducers<IAppState>({
   activities: activitiesReducer,
   matchedMovie: matchedMovieReducer,
   userName: userNameReducer,
+  activityListModal: activityListModalReducer,
   roomName: roomNameReducer
 });
 

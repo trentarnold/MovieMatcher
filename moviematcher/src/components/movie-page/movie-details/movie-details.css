@@ -48,6 +48,9 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.movie-details-button-holder.column {
+  flex-direction: column;
+}
 .movie-details-release-runtime {
   display: flex;
   justify-content: space-around;

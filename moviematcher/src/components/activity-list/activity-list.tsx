@@ -1,19 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAppSelector } from '../../redux/app/hooks'
 import { selectAuth } from '../../redux/features/modals/authSlice'
 import { selectActivities } from '../../redux/features/user/activitiesSlice'
 import ActivityCard from './activity-card/activity-card'
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import RecentActivityModal from './recentActivityModal/RecentActivityModal'
+import { useAppDispatch } from '../../redux/app/hooks';
+import { turnOnActivityListModal } from '../../redux/features/modals/activityListModal'
 require('./activity-list.css')
 
 const ActivityList = () => {
     let activities = useAppSelector(selectActivities);
     const accessToken = useAppSelector(selectAuth);
+    const { movieId, otherUserName} = useParams();
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        if(movieId && otherUserName) {
+            dispatch(turnOnActivityListModal())
+        }
+    }, [])
+
     const params = useParams();
     if (params.id) {
         activities = activities.filter(activity => (activity.uid === Number(params.id)) || (activity.friendid === Number(params.id)))
     }
-    console.log(params, "PARAMS")
 
     return (
         <div className="recent-activity">
@@ -23,7 +33,7 @@ const ActivityList = () => {
                     : <div className="no-activity-landing">No Recent Activity</div>
                 : <div className="no-activity-landing">Please login to see recent activity</div>
             }
-            
+            {movieId && otherUserName && <RecentActivityModal movieId = {movieId} otherUserName = {otherUserName}/>}
         </div>
     )
 }

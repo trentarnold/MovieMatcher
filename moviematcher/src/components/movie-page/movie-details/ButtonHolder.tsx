@@ -12,9 +12,12 @@ import StarRatings from 'react-star-ratings';
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
 require('./ButtonHolder.css');
 type Props = {
-  movie:MovieDetailsInterface
+  movie:MovieDetailsInterface,
+  setRatingModalToggle?:any,
+  setNewRating?: any,
+  flexColumn?: boolean,
 }
-const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMovies, watchedMovies }) => {
+const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMovies, watchedMovies, flexColumn }) => {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
@@ -80,7 +83,7 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
     setWatchDate(new Date(Date.now()))
   }
   return (
-    <div className='movie-details-button-holder' style={{margin: "1.5rem 0"}}>
+    <div className={`movie-details-button-holder ${flexColumn ? 'column': ''}`} style={{margin: "1.5rem 0"}}>
       <Button 
         style={{backgroundColor:'transparent'}}
         className='enlarge-on-hover'
@@ -108,7 +111,8 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
           </Button> 
         : <Button style={{backgroundColor:'transparent'}} onClick={() => setRatingModalToggle(true)}>Rate</Button>
       }
-      {watchedMovieToggle
+
+     { flexColumn ? <></> :  watchedMovieToggle 
       ? watchedMovieDateToggle
         ? <div className="date-form" style={{display: "flex"}}>
           <input className='enlarge-on-hover' type="datetime-local" onChange={(e) => updateWatchDate(e)}></input>

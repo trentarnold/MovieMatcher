@@ -24,7 +24,7 @@ interface ServerToClientEvents {
   movies: (movie: Movie[], room:string) => void;
   foundMutualMovie: (room:string, movie:Movie) => void;
   acceptMovie: (movie:Movie) => void;
-  bothUsersAccepted: () => void;
+  bothUsersAccepted: (userName:string, movieId:string, room:string) => void;
   filter: (room: string, filter:filter) => void;
   sendFilter:(filters:filterData) => void;
 }
@@ -101,8 +101,8 @@ io.on("connection", (socket: Socket) => {
   socket.on('denied', (room) => {
     socket.to(room).emit('denied')
   })
-  socket.on('declineWatchMovie', (userName, room) => {
-    socket.to(room).emit('declineWatchMovie', userName)
+  socket.on('declineWatchMovie', (userName, room, title) => {
+    socket.to(room).emit('declineWatchMovie', userName, title)
   })
   socket.on('join',async(room) =>{
     const response =  await axios.get('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US');
@@ -118,8 +118,8 @@ io.on("connection", (socket: Socket) => {
   socket.on('otherUserAccepted', (room:string, userName:string)=> {
     socket.to(room).emit('otherUserAccepted', userName)
   })
-  socket.on('bothUsersAccepted', (room:string) => {
-    io.in(room).emit('bothUsersAccepted')
+  socket.on('bothUsersAccepted', (room:string, userName, movieId) => {
+    io.in(room).emit('bothUsersAccepted', userName, movieId, room)
   })
   socket.on('addFilter', (room:string, username:string, filter:filter) => {
     console.log(filter)

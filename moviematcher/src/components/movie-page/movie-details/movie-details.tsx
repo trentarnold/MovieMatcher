@@ -144,8 +144,9 @@ const MovieDetails = () => {
                             })}
                             </div>
                         </div>
-                        {accessToken ? <ButtonHolder setRatingModalToggle={setRatingModalToggle} setNewRating={setNewRating} watchedMovies={watchedMovies} setWatchedMovies={setWatchedMovies} movie={currentMovie} /> : <div />}
-                        {watchedMovies.length
+                        {accessToken ? <ButtonHolder setRatingModalToggle={setRatingModalToggle} setNewRating={setNewRating} watchedMovies={watchedMovies} 
+                                        setWatchedMovies={setWatchedMovies} movie={currentMovie} flexColumn={false}/> : <div />}
+                        {watchedMovies.length 
                             ? <div className="last-watched-container">
                                 <div className="last-watched-details-header">You watched this on:</div>
                                 {sortWatchedMoviesByDate().map(watchedMovie => <div className="last-watched-details">{moment(watchedMovie.createdAt).format('dddd MMM D, YYYY')} {daysSince(watchedMovie.createdAt)}</div>)}

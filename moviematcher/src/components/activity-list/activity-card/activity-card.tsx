@@ -30,7 +30,7 @@ const ActivityCard = ({activity}: any) => {
             }
         }
         fetchData()
-    }, [])
+    }, [activity])
 
     function outputActivity() {
         if (doer && movie) {

@@ -1,10 +1,10 @@
 const axios = require('axios');
 import { Movie, Results } from "../../interfaces/movieInterface";
 import {MovieDetailsInterface} from '../../interfaces/MovieDetails'
-import { movieDetailsPlaceHolder } from '../../moviematcher/src/MoviePlaceholder';
+import { movieDetailsPlaceHolder } from '../../moviematcher/src/moviePlaceholder'
 import { ActorListInterface } from '../../interfaces/ActorList';
 import { actorListPlaceholder } from '../../moviematcher/src/actorListPlaceholder';
-import ActorDetailsInterface from '../../interfaces/ActorDetails';
+import  ActorDetailsInterface  from '../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../../moviematcher/src/actorDetailsPlaceholder';
 
 
