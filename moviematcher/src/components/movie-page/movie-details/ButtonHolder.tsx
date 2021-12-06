@@ -14,7 +14,7 @@ require('./ButtonHolder.css');
 type Props = {
   movie:MovieDetailsInterface
 }
-const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMovie }) => {
+const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMovies, watchedMovies }) => {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
@@ -76,7 +76,7 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
     const newestMovie = await ServerApiService.addWatchedMovie(accessToken, {movieID: movie.id, createdDate: watchDate});
     setWatchedMovieToggle(false)
     setWatchedMovieDateToggle(false)
-    setWatchedMovie(newestMovie);
+    setWatchedMovies([...watchedMovies, newestMovie]);
     setWatchDate(new Date(Date.now()))
   }
   return (
@@ -112,7 +112,7 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
       ? watchedMovieDateToggle
         ? <div className="date-form" style={{display: "flex"}}>
           <input className='enlarge-on-hover' type="datetime-local" onChange={(e) => updateWatchDate(e)}></input>
-          <Button type="submit" style={{backgroundColor:'transparent'}} className='enlarge-on-hover' onClick={updateWatchedMovie}>Save</Button>
+          <Button type="submit" style={{backgroundColor:'transparent', marginLeft: "0.5rem"}} className='enlarge-on-hover' onClick={updateWatchedMovie}>Save</Button>
         </div>
         : <div style={{display: "flex"}}>
           <Button style={{backgroundColor:'transparent'}} className='enlarge-on-hover' onClick={updateWatchedMovie}>Today</Button>

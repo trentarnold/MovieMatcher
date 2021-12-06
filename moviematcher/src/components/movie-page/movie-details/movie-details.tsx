@@ -23,10 +23,10 @@ const MovieDetails = () => {
     const [streamProviders, setStreamProviders] = useState<any>();
     const [newRating, setNewRating] = useState<number>(0)
     const [ratingModalToggle, setRatingModalToggle] = useState<boolean>(false)
-    const [watchedMovie, setWatchedMovie] = useState<FavoriteMovieInterface>()
+    const [watchedMovies, setWatchedMovies] = useState<FavoriteMovieInterface[]>([])
     const dispatch = useAppDispatch();
     useEffect(() => {
-        setWatchedMovie(undefined);
+        setWatchedMovies([]);
         let isCancelled = false;
         async function fetchMovie () {
             const movieDetails = await APIService.getIndividualMovie(id);
@@ -43,12 +43,14 @@ const MovieDetails = () => {
         async function fetchWatchedMovie() {
             const movies = await ServerApiService.getWatchedMovies(accessToken);
             if (Array.isArray(movies)) {
+                let movieArr:FavoriteMovieInterface[] = [];
                 movies.map(movie => {
                     if (movie.movieid === Number(id)) {
-                        setWatchedMovie(movie);
+                        movieArr.push(movie);
                     }
                     return movie;
                 })
+                setWatchedMovies(movieArr)
             }
         }
         fetchMovie();
@@ -79,6 +81,13 @@ const MovieDetails = () => {
         if (days === 0) return '(today)';
         if (days === 1) return '(1 day ago)';
         if (days > 1) return `(${days} days ago)`
+    }
+    function sortWatchedMoviesByDate() {
+        const sorted = watchedMovies.sort((a, b) => {
+            return Number(new Date(b.createdAt)) - Number(new Date(a.createdAt));
+        })
+        console.log(sorted)
+        return sorted;
     }
     return (
         <div style={{marginTop: "1.5rem"}}>
@@ -135,9 +144,12 @@ const MovieDetails = () => {
                             })}
                             </div> 
                         </div>
-                        {accessToken ? <ButtonHolder setRatingModalToggle={setRatingModalToggle} setNewRating={setNewRating} setWatchedMovie={setWatchedMovie} movie={currentMovie} /> : <div />}
-                        {watchedMovie 
-                            ? <div className="last-watched-details">You last watched this on: {moment(watchedMovie.createdAt).format('dddd MMM D, YYYY')} {daysSince(watchedMovie.createdAt)}</div>
+                        {accessToken ? <ButtonHolder setRatingModalToggle={setRatingModalToggle} setNewRating={setNewRating} watchedMovies={watchedMovies} setWatchedMovies={setWatchedMovies} movie={currentMovie} /> : <div />}
+                        {watchedMovies.length 
+                            ? <div className="last-watched-container">
+                                <div className="last-watched-details-header">You watched this on:</div>
+                                {sortWatchedMoviesByDate().map(watchedMovie => <div className="last-watched-details">{moment(watchedMovie.createdAt).format('dddd MMM D, YYYY')} {daysSince(watchedMovie.createdAt)}</div>)}
+                            </div>
                             : <div />
                         }
                     </div>

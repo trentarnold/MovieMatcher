@@ -81,8 +81,19 @@
   margin-bottom: 1rem;
 }
 
+.last-watched-container {
+  margin-bottom: 0.5rem;
+  height: 5rem;
+  overflow-y: scroll;
+}
+
+.last-watched-details-header {
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
 .last-watched-details {
-  margin-bottom: 1rem;
+  margin-bottom: 0.15rem;
   text-align: center;
   color: white;
 }
