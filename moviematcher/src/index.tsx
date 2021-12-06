@@ -26,6 +26,8 @@ import matchedMovieReducer, {MatchedMovieState} from './redux/features/modals/ma
 import activitiesReducer, { activitiesState } from './redux/features/user/activitiesSlice';
 import userNameReducer, { UserNameState} from './redux/features/user/yourUserName'
 import  roomNameReducer, {roomNameState}  from './redux/features/modals/roomNameSlice';
+import { SocketContext, socket } from './socket';
+
 const persistConfig = {
   key: 'root',
   storage,
@@ -76,6 +78,7 @@ const persistor = persistStore(persistStorage);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={persistStorage}>
+    <SocketContext.Provider value={socket}>
       <PersistGate loading={null} persistor={persistor}>
         <ChakraProvider>
           <BrowserRouter >

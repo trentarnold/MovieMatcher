@@ -28,7 +28,7 @@ const {
 router.put('/user/profile',authMiddleware, updatePictureMiddleware, updateUser);
 router.get('/user/profile', authMiddleware, getUser);
 router.post('/user/otherUser', authMiddleware, getSpecificUser) // Not for user calls, internal use only!
-router.post('user/getByUsername', authMiddleware, getByUsername) //Only for Socket.IO room. Need to fix if time allows
+//router.post('user/getByUsername', authMiddleware, getByUsername) //Only for Socket.IO room. Need to fix if time allows
 router.get('/user/allPeople', authMiddleware, getAllPeople)
 router.get('/user/friends',authMiddleware, getFriends);
 router.post('/user/create', checkUsernameMiddleware, setPictureMiddleware ,createUser);

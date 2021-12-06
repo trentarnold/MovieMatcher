@@ -18,10 +18,11 @@ import {
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { selectMovieFilter, turnOffMovieFilter } from '../redux/features/modals/movieFilterSlice';
-import { selectSocketRef } from '../redux/features/socket/socketRefSlice';
+import { socket } from '../socket';
 import { useEffect, useState } from 'react'
 import './filterForm.css'
 import { clearRoomName, selectRoomName } from '../redux/features/modals/roomNameSlice';
+import { selectUserName } from '../redux/features/user/yourUserName';
 
 interface ActorResult {
   adult?:boolean,
@@ -38,8 +39,13 @@ interface filterObject {
   avoidGenres:string[],
   cast:string[],
   providers:string[],
-  castIds: number[],
 }
+
+interface filterData {
+  username: string,
+  filter:filterObject
+}
+
 
 const streamProviders = [{
     display_priority: 1,
@@ -83,7 +89,7 @@ const FilterForm = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const room = useAppSelector(selectRoomName);
     const open = useAppSelector(selectMovieFilter)
-    const socket = useAppSelector(selectSocketRef)
+    const loggedInUser = useAppSelector(selectUserName)
     const dispatch = useAppDispatch()
 
     //lmfao
@@ -105,6 +111,7 @@ const FilterForm = () => {
     const [thriller, setThriller] = useState<string>('na')
     const [war, setWar] = useState<string>('na')
     const [western, setWestern] = useState<string>('na')
+    const [filters, setFilters] = useState<filterData[]>([])
 
     const [genres, setGenres] = useState<string[]>([]);
     const [avoidGenres, setAvoidGenres] = useState<string[]>([]);
@@ -121,8 +128,8 @@ const FilterForm = () => {
 
     const handleSubmit = () => {
       const filterObject = {providers, genres, avoidGenres, cast}
-      console.log(filterObject)
-      socket.emit('filter', room, filterObject)
+      const username = loggedInUser
+      socket.emit('addFilter', room, username, filterObject)
       handleClose()
     }
 
@@ -133,7 +140,6 @@ const FilterForm = () => {
       if(avoidGenres.indexOf(genreId) !== -1) {
         setAvoidGenres(avoidGenres.filter(genre => genre !== genreId));
       }
-      
     }
 
     const handleRemoveToggle = (genreId: string) => {
@@ -189,13 +195,32 @@ const FilterForm = () => {
     }
 
     useEffect(() => {
-      if(open && socket) {
+      if(open) {
         onOpen()
-        socket.on('applyFilter', (room:string, filter:filterObject) => {
-          console.log(filter)
-        })
+        setFilters([])
+        console.log('opened, filters cleared')
       }
     }, [open])
+    
+    useEffect (()=>{
+      console.log(filters)
+
+      if (filters[1] && filters[1].username === loggedInUser ) {
+        socket.emit('compareFilters', filters)
+        setFilters([]); 
+      }
+      
+      },[filters])
+
+      useEffect(() =>{
+        socket.on('sendFilter', (filter:filterData) => {
+          if(filters.length > 2) {
+            const newFilters = filters;
+            newFilters.push(filter);
+            setFilters(newFilters);
+          }
+        })
+      });
 
     useEffect(() =>{
       async function searchActors () {

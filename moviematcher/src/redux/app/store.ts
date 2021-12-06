@@ -33,7 +33,6 @@ export const store = configureStore({
     activities: activitiesReducer,
     movieFilter: movieFilterReducer,
     matchedMovie: matchedMovieReduced,
-    userName: userNameReducer,
     roomName:roomNameSlice
   },
 });

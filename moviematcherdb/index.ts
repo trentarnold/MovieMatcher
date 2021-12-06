@@ -25,8 +25,8 @@ interface ServerToClientEvents {
   foundMutualMovie: (room:string, movie:Movie) => void;
   acceptMovie: (movie:Movie) => void;
   bothUsersAccepted: () => void;
-  filter: (room: string, filters: {}) => void;
-  applyFilter:(room: string, filters:{}) => void;
+  filter: (room: string, filter:filter) => void;
+  sendFilter:(filters:filterData) => void;
 }
 
 interface ClientToServerEvents {
@@ -40,6 +40,18 @@ interface InterServerEvents {
 interface SocketData {
   name: string;
   age: number;
+}
+
+interface filter {
+  providers:string[],
+  genres:string[],
+  avoidGenres:string[],
+  cast:string[],
+}
+
+interface filterData {
+  username:string,
+  filter:filter,
 }
     
 app.use(cors());
@@ -59,6 +71,7 @@ interface LooseObject {
 
 const users:LooseObject = {};
 io.on("connection", (socket: Socket) => {
+
   socket.on('login', (username:string) => {
     users[socket.id] = username
     const loggedInUsers = Object.values(users);
@@ -108,14 +121,13 @@ io.on("connection", (socket: Socket) => {
   socket.on('bothUsersAccepted', (room:string) => {
     io.in(room).emit('bothUsersAccepted')
   })
-  socket.on('filter', (room:string, filters:{
-    providers:string[],
-    genres:string[],
-    avoidGenres:string[],
-    cast:string[],
-  }) => {
+  socket.on('addFilter', (room:string, username:string, filter:filter) => {
+    console.log(filter)
+    io.in(room).emit('sendFilter', {username, filter})
+  })
+  socket.on('compareFilters', (room:string, filters: filterData[]) => {
+    console.log(room)
     console.log(filters)
-    io.in(room).emit('applyFilter', room, filters)
   })
 });
 
