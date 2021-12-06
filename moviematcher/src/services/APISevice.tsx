@@ -1,9 +1,5 @@
 import {Movie, Results} from '../../../interfaces/movieInterface';
-<<<<<<< HEAD
-import { movieDetailsPlaceHolder } from '../MoviePlaceholder';
-=======
 import { movieDetailsPlaceHolder } from '../moviePlaceholder';
->>>>>>> 4e5f0d117b122626d440e80e662f4efe81bacba8
 import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails'
 import { Observable } from 'redux';
 import { ActorListInterface } from '../../../interfaces/ActorList'
