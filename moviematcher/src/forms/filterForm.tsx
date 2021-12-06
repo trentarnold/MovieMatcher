@@ -213,12 +213,17 @@ const FilterForm = () => {
       },[filters])
 
       useEffect(() =>{
-        socket.on('sendFilter', (filter:filterData) => {
-          if(filters.length > 2) {
-            const newFilters = filters;
-            newFilters.push(filter);
-            setFilters(newFilters);
-          }
+        socket.on('sendFilter', (username:string, filter:filterData) => {
+          console.log('getting filter')
+          console.log(filter)
+          // if(filters.length < 2) {
+          //   const newFilters = filters;
+          //   newFilters.push(filter);
+          //   setFilters(newFilters);
+          // }
+          // if(filters.length > 2) {
+          //   setFilters([filter])
+          // }
         })
       });
 

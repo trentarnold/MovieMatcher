@@ -1,6 +1,6 @@
 import React from 'react'
 import './movie-thumb.css'
-import { Movie } from '../../../../../interfaces/MovieInterface'
+import { Movie } from '../../../../../interfaces/movieInterface'
 import {Button} from '@chakra-ui/react'
 import StarRatings from 'react-star-ratings';
 import {  useNavigate } from "react-router-dom";

@@ -1,4 +1,4 @@
-import {Movie, Results} from '../../../interfaces/MovieInterface';
+import {Movie, Results} from '../../../interfaces/movieInterface';
 import { movieDetailsPlaceHolder } from '../MoviePlaceholder';
 import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails'
 import { Observable } from 'redux';
