@@ -13,6 +13,7 @@ import { selectAuth } from '../../../redux/features/modals/authSlice';
 import RateMovieModal from './RateMovieModal';
 import { ServerApiService } from '../../../services/ServerApi';
 import { addRating } from '../../../redux/features/user/ratingsSlice';
+import { setActivities } from '../../../redux/features/user/activitiesSlice';
 
 const MovieDetails = () => {
     const { id }: any = useParams();
@@ -50,8 +51,10 @@ const MovieDetails = () => {
     const reduceToFiveStarRating = (averageVote:number):number => {
         return (averageVote / 2);
     }
-    function handleRatingSubmit() {
+    async function handleRatingSubmit() {
         ServerApiService.addRating(accessToken, currentMovie.id, newRating);
+        const activities = await ServerApiService.getActivities(accessToken);
+        dispatch(setActivities(activities));
         dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
         setNewRating(0);
     }

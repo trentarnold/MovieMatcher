@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { Button } from '@chakra-ui/button';
 import { useAppDispatch, useAppSelector  } from '../../redux/app/hooks';
 import { turnOnLogin } from '../../redux/features/modals/loginSlice';
-import { toggleFriendsList } from '../../redux/features/modals/friendsListSlice'
+import { selectFriendsList, toggleFriendsList } from '../../redux/features/modals/friendsListSlice'
 import { clearToken, selectAuth } from '../../redux/features/modals/authSlice';
 import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
 
@@ -11,10 +11,12 @@ const Navbar = () => {
   const auth = useAppSelector(selectAuth)
   const socket = useAppSelector(selectSocketRef)
   const dispatch = useAppDispatch()
+  let listBool = useAppSelector(selectFriendsList) 
 
   const handleLogOut = () =>{
     socket.emit('logout')
     dispatch(clearToken())
+    if (listBool === true)dispatch(toggleFriendsList())
   }
   
   return (

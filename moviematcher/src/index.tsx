@@ -21,6 +21,7 @@ import blackListIdsReducer, {blackListIdsState} from './redux/features/user/blac
 import loggedInUserReducer, {loggedInUserState} from './redux/features/user/loggedInUsers'
 import socketRefReducer, {socketRefState} from './redux/features/socket/socketRefSlice'
 import ratingsReducer, { ratingsState } from './redux/features/user/ratingsSlice';
+import movieFilterReducer, {MovieFilterState} from './redux/features/modals/movieFilterSlice'
 import matchedMovieReducer, {MatchedMovieState} from './redux/features/modals/matchedMovie'
 import activitiesReducer, { activitiesState } from './redux/features/user/activitiesSlice';
 import userNameReducer, { UserNameState} from './redux/features/user/yourUserName';
@@ -42,6 +43,7 @@ interface IAppState {
   loggedInUser: loggedInUserState;
   socketRef: socketRefState;
   ratings: ratingsState;
+  movieFilter: MovieFilterState;
   activities: activitiesState;
   matchedMovie: MatchedMovieState;
   userName: UserNameState;
@@ -60,6 +62,7 @@ const rootReducer = combineReducers<IAppState>({
   loggedInUser: loggedInUserReducer,
   socketRef: socketRefReducer,
   ratings: ratingsReducer,
+  movieFilter: movieFilterReducer,
   activities: activitiesReducer,
   matchedMovie: matchedMovieReducer,
   userName: userNameReducer,

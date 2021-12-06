@@ -1,4 +1,5 @@
-import { ActorDetailsInterface } from '../../interfaces/ActorDetails'
+import ActorDetailsInterface from "../../interfaces/ActorDetails"
+
 export const actorDetailsPlaceholder:ActorDetailsInterface = {
   adult: false,
   also_known_as: ['양조위', '  梁朝偉', 'Tony Chiu Wai Leung', '梁朝伟', 'Tony Leung', 'Yang Jo-wi'],
