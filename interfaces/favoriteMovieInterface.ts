@@ -4,6 +4,7 @@ export interface FavoriteMovieInterface {
   movieid: number,
   uid: number
   updatedAt: string,
+  freindid?: number,
 }
 
 export interface MovieWithRatingInterface {

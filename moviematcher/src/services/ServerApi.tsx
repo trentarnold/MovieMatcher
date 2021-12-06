@@ -377,6 +377,39 @@ export const ServerApiService = {
       console.log(err)
       return []
     }
+  },
+  getWatchedMovies: async(accessToken: string): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/watched`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      })
+      return await response.json();
+    } catch (err) {
+      console.log(err)
+      return []
+    }
+  },
+  addWatchedMovie: async(accessToken: string, movie: {movieID: number, createdDate: Date}) => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/addWatched`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(movie)
+      })
+      return await response.json();
+    } catch (err) {
+      console.log(err)
+      return []
+    }
   }
 }
 

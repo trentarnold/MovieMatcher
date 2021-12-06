@@ -51,9 +51,10 @@
 .movie-details-release-runtime {
   display: flex;
   justify-content: space-around;
+  margin-bottom: 0.5rem;
 }
 .movie-details-company-logo{
-  width:5rem;
+  width: 5rem;
   margin-right: 20px;
 }
 .movie-details-production-company {
@@ -63,7 +64,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 .movie-details-genres {
   display: flex;
@@ -73,10 +73,16 @@
 }
 .movie-details-stream-provider {
   height: 50px;
-  /* border-radius: 50%; */
   margin: 10px;
 }
 .movie-details-stream-providers{
   display: flex;
   justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.last-watched-details {
+  margin-bottom: 1rem;
+  text-align: center;
+  color: white;
 }
