@@ -40,8 +40,6 @@ const MovieDetails = () => {
                 setStreamProviders(fetchedStreamProviders.US.flatrate);
             }
         }
-<<<<<<< HEAD
-=======
         async function fetchWatchedMovie() {
             const movies = await ServerApiService.getWatchedMovies(accessToken);
             if (Array.isArray(movies)) {
@@ -55,7 +53,6 @@ const MovieDetails = () => {
                 setWatchedMovies(movieArr)
             }
         }
->>>>>>> c3554ae9fa0fc777e83d751cdd941c2ea95f8444
         fetchMovie();
         fetchStreamProviders();
         fetchWatchedMovie();
