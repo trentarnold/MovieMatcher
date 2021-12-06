@@ -23,28 +23,7 @@ import { useEffect, useState } from 'react'
 import './filterForm.css'
 import { clearRoomName, selectRoomName } from '../redux/features/modals/roomNameSlice';
 import { selectUserName } from '../redux/features/user/yourUserName';
-
-interface ActorResult {
-  adult?:boolean,
-  gender: number,
-  id: number,
-  known_for_department: string,
-  name:string,
-  popularity:number,
-  profile_path: string,
-}
-
-interface filterObject {
-  genres:string[],
-  avoidGenres:string[],
-  cast:string[],
-  providers:string[],
-}
-
-interface filterData {
-  username: string,
-  filter:filterObject
-}
+import {filterObject, filterData, ActorResult} from '../../../interfaces/filterFormInterface';
 
 
 const streamProviders = [{
@@ -113,6 +92,8 @@ const FilterForm = () => {
     const [western, setWestern] = useState<string>('na')
     const [filters, setFilters] = useState<filterData[]>([])
 
+    const [otherUserFilters, setOtherUserFilter] = useState<filterData>()
+
     const [genres, setGenres] = useState<string[]>([]);
     const [avoidGenres, setAvoidGenres] = useState<string[]>([]);
     const [cast, setCast] = useState<string[]>([]);
@@ -129,8 +110,19 @@ const FilterForm = () => {
     const handleSubmit = () => {
       const filterObject = {providers, genres, avoidGenres, cast}
       const username = loggedInUser
-      socket.emit('addFilter', room, username, filterObject)
-      handleClose()
+      if(!otherUserFilters){
+        socket.emit('addFilter', room, username, filterObject)
+        handleClose()
+      }
+      if(otherUserFilters){
+        const userFiltersData = {
+          username,
+          filter: filterObject
+        }
+        socket.emit('sendBothFilters', room, userFiltersData, otherUserFilters)
+        handleClose()
+      }
+
     }
 
     const handleAddToggle = (genreId: string) => {
@@ -196,31 +188,24 @@ const FilterForm = () => {
 
     useEffect(() => {
       if(open) {
-        onOpen()
-        setFilters([])
-        console.log('opened, filters cleared')
+        onOpen();
+        setFilters([]);
       }
     }, [open])
     
     useEffect (()=>{
-      console.log(filters)
-
-      if (filters[1] && filters[1].username === loggedInUser ) {
-        socket.emit('compareFilters', filters)
-        setFilters([]); 
-      }
-      
-      },[filters])
+      console.log(otherUserFilters)
+      },[otherUserFilters])
 
       useEffect(() =>{
-        socket.on('sendFilter', (filter:filterData) => {
-          if(filters.length > 2) {
-            const newFilters = filters;
-            newFilters.push(filter);
-            setFilters(newFilters);
+        socket.on('sendFilter', (username:string, filter:filterObject) => {
+          console.log('getting filter')
+          console.log(filter)
+          if(username != loggedInUser) {
+            setOtherUserFilter({username, filter})
           }
         })
-      });
+      }, []);
 
     useEffect(() =>{
       async function searchActors () {

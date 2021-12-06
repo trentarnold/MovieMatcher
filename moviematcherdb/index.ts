@@ -26,7 +26,7 @@ interface ServerToClientEvents {
   acceptMovie: (movie:Movie) => void;
   bothUsersAccepted: (userName:string, movieId:string, room:string) => void;
   filter: (room: string, filter:filter) => void;
-  sendFilter:(filters:filterData) => void;
+  sendFilter:(username: string, filters:filter) => void;
 }
 
 interface ClientToServerEvents {
@@ -121,14 +121,18 @@ io.on("connection", (socket: Socket) => {
   socket.on('bothUsersAccepted', (room:string, userName, movieId) => {
     io.in(room).emit('bothUsersAccepted', userName, movieId, room)
   })
+
   socket.on('addFilter', (room:string, username:string, filter:filter) => {
-    console.log(filter)
-    io.in(room).emit('sendFilter', {username, filter})
+    
+    io.in(room).emit('sendFilter', username, filter)
   })
-  socket.on('compareFilters', (room:string, filters: filterData[]) => {
-    console.log(room)
-    console.log(filters)
+
+  socket.on('sendBothFilters', (room:string, userFilterObject:filterData, otherUserFilterObject:filterData) => {
+    console.log(userFilterObject);
+    console.log(otherUserFilterObject);
   })
+
+
 });
 
 

@@ -29,7 +29,10 @@ import { setRatings } from './redux/features/user/ratingsSlice';
 import { selectMovieFilter, turnOnMovieFilter } from './redux/features/modals/movieFilterSlice';
 import FilterForm from './forms/filterForm';
 import { setActivities } from './redux/features/user/activitiesSlice';
-import { setUserName } from './redux/features/user/yourUserName'
+import { setUserName } from './redux/features/user/yourUserName';
+import {socket} from './socket'
+import {filterData} from '../../interfaces/filterFormInterface';
+
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
@@ -59,22 +62,21 @@ function App() {
     if(accessToken) {
       const getYourUserInfo = async() => {
         let yourUserInfo =  await ServerApiService.getUser(accessToken);
-        socketRef.current = io('http://localhost:3001',  { transports : ['websocket'] });  
-        socketRef.current.emit('login',  yourUserInfo.username);
-        socketRef.current.on('loggedInUsers', (loggedInUsers:string[]) => {
+        socket.emit('login',  yourUserInfo.username);
+        socket.on('loggedInUsers', (loggedInUsers:string[]) => {
           dispatch(setLoggedInUser(loggedInUsers));
         })
-        socketRef.current.on('invite', (room:string, otherUserName:string, username ) => {
+        socket.on('invite', (room:string, otherUserName:string, username ) => {
           const openToast = () => toastRef.current = toast(<InviteToast room={room} toastRef = {toastRef.current} otherUserName={username}/>)
             openToast();
         })
-        socketRef.current.on('denied', (room:string) => {
+        socket.on('denied', (room:string) => {
           toast('You got denied bitch')
         })
-        socketRef.current.on('accepted', (room:string) => {
+        socket.on('accepted', (room:string) => {
           navigate(`/movieMatch/${room}`)
         })
-        dispatch(setSocketRef(socketRef.current))
+        dispatch(setSocketRef(socket))
       }
       getYourUserInfo()
     }
