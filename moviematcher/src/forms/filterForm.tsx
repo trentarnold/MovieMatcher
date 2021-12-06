@@ -101,7 +101,7 @@ const FilterForm = () => {
     const [providers, setProviders] = useState<string[]>([]);
     const [query, setQuery] = useState<string>('')
     const [queryResults, setQueryResults] = useState<ActorResult[]>([])
- 
+    console.log('genres', genres);
     const handleClose = () => {
         dispatch(turnOffMovieFilter())
         onClose();
@@ -159,18 +159,32 @@ const FilterForm = () => {
         setProviders(providers.filter(provider => provider !== providerId));
       }
     };
-
-    const handleChange = (value:string, callBackString:string, id: string) => {
+    const handleChange = (value:string, callBackString:string, id: string, sent:boolean) => {
       const setState = eval(callBackString);
       setState(value);
       if (value === '+') {
         handleAddToggle(id);
+        if (!sent) {
+          socket.emit('handleAddToggle', value, callBackString, id, room);
+        }
       } else if (value === '-') {
         handleRemoveToggle(id);
+        if(!sent) {
+          socket.emit('handleRemoveToggle', value, callBackString, id, room);
+        }
       } else {
         handleNeutralToggle(id);
+        if(!sent) {
+          socket.emit('handleResetToggle', value, callBackString, id, room);
+        }
       }
     }
+    // socket.on('handleRemoveToggle', (value, callBackString, id, room) => {
+    //   socket.to(room).emit('handleRemoveToggle', value, callBackString, id);
+    // })
+    // socket.on('handleResetToggle', (value, callBackString, id, room) => {
+    //   socket.to(room).emit('handleResetToggle', value, callBackString, id);
+    // })
 
     const handleQueryChange = (e:React.ChangeEvent<HTMLInputElement>) => {
       setQuery(e.currentTarget.value);
@@ -192,7 +206,9 @@ const FilterForm = () => {
         setFilters([]);
       }
     }, [open])
-    
+    // useEffect(() => {
+    //   console.log(genres);
+    // }, genres)
     useEffect (()=>{
       console.log(otherUserFilters)
       },[otherUserFilters])
@@ -204,6 +220,18 @@ const FilterForm = () => {
                   if(username != loggedInUser) {
                     setOtherUserFilter({username, filter})
                   }
+                })
+                socket.on('handleAddToggle', (value, callBackString, id) => {
+                  console.log(id, 'handleAddToggle')
+                  handleChange(value, callBackString, id, true);
+                })
+                socket.on('handleResetToggle', (value, callBackString, id) => {
+                  console.log(id, 'handleAddToggle')
+                  handleChange(value, callBackString, id, true);
+                })
+                socket.on('handleRemoveToggle', (value, callBackString, id) => {
+                  console.log(id, 'handleAddToggle')
+                  handleChange(value, callBackString, id, true);
                 })
               }, []);
 
@@ -242,7 +270,7 @@ const FilterForm = () => {
                           Action
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setAction', '28')
+                        handleChange(value, 'setAction', '28', false)
                       }} value={action} id="action">
                         <Stack direction='row'>
                           <Radio size='sm'  colorScheme='red' value='-'></Radio>
@@ -255,7 +283,7 @@ const FilterForm = () => {
                           Adventure
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setAdventure', '12')
+                        handleChange(value, 'setAdventure', '12', false)
                       }} value={adventure} id="adventure">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -268,7 +296,7 @@ const FilterForm = () => {
                           Animation
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setAnimation', '16')
+                        handleChange(value, 'setAnimation', '16', false)
                       }} value={animation} id="animation">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -281,7 +309,7 @@ const FilterForm = () => {
                           Comedy
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setComedy', '35')
+                        handleChange(value, 'setComedy', '35', false)
                       }} value={comedy} id="comedy">
                       <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -293,7 +321,7 @@ const FilterForm = () => {
                           Crime
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setCrime', '80')
+                        handleChange(value, 'setCrime', '80', false)
                       }} value={crime} id="crime">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -306,7 +334,7 @@ const FilterForm = () => {
                           Documentary
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setDocumentary', '99')
+                        handleChange(value, 'setDocumentary', '99', false)
                       }} value={documentary} id="documentary">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -322,7 +350,7 @@ const FilterForm = () => {
                           Drama
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setDrama', '18')
+                        handleChange(value, 'setDrama', '18', false)
                       }} value={drama} id="drama">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -335,7 +363,7 @@ const FilterForm = () => {
                           Family
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setFamily', '10751')
+                        handleChange(value, 'setFamily', '10751', false)
                       }} value={family} id="family">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -348,7 +376,7 @@ const FilterForm = () => {
                           Fantasy
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setFantasy', '14')
+                        handleChange(value, 'setFantasy', '14', false)
                       }} value={fantasy} id="fantasy">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -361,7 +389,7 @@ const FilterForm = () => {
                           History
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setHistory', '36')
+                        handleChange(value, 'setHistory', '36', false)
                       }} value={history} id="history">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -374,7 +402,7 @@ const FilterForm = () => {
                           Horror
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setHorror', '27')
+                        handleChange(value, 'setHorror', '27', false)
                       }} value={horror} id="horror">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -387,7 +415,7 @@ const FilterForm = () => {
                           Music
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setMusic', '10402')
+                        handleChange(value, 'setMusic', '10402', false)
                       }} value={music} id="music">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -403,7 +431,7 @@ const FilterForm = () => {
                           Mystery
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setMystery', '9648')
+                        handleChange(value, 'setMystery', '9648', false)
                       }} value={mystery} id="mystery">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -416,7 +444,7 @@ const FilterForm = () => {
                           Romance
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setRomance', '10749')
+                        handleChange(value, 'setRomance', '10749', false)
                       }} value={romance} id="romance">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -429,7 +457,7 @@ const FilterForm = () => {
                           Sci-Fi
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setSciFi', '878')
+                        handleChange(value, 'setSciFi', '878', false)
                       }} value={sciFi} id="sciFi">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -442,7 +470,7 @@ const FilterForm = () => {
                           Thriller
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setThriller', '53')
+                        handleChange(value, 'setThriller', '53', false)
                       }} value={thriller} id="thriller">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -455,7 +483,7 @@ const FilterForm = () => {
                           War
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setWar', '10752')
+                        handleChange(value, 'setWar', '10752', false)
                       }} value={war} id="war">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
@@ -468,7 +496,7 @@ const FilterForm = () => {
                           Western
                       </FormLabel>
                       <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setWestern', '37')
+                        handleChange(value, 'setWestern', '37', false)
                       }} value={western} id="western">
                         <Stack direction='row'>
                           <Radio size='sm' colorScheme='red' value='-'></Radio>
