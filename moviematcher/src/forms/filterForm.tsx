@@ -24,7 +24,7 @@ import './filterForm.css'
 import { clearRoomName, selectRoomName } from '../redux/features/modals/roomNameSlice';
 import { selectUserName } from '../redux/features/user/yourUserName';
 import {filterObject, filterData, ActorResult} from '../../../interfaces/filterFormInterface';
-
+import ThreeWayToggle from './filter-components/three-way-toggle';
 
 const streamProviders = [{
     display_priority: 1,
@@ -63,6 +63,10 @@ const streamProviders = [{
     "provider_id": 15
   },
 ]
+
+const genres = {
+  
+}
 
 const FilterForm = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -189,7 +193,7 @@ const FilterForm = () => {
     useEffect(() => {
       if(open) {
         onOpen();
-        setFilters([]);
+        setOtherUserFilter(undefined);
       }
     }, [open])
     
@@ -237,246 +241,30 @@ const FilterForm = () => {
                   <Flex  justifyContent="center"> {/* lmfao */}
                     {/* maybe map these from an array instead. It'd be harder to control the styling for it */}
                     <Flex flexDirection="column" tm='0' alignItems="center">
-            
-                      <FormLabel htmlFor='action' size='sm' mb='0'>
-                          Action
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setAction', '28')
-                      }} value={action} id="action">
-                        <Stack direction='row'>
-                          <Radio size='sm'  colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-
-                      <FormLabel htmlFor='adventure' size='sm' mb='0'>
-                          Adventure
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setAdventure', '12')
-                      }} value={adventure} id="adventure">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='animation' size='sm' mb='0'>
-                          Animation
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setAnimation', '16')
-                      }} value={animation} id="animation">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='comedy' size='sm' mb='0'>
-                          Comedy
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setComedy', '35')
-                      }} value={comedy} id="comedy">
-                      <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      <FormLabel htmlFor='crime' size='sm' mb='0'>
-                          Crime
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setCrime', '80')
-                      }} value={crime} id="crime">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='documentary' size='sm' mb='0'>
-                          Documentary
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setDocumentary', '99')
-                      }} value={documentary} id="documentary">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Action' genreId='28' value={action}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Adventure' genreId='12' value={adventure}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Animation' genreId='16' value={animation}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Comedy' genreId='35' value={comedy}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Crime' genreId='80' value={crime}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Documentary' genreId='99' value={documentary}/>
                     </Flex>
 
                     <Flex flexDirection="column" alignItems="center">
-                      <FormLabel htmlFor='drama' size='sm' mb='0'>
-                          Drama
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setDrama', '18')
-                      }} value={drama} id="drama">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='family' size='sm' mb='0'>
-                          Family
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setFamily', '10751')
-                      }} value={family} id="family">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='fantasy' size='sm' mb='0'>
-                          Fantasy
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setFantasy', '14')
-                      }} value={fantasy} id="fantasy">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='history' size='sm' mb='0'>
-                          History
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setHistory', '36')
-                      }} value={history} id="history">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='horror' size='sm' mb='0'>
-                          Horror
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setHorror', '27')
-                      }} value={horror} id="horror">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='music' size='sm' mb='0'>
-                          Music
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setMusic', '10402')
-                      }} value={music} id="music">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Drama' genreId='18' value={drama}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Family' genreId='10751' value={family}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Fantasy' genreId='14' value={fantasy}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='History' genreId='36' value={history}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Horror' genreId='27' value={horror}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Music' genreId='10402' value={music}/>
                     </Flex>
                      
                     <Flex flexDirection="column" alignItems="center">
-                      <FormLabel htmlFor='mystery' size='sm' mb='0'>
-                          Mystery
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setMystery', '9648')
-                      }} value={mystery} id="mystery">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='romance' size='sm' mb='0'>
-                          Romance
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setRomance', '10749')
-                      }} value={romance} id="romance">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='sciFi' size='sm' mb='0'>
-                          Sci-Fi
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setSciFi', '878')
-                      }} value={sciFi} id="sciFi">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='thriller' size='sm' mb='0'>
-                          Thriller
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setThriller', '53')
-                      }} value={thriller} id="thriller">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      
-                      <FormLabel htmlFor='war' size='sm' mb='0'>
-                          War
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setWar', '10752')
-                      }} value={war} id="war">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      <>
-                      <FormLabel htmlFor='western' size='sm' mb='0'>
-                          Western
-                      </FormLabel>
-                      <RadioGroup onChange={(value)=> {
-                        handleChange(value, 'setWestern', '37')
-                      }} value={western} id="western">
-                        <Stack direction='row'>
-                          <Radio size='sm' colorScheme='red' value='-'></Radio>
-                          <Radio size='sm' value='na'defaultChecked={true}></Radio>
-                          <Radio size='sm' colorScheme='green' value='+'></Radio>
-                        </Stack>
-                      </RadioGroup>
-                      </>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Mystery' genreId='9648' value={mystery}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Romance' genreId='10749' value={romance}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='SciFi' genreId='878' value={sciFi}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Thriller' genreId='53' value={thriller}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='War' genreId='10752' value={war}/>
+                      <ThreeWayToggle onChangeFunc={handleChange} genre='Western' genreId='37' value={western}/>
                     </Flex>
                     
                 </Flex>{/* rows of genre toggles*/}
