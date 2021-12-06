@@ -79,13 +79,14 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={persistStorage}>
     <SocketContext.Provider value={socket}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ChakraProvider>
-          <BrowserRouter >
-            <App />
-          </BrowserRouter>
-        </ChakraProvider>
-      </PersistGate>
+        <PersistGate loading={null} persistor={persistor}>
+          <ChakraProvider>
+            <BrowserRouter >
+              <App />
+            </BrowserRouter>
+          </ChakraProvider>
+        </PersistGate>
+      </SocketContext.Provider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

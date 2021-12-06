@@ -4,7 +4,7 @@ import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
 import { Movie } from '../../../../interfaces/MovieInterface';
 import { useParams } from 'react-router';
 import { Button } from '@chakra-ui/button';
-import { moviePlaceholder } from '../../moviePlaceholder';
+import { moviePlaceholder } from '../../MoviePlaceholder';
 import './MovieMatch.css'
 import MovieRatingDetails from './MovieRatingDetails/MovieRatingDetails';
 import MovieThumb from '../movie-list/movie-thumb/movie-thumb';
@@ -31,7 +31,7 @@ const MovieMatch = () => {
   const [titles, setTitles] = useState<string[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
+
   useEffect(()=>{
     if (room) {dispatch(setRoomName(room))
     dispatch(turnOnMovieFilter())
@@ -76,7 +76,7 @@ const MovieMatch = () => {
       setCurrentMovie(newList[0]);
     }
   }
-  
+
   //acceptedMovies.filter(movie => movie.title === currentMovie.title).length > 0
 
   const handleAccept = () => {
@@ -96,7 +96,7 @@ const MovieMatch = () => {
     if(!bothAccept) {
       socket.emit('otherUserAccepted', room, userName)
     }else {
-      socket.emit('bothUsersAccepted', room) 
+      socket.emit('bothUsersAccepted', room)
     }
   }
   const declineWatchMovie = () => {
@@ -111,19 +111,19 @@ const MovieMatch = () => {
 
   return (
     <div className="movie-match-container">
-      {currentMovie && 
+      {currentMovie &&
       <div>
         <MovieRatingDetails currentMovie = {currentMovie} handleAccept = {handleAccept} handleDeny = {handleDeny}/>
         <div className="movie-match-buttons">
           <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover' onClick={handleAccept}>
-            <div className='movie-rating-button'> 
-              <FaThumbsUp color='green' size='4em' /> 
+            <div className='movie-rating-button'>
+              <FaThumbsUp color='green' size='4em' />
               <span className='movie-rating-button-span'>I'll Watch it</span>
-            </div> 
+            </div>
           </Button>
           <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover'  onClick={handleDeny}>
-          <div className='movie-rating-button'> 
-            <FaThumbsDown color='red' size='4em'  /> 
+          <div className='movie-rating-button'>
+            <FaThumbsDown color='red' size='4em'  />
             <span className='movie-rating-button-span'>Not a chance</span>
           </div>
           </Button>

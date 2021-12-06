@@ -18,7 +18,7 @@ import { setFriendIds } from './redux/features/user/friendsIdSlice';
 import { User } from '../../interfaces/responses';
 import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
 import { setBlackListIds } from './redux/features/user/blackListids';
-import { socket } from './socket';
+import io, { Socket } from 'socket.io-client';
 import { setLoggedInUser} from './redux/features/user/loggedInUsers';
 import { setSocketRef, selectSocketRef } from './redux/features/socket/socketRefSlice';
 import { useNavigate } from 'react-router-dom';
@@ -29,10 +29,12 @@ import { setRatings } from './redux/features/user/ratingsSlice';
 import { selectMovieFilter, turnOnMovieFilter } from './redux/features/modals/movieFilterSlice';
 import FilterForm from './forms/filterForm';
 import { setActivities } from './redux/features/user/activitiesSlice';
+import { setUserName } from './redux/features/user/yourUserName'
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const navigate = useNavigate();
+  const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>();
   const toastRef = useRef<ReactText>('');
   interface ServerToClientEvents {
     noArg: () => void;
@@ -56,22 +58,23 @@ function App() {
 
     if(accessToken) {
       const getYourUserInfo = async() => {
-        let yourUserInfo =  await ServerApiService.getUser(accessToken); 
-        socket.emit('login',  yourUserInfo.username);
-        socket.on('loggedInUsers', (loggedInUsers:string[]) => {
+        let yourUserInfo =  await ServerApiService.getUser(accessToken);
+        socketRef.current = io('http://localhost:3001',  { transports : ['websocket'] });  
+        socketRef.current.emit('login',  yourUserInfo.username);
+        socketRef.current.on('loggedInUsers', (loggedInUsers:string[]) => {
           dispatch(setLoggedInUser(loggedInUsers));
         })
-        socket.on('invite', (room:string, otherUserName:string, username ) => {
+        socketRef.current.on('invite', (room:string, otherUserName:string, username ) => {
           const openToast = () => toastRef.current = toast(<InviteToast room={room} toastRef = {toastRef.current} otherUserName={username}/>)
             openToast();
         })
-        socket.on('denied', (room:string) => {
+        socketRef.current.on('denied', (room:string) => {
           toast('You got denied bitch')
         })
-        socket.on('accepted', (room:string) => {
+        socketRef.current.on('accepted', (room:string) => {
           navigate(`/movieMatch/${room}`)
         })
-        dispatch(setSocketRef(socket))
+        dispatch(setSocketRef(socketRef.current))
       }
       getYourUserInfo()
     }
@@ -117,7 +120,7 @@ function App() {
       fetchActivities();
       getUsername();
     }
-  }, [accessToken]);
+  }, [accessToken])
  
   return (
     <div className="App">
@@ -126,7 +129,6 @@ function App() {
       <Routes>
           <Route path='/' element={<Home /> } />
           <Route path='/recent' element={<RecentActivity />} />
-          <Route path='/recent/:movieId/:otherUserName' element={<RecentActivity />} />
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/movieDetails/:id' element={<MoviePage />} />
           <Route path='/actorDetails/:id' element = {<ActorPage />} />

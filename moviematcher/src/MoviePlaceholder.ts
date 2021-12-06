@@ -1,4 +1,4 @@
-import { Movie } from '../../interfaces/MovieInterface';
+import { Movie } from '../../interfaces/movieInterface';
 import { MovieDetailsInterface } from '../../interfaces/MovieDetails';
 export const moviePlaceholder:Movie = {
   adult: true,
@@ -22,12 +22,12 @@ const productionCompany = {
   name: 'string',
   origin_country: 'string'
   }
-  
+
   const productionCountries = {
     iso_3166_1: 'string',
     name: 'string'
   }
-  
+
   const spokenLanguages = {
   english_name: 'string',
   iso_639_1: 'string',
@@ -60,5 +60,3 @@ export const movieDetailsPlaceHolder:MovieDetailsInterface = {
   vote_average: 1,
   vote_count: 1
 }
-
-  

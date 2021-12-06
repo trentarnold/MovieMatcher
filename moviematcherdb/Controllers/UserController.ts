@@ -276,6 +276,7 @@ module.exports = {
   updateUser,
   getUser,
   getFriends,
+  getByUsername,
   createUser,
   loginUser,
   getAllPeople,
