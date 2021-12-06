@@ -131,7 +131,15 @@ io.on("connection", (socket: Socket) => {
     console.log(userFilterObject);
     console.log(otherUserFilterObject);
   })
-
+  socket.on('handleAddToggle', (value, callBackString, id, room) => {
+    socket.to(room).emit('handleAddToggle', value, callBackString, id);
+  })
+  socket.on('handleRemoveToggle', (value, callBackString, id, room) => {
+    socket.to(room).emit('handleRemoveToggle', value, callBackString, id);
+  })
+  socket.on('handleResetToggle', (value, callBackString, id, room) => {
+    socket.to(room).emit('handleResetToggle', value, callBackString, id);
+  })
 
 });
 
