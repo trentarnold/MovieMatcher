@@ -48,17 +48,6 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
       } else return `http://localhost:3001${user.profile_pic}`
     }
 
-    // useEffect(() => {
-    //   async function getUsername () {
-    //     const info = await ServerApiService.getUser(accessToken);
-    //     setUsername(info.username);
-    //   }
-    //   if(accessToken){
-    //       console.log('called')
-    //       getUsername();
-    //   }
-    // }, [accessToken]);
-
     return (
         <div className="friend-icon">
             <img src={determinePicture()} alt="profile"/>

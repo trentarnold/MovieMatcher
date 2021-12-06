@@ -45,7 +45,7 @@ const MovieMatch = () => {
       dispatch(turnOnMatchedMovie())
     })
     socket.on('declineWatchMovie', (userName:string) => {
-      toast(`${userName} no longer wants to watch this movie`)
+      toast(`${userName} no longer wants to watch ${matchedMovie.title}`)
       dispatch(turnOffMatchedMovie())
       setBothAccept(false);
     })

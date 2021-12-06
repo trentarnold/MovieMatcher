@@ -104,6 +104,7 @@ function App() {
     const fetchActivities = async() => {
       let activities = await ServerApiService.getActivities(accessToken);
       dispatch(setActivities(activities));
+    }
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
@@ -125,6 +126,7 @@ function App() {
       <Routes>
           <Route path='/' element={<Home /> } />
           <Route path='/recent' element={<RecentActivity />} />
+          <Route path='/recent/:movieId/:otherUserName' element={<RecentActivity />} />
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/movieDetails/:id' element={<MoviePage />} />
           <Route path='/actorDetails/:id' element = {<ActorPage />} />
