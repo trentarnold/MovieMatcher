@@ -288,4 +288,5 @@ module.exports = {
   deleteBlacklist,
   getBlacklist,
   getSpecificUser,
+  getByUsername
 }

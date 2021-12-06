@@ -377,6 +377,25 @@ export const ServerApiService = {
       console.log(err)
       return []
     }
+  },
+  getOtherUserByUserName: async(accessToken:string, otherUserName:string): Promise<User> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/getByUsername`, {
+        method: "POST",
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({username: otherUserName})
+      })
+      return await response.json();
+
+    }
+    catch (err) {
+      console.log(err)
+      return UserPlaceholder
+    }
   }
 }
 

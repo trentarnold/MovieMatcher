@@ -11,9 +11,12 @@ import { selectRatings, removeRating } from '../../../redux/features/user/rating
 import StarRatings from 'react-star-ratings';
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
 type Props = {
-  movie:MovieDetailsInterface
+  movie:MovieDetailsInterface,
+  setRatingModalToggle?:any,
+  setNewRating?: any,
+  flexColumn?: boolean,
 }
-const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
+const ButtonHolder: React.FC<Props>  = ({movie, setRatingModalToggle, setNewRating, flexColumn}) => {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
@@ -64,7 +67,7 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle}) => {
     dispatch(removeRating(movie.id))
   }
   return (
-    <div className='movie-details-button-holder' style={{marginTop: "1.5rem"}}>
+    <div className={`movie-details-button-holder ${flexColumn ? 'column': ''}`} style={{marginTop: "1.5rem"}}>
       <Button 
         style={{backgroundColor:'transparent'}}
         className='enlarge-on-hover'
