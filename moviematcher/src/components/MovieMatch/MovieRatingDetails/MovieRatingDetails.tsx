@@ -3,7 +3,7 @@ import './MovieRatingDetails.css'
 import APIService from '../../../services/APISevice'
 import { Movie } from '../../../../../interfaces/movieInterface'
 import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
-import { movieDetailsPlaceHolder } from '../../../MoviePlaceholder'
+import { movieDetailsPlaceHolder } from '../../../moviePlaceholder'
 import StarRatings from 'react-star-ratings';
 import ButtonHolder from '../../movie-page/movie-details/ButtonHolder'
 import { Button } from '@chakra-ui/react'

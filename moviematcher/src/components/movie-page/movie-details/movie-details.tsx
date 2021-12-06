@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router';
 import APIService from '../../../services/APISevice';
 import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
-import { movieDetailsPlaceHolder } from '../../../MoviePlaceholder';
+import { movieDetailsPlaceHolder } from '../../../moviePlaceholder';
 import StarRatings from 'react-star-ratings';
 import ActorsList from '../../actors-list/ActorsList';
 import ButtonHolder from './ButtonHolder';
@@ -144,8 +144,9 @@ const MovieDetails = () => {
                             })}
                             </div>
                         </div>
-                        {accessToken ? <ButtonHolder setRatingModalToggle={setRatingModalToggle} setNewRating={setNewRating} watchedMovies={watchedMovies} setWatchedMovies={setWatchedMovies} movie={currentMovie} /> : <div />}
-                        {watchedMovies.length
+                        {accessToken ? <ButtonHolder setRatingModalToggle={setRatingModalToggle} setNewRating={setNewRating} watchedMovies={watchedMovies} 
+                                        setWatchedMovies={setWatchedMovies} movie={currentMovie} flexColumn={false}/> : <div />}
+                        {watchedMovies.length 
                             ? <div className="last-watched-container">
                                 <div className="last-watched-details-header">You watched this on:</div>
                                 {sortWatchedMoviesByDate().map(watchedMovie => <div className="last-watched-details">{moment(watchedMovie.createdAt).format('dddd MMM D, YYYY')} {daysSince(watchedMovie.createdAt)}</div>)}

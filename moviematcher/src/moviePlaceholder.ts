@@ -14,8 +14,9 @@ export const moviePlaceholder:Movie = {
   title: 'String',
   video: true,
   vote_average: 2,
-  vote_count: 1
+  vote_count: 1,
 }
+
 const productionCompany = {
   id: 1,
   logo_path: 'string',

@@ -15,6 +15,7 @@ export interface Movie {
     vote_count: number
 }
 
+
 export interface Results {
   results: Movie[],
   page?: Number,
