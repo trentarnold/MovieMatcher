@@ -51,6 +51,20 @@ export async function getSpecificUser (req:Request, res:Response) {
     res.sendStatus(500)
   }
 }
+
+export async function getByUsername(req:Request, res:Response) {
+  try {
+    if(req.body) {
+      const user = await searchByUsername(req.body.username);
+      res.status(200).send(user);  //returns the queried user
+    } else {
+      res.status(500).send({message: "User not found"})
+    }
+  } catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500)
+  }
+}
 export async function getFriends (req:RequestInstance,res:Response) {
   try{
     if(req.user) {

@@ -19,7 +19,7 @@ export const activitiesSlice = createSlice({
     },
     clearActivities: (state) => {
       state.value = [];
-    },
+    }
   } 
 });
 

@@ -1,12 +1,12 @@
 import RecentActivity from '../recent-activity/recent-activity';
+import { useEffect } from 'react';
 import ProfileInfo from './profile-info/profile-info';
 import './profile-page.css'
-import { profilePlaceholder } from '../../profilePlaceholder';
 import BlackAndWatchList from '../BlackAndWatchList';
 const ProfilePage = () => {
-
-    //const[moviesToDisplay, setMoviesToDisplay] = useState<Movie>([])
-    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, )
 
     return (
         <div className='profile'>
