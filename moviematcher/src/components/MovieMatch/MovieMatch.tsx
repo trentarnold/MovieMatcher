@@ -4,7 +4,7 @@ import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
 import { Movie } from '../../../../interfaces/MovieInterface';
 import { useParams } from 'react-router';
 import { Button } from '@chakra-ui/button';
-import { moviePlaceholder } from '../../MoviePlaceholder';
+import { moviePlaceholder } from '../../moviePlaceholder';
 import './MovieMatch.css'
 import MovieRatingDetails from './MovieRatingDetails/MovieRatingDetails';
 import MovieThumb from '../movie-list/movie-thumb/movie-thumb';

@@ -1,4 +1,4 @@
-import { Movie } from '../../interfaces/movieInterface';
+import { Movie } from '../../interfaces/MovieInterface';
 import { MovieDetailsInterface } from '../../interfaces/MovieDetails';
 export const moviePlaceholder:Movie = {
   adult: true,
@@ -14,7 +14,7 @@ export const moviePlaceholder:Movie = {
   title: 'String',
   video: true,
   vote_average: 2,
-  vote_count: 1
+  vote_count: 1,
 }
 const productionCompany = {
   id: 1,

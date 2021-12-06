@@ -1,5 +1,5 @@
 import {Movie, Results} from '../../../interfaces/MovieInterface';
-import { movieDetailsPlaceHolder } from '../MoviePlaceholder';
+import { movieDetailsPlaceHolder } from '../moviePlaceholder';
 import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails'
 import { Observable } from 'redux';
 import { ActorListInterface } from '../../../interfaces/ActorList'
