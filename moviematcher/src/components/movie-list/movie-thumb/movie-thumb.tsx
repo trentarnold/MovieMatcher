@@ -82,7 +82,7 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
                       className='enlarge-on-hover'
                       onClick={handleBlackList}>
                     { blackListIds.includes(movie.id) ? <FaMinus color='red'/> : <FaSkull color='red' /> }
-                    <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
+                    <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Blacklist It'}</span>
               </Button>
             </div>  
             <img className='movie-thumb-img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt='movie poster' />   

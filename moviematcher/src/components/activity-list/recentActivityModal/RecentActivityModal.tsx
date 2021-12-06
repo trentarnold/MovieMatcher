@@ -73,7 +73,12 @@ const RecentActivityModal:React.FC<Props> = ({otherUserName, movieId}) => {
     dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
     setNewRating(0);
 }
-
+const handleAddToWatched = async() => {
+  let response = await ServerApiService.addWatchedMovie(accessToken, {movieID: Number(movieId), friendID: otherUserInformation.id});
+  const activities = await ServerApiService.getActivities(accessToken);
+  dispatch(setActivities(activities));
+  handleClose()
+}
   return (
     <DarkMode>
       <Modal isOpen={open} onClose={handleClose} isCentered >
@@ -88,7 +93,7 @@ const RecentActivityModal:React.FC<Props> = ({otherUserName, movieId}) => {
                 <ButtonHolder setRatingModalToggle={setRatingModalToggle} setNewRating={setNewRating} movie ={currentMovie} flexColumn={true}/>
               </ModalBody>
               <ModalFooter style ={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                <Button>Add to recently watched</Button>
+                <Button onClick={handleAddToWatched}>Add to recently watched</Button>
               </ModalFooter>
           </ModalContent>
         </ModalOverlay>

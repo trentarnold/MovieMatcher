@@ -19,12 +19,11 @@ const ActivityList = () => {
             dispatch(turnOnActivityListModal())
         }
     }, [])
-    
+
     const params = useParams();
     if (params.id) {
         activities = activities.filter(activity => (activity.uid === Number(params.id)) || (activity.friendid === Number(params.id)))
     }
-    console.log(params, "PARAMS")
 
     return (
         <div className="recent-activity">

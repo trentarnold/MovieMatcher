@@ -3,7 +3,6 @@ import { UserPlaceholder } from '../UserPlaceholder'
 import { FavoriteMovieInterface, MovieWithRatingInterface } from '../../../interfaces/favoriteMovieInterface'
 import { activityInterface } from '../../../interfaces/activityInterface';
 import axios from 'axios';
-import { access } from 'fs';
 const BASE_URL = 'http://localhost:3001'
 interface User {
   username:string,
@@ -395,6 +394,39 @@ export const ServerApiService = {
     catch (err) {
       console.log(err)
       return UserPlaceholder
+    }
+  },
+  getWatchedMovies: async(accessToken: string): Promise<FavoriteMovieInterface[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/watched`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      })
+      return await response.json();
+    } catch (err) {
+      console.log(err)
+      return []
+    }
+  },
+  addWatchedMovie: async(accessToken: string, movie: {movieID: number, friendID?: number,  createdDate?: Date}) => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/addWatched`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(movie)
+      })
+      return await response.json();
+    } catch (err) {
+      console.log(err)
+      return []
     }
   }
 }
