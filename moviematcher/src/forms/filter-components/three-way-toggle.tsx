@@ -19,7 +19,7 @@ import {
 interface Props {
     genre: string;
     genreId: string;
-    onChangeFunc: (value:string, callBackString:string, id: string, bool: boolean) => void;
+    onChangeFunc: (value:string, callBackString:string, id: string, sent: boolean) => void;
     value:string;
 }
 
@@ -31,7 +31,7 @@ const ThreeWayToggle:React.FC<Props> = ({genre, genreId, onChangeFunc, value}) =
                 {genre}
             </FormLabel>
             <RadioGroup onChange={(val)=> {
-                onChangeFunc(val, `set${genre}`, genreId, true)
+                onChangeFunc(val, `set${genre}`, genreId, false)
               }} value={value} id={genre}>
               <Stack direction='row'>
                 <Radio size='sm'  colorScheme='red' value='-'></Radio>
