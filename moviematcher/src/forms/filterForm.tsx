@@ -101,7 +101,6 @@ const FilterForm = () => {
     const [providers, setProviders] = useState<string[]>([]);
     const [query, setQuery] = useState<string>('')
     const [queryResults, setQueryResults] = useState<ActorResult[]>([])
-    console.log('genres', genres);
     const handleClose = () => {
         dispatch(turnOffMovieFilter())
         onClose();
