@@ -213,14 +213,17 @@ const FilterForm = () => {
       },[filters])
 
       useEffect(() =>{
-        socket.on('sendFilter', (filter:filterData) => {
+        console.log(socket)
+        socket.on('sendFilter', (userName:string, filter:any) => {
+          console.log('filters.......', filter)
+          console.log('hello how are you?')
           if(filters.length > 2) {
             const newFilters = filters;
             newFilters.push(filter);
             setFilters(newFilters);
           }
         })
-      });
+      }, []);
 
     useEffect(() =>{
       async function searchActors () {
