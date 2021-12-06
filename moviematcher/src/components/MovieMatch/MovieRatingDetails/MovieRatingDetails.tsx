@@ -3,7 +3,7 @@ import './MovieRatingDetails.css'
 import APIService from '../../../services/APISevice'
 import { Movie } from '../../../../../interfaces/MovieInterface'
 import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
-import { movieDetailsPlaceHolder } from '../../../moviePlaceholder'
+import { movieDetailsPlaceHolder } from '../../../MoviePlaceholder'
 import StarRatings from 'react-star-ratings';
 import ButtonHolder from '../../movie-page/movie-details/ButtonHolder'
 import { Button } from '@chakra-ui/react'
@@ -27,11 +27,11 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
       }
     }
     async function fetchStreamProviders () {
-      const fetchedStreamProviders = await APIService.getStreamProviders(currentMovie.id);  
+      const fetchedStreamProviders = await APIService.getStreamProviders(currentMovie.id);
       if(!isCancelled && fetchedStreamProviders.US) {
           setStreamProviders(fetchedStreamProviders.US.flatrate);
       }
-   } 
+   }
     getMovieDetails()
     fetchStreamProviders()
     return () => {
@@ -46,8 +46,8 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
       <div className='movie-details-container'>
             <div className='movie-details-information-container'>
                 <div className ='movie-details-title-container'>
-                <div className='movie-details-title'>{currentMovie.title}</div>            
-                <StarRatings 
+                <div className='movie-details-title'>{currentMovie.title}</div>
+                <StarRatings
                     rating={reduceToFiveStarRating(currentMovie.vote_average)}
                     starDimension="2rem"
                     starSpacing="1px"
@@ -71,20 +71,20 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
                 </>
                 }
                 <div className='movie-details-production-company'>
-                    <div className='movie-details-company-logo-container'> 
+                    <div className='movie-details-company-logo-container'>
                     {movieDetails.production_companies.map((company, index) => {
                         return (
-                            <div> 
-                                {company.logo_path && index < 5? 
+                            <div>
+                                {company.logo_path && index < 5?
                                     <div key={company.id}>
                                     <img className ='movie-details-company-logo'src={`https://image.tmdb.org/t/p/w500${company.logo_path}`} alt="production company"/>
-                                    </div> 
+                                    </div>
                                     : ''
                                 }
                             </div>
                         )
                     })}
-                    </div> 
+                    </div>
                 </div>
                 <div className='movie-details-release-runtime'>
                     <div className='movie-details-release-date'> <span style={{color:'grey', fontStyle:'italic'}}> Released on:  </span>{currentMovie.release_date}</div>
