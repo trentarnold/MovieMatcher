@@ -105,7 +105,7 @@ const FilterForm = () => {
     const [providers, setProviders] = useState<string[]>([]);
     const [query, setQuery] = useState<string>('')
     const [queryResults, setQueryResults] = useState<ActorResult[]>([])
- 
+    console.log('genres', genres);
     const handleClose = () => {
         dispatch(turnOffMovieFilter())
         onClose();
@@ -163,18 +163,32 @@ const FilterForm = () => {
         setProviders(providers.filter(provider => provider !== providerId));
       }
     };
-
-    const handleChange = (value:string, callBackString:string, id: string) => {
+    const handleChange = (value:string, callBackString:string, id: string, sent:boolean) => {
       const setState = eval(callBackString);
       setState(value);
       if (value === '+') {
         handleAddToggle(id);
+        if (!sent) {
+          socket.emit('handleAddToggle', value, callBackString, id, room);
+        }
       } else if (value === '-') {
         handleRemoveToggle(id);
+        if(!sent) {
+          socket.emit('handleRemoveToggle', value, callBackString, id, room);
+        }
       } else {
         handleNeutralToggle(id);
+        if(!sent) {
+          socket.emit('handleResetToggle', value, callBackString, id, room);
+        }
       }
     }
+    // socket.on('handleRemoveToggle', (value, callBackString, id, room) => {
+    //   socket.to(room).emit('handleRemoveToggle', value, callBackString, id);
+    // })
+    // socket.on('handleResetToggle', (value, callBackString, id, room) => {
+    //   socket.to(room).emit('handleResetToggle', value, callBackString, id);
+    // })
 
     const handleQueryChange = (e:React.ChangeEvent<HTMLInputElement>) => {
       setQuery(e.currentTarget.value);
@@ -196,20 +210,34 @@ const FilterForm = () => {
         setOtherUserFilter(undefined);
       }
     }, [open])
-    
+    // useEffect(() => {
+    //   console.log(genres);
+    // }, genres)
     useEffect (()=>{
       console.log(otherUserFilters)
       },[otherUserFilters])
 
-      useEffect(() =>{
-        socket.on('sendFilter', (username:string, filter:filterObject) => {
-          console.log('getting filter')
-          console.log(filter)
-          if(username != loggedInUser) {
-            setOtherUserFilter({username, filter})
-          }
-        })
-      }, []);
+      useEffect(() => {
+                socket.on('sendFilter', (username:string, filter:filterObject) => {
+                  console.log('getting filter')
+                  console.log(filter)
+                  if(username != loggedInUser) {
+                    setOtherUserFilter({username, filter})
+                  }
+                })
+                socket.on('handleAddToggle', (value, callBackString, id) => {
+                  console.log(id, 'handleAddToggle')
+                  handleChange(value, callBackString, id, true);
+                })
+                socket.on('handleResetToggle', (value, callBackString, id) => {
+                  console.log(id, 'handleAddToggle')
+                  handleChange(value, callBackString, id, true);
+                })
+                socket.on('handleRemoveToggle', (value, callBackString, id) => {
+                  console.log(id, 'handleAddToggle')
+                  handleChange(value, callBackString, id, true);
+                })
+              }, []);
 
     useEffect(() =>{
       async function searchActors () {
