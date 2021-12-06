@@ -1,4 +1,4 @@
-import { Movie } from '../../interfaces/movieInterface';
+import { Movie } from '../../interfaces/MovieInterface';
 import { MovieDetailsInterface } from '../../interfaces/MovieDetails';
 export const moviePlaceholder:Movie = {
   adult: true,
