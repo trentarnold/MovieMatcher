@@ -17,7 +17,7 @@ const APIService = {
         console.log(e)
     }
   },
-  
+
   getPopularMovies: async(): Promise<Results> => {
     try {
       const popularMovies = await fetch('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US')
@@ -90,7 +90,7 @@ const APIService = {
 
   getIndividualMovie: async(id:string | number): Promise<MovieDetailsInterface>  => {
     try {
-      const movie  = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);           
+      const movie  = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);
       return await movie.json()
     }catch(e) {
       console.log(e);
@@ -129,7 +129,7 @@ const APIService = {
     try {
       const actorDetails = await fetch(`https://api.themoviedb.org/3/person/${actorId}?api_key=66be68e2d9a8be7fee88a803b45d654b`)
       return await actorDetails.json();
-      
+
     }catch(e) {
       console.log(e)
       return actorDetailsPlaceholder;

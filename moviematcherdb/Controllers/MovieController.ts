@@ -51,7 +51,7 @@ async function movieWatchCount (req:RequestInstance,res:Response) {
   }
 }
 
-async function APIServiceHandler (req:RequestInstance,res:Response) {
+async function getFileredMovies (req:RequestInstance,res:Response) {
   try{
   let params = '';
 
@@ -73,7 +73,7 @@ async function APIServiceHandler (req:RequestInstance,res:Response) {
   let movies = {};
 
   if(params !== undefined) {
-    movies = await APIMovieService.getFileredMovies(params);
+    movies = await APIMovieService.getFilteredMoviesQuery(params);
   } else {
      movies = await APIMovieService.getMoviesBase();  //base case if no params/cast are passed
   }
@@ -85,9 +85,119 @@ catch (err:any) {
 }
 }
 
+async function getPopularMovies(req:RequestInstance,res:Response) {
+  try{
+    const movies = await APIMovieService.getPopularMovies();
+    // console.log(movies);
+    res.status(200).send(movies);
+  } catch (err: any) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
+}
+
+async function getUpcomingMovies(req:RequestInstance,res:Response) {
+  try{
+    const movies = await APIMovieService.getUpcomingMovies();
+    res.status(200).send(movies);
+  } catch (err: any) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
+}
+
+async function getActorsList(req:RequestInstance,res:Response) {
+  try {
+    let params;
+
+  if((req.originalUrl.split('=')[1]) !== undefined) {
+     params = (req.originalUrl.split('=')[1]);
+  }
+  params = Number(params);
+    const actors =  await APIMovieService.getActorListQuery(params);
+    res.status(200).send(actors);
+  } catch (err: any) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
+}
+
+async function getStreamProviders(req:RequestInstance,res:Response) {
+  try {
+    let params;
+
+  if((req.originalUrl.split('=')[1]) !== undefined) {
+     params = (req.originalUrl.split('=')[1]);
+  }
+  params = Number(params);
+    const Providers = await APIMovieService.getStreamProvidersQuery(params);
+    res.status(200).send(Providers);
+  } catch (err: any) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
+}
+
+async function getSimilarMovies(req:RequestInstance,res:Response) {
+  try {
+    let params;
+
+  if((req.originalUrl.split('=')[1]) !== undefined) {
+     params = (req.originalUrl.split('=')[1]);
+  }
+  params = Number(params);
+    const movies = await APIMovieService.getSimilarMoviesQuery(params);
+    res.status(200).send(movies);
+  } catch (err: any) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
+}
+
+async function getActorsDetails(req:RequestInstance,res:Response) {
+  try {
+    let params;
+
+  if((req.originalUrl.split('=')[1]) !== undefined) {
+     params = (req.originalUrl.split('=')[1]);
+  }
+   const actorId = Number(params);
+   const details =await APIMovieService.getActorDetailsQuery(actorId);
+   console.log(details, "  details")
+    res.status(200).send(details);
+  } catch (err: any) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
+}
+
+async function getCombinedCredits(req:RequestInstance,res:Response) {
+  try {
+    let params;
+
+  if((req.originalUrl.split('?')[1]) !== undefined) {
+     params = (req.originalUrl.split('?')[1]);
+  }
+  params = Number(params);
+    const Credits = APIMovieService.getActorDetailsQuery(params);
+    res.status(200).send(Credits);
+  } catch (err: any) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
+
+}
+
 module.exports = {
   getWatchedMovie,
   addWatchedMovie,
   movieWatchCount,
-  APIServiceHandler
+  getFileredMovies,
+  getPopularMovies,
+  getUpcomingMovies,
+  getActorsList,
+  getStreamProviders,
+  getSimilarMovies,
+  getActorsDetails,
+  getCombinedCredits
 }

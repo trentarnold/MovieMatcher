@@ -15,6 +15,7 @@ import MatchedMovieModal from './MatchedMovieModal/MatchedMovieModal';
 import { selectUserName } from '../../redux/features/user/yourUserName';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+import { setRoomName } from '../../redux/features/modals/roomNameSlice';
 
 const MovieMatch = () => {
   const { room } = useParams()
@@ -30,8 +31,11 @@ const MovieMatch = () => {
   const [titles, setTitles] = useState<string[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
+
   useEffect(()=>{
+    if (room) {dispatch(setRoomName(room))
+    dispatch(turnOnMovieFilter())
+    }
     socket.emit('join', room);
     socket.on('movies', ((movies: Movie[], room:string) => {
       const users = room.split('+');
@@ -63,7 +67,7 @@ const MovieMatch = () => {
       dispatch(turnOffMatchedMovie());
       setBothAccept(false);
     })
-
+    
   }, [])
 
   const handleDeny = () => {
@@ -74,7 +78,7 @@ const MovieMatch = () => {
       setCurrentMovie(newList[0]);
     }
   }
-  
+
   //acceptedMovies.filter(movie => movie.title === currentMovie.title).length > 0
 
   const handleAccept = () => {
@@ -103,21 +107,25 @@ const MovieMatch = () => {
     setBothAccept(false);
   }
 
+  const toggleFilter = () => {
+     
+  }
+
   return (
     <div className="movie-match-container">
-      {currentMovie && 
+      {currentMovie &&
       <div>
         <MovieRatingDetails currentMovie = {currentMovie} handleAccept = {handleAccept} handleDeny = {handleDeny}/>
         <div className="movie-match-buttons">
           <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover' onClick={handleAccept}>
-            <div className='movie-rating-button'> 
-              <FaThumbsUp color='green' size='4em' /> 
+            <div className='movie-rating-button'>
+              <FaThumbsUp color='green' size='4em' />
               <span className='movie-rating-button-span'>I'll Watch it</span>
-            </div> 
+            </div>
           </Button>
           <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover'  onClick={handleDeny}>
-          <div className='movie-rating-button'> 
-            <FaThumbsDown color='red' size='4em'  /> 
+          <div className='movie-rating-button'>
+            <FaThumbsDown color='red' size='4em'  />
             <span className='movie-rating-button-span'>Not a chance</span>
           </div>
           </Button>

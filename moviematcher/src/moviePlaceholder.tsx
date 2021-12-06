@@ -14,7 +14,7 @@ export const moviePlaceholder:Movie = {
   title: 'String',
   video: true,
   vote_average: 2,
-  vote_count: 1
+  vote_count: 1,
 }
 const productionCompany = {
   id: 1,
@@ -22,12 +22,12 @@ const productionCompany = {
   name: 'string',
   origin_country: 'string'
   }
-  
+
   const productionCountries = {
     iso_3166_1: 'string',
     name: 'string'
   }
-  
+
   const spokenLanguages = {
   english_name: 'string',
   iso_639_1: 'string',
@@ -60,5 +60,3 @@ export const movieDetailsPlaceHolder:MovieDetailsInterface = {
   vote_average: 1,
   vote_count: 1
 }
-
-  

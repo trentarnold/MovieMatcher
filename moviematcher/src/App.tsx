@@ -45,6 +45,7 @@ function App() {
     invite: (room:string, otherUserName:string, username:string) => void;
     accepted: (room:string) => void;
     denied: (room:string) => void;
+    applyFilter: (room:string, filters:{}) => void;
   }
   interface ClientToServerEvents {
     login: (username:string) => void;
@@ -119,7 +120,7 @@ function App() {
       fetchActivities();
       getUsername();
     }
-  }, [accessToken]);
+  }, [accessToken])
  
   return (
     <div className="App">
@@ -128,7 +129,6 @@ function App() {
       <Routes>
           <Route path='/' element={<Home /> } />
           <Route path='/recent' element={<RecentActivity />} />
-          <Route path='/recent/:movieId/:otherUserName' element={<RecentActivity />} />
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/movieDetails/:id' element={<MoviePage />} />
           <Route path='/actorDetails/:id' element = {<ActorPage />} />

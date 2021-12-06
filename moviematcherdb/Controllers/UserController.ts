@@ -276,6 +276,7 @@ module.exports = {
   updateUser,
   getUser,
   getFriends,
+  getByUsername,
   createUser,
   loginUser,
   getAllPeople,
@@ -288,5 +289,4 @@ module.exports = {
   deleteBlacklist,
   getBlacklist,
   getSpecificUser,
-  getByUsername
 }

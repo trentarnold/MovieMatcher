@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router';
 import APIService from '../../../services/APISevice';
 import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
-import { movieDetailsPlaceHolder, moviePlaceholder } from '../../../moviePlaceholder';
+import { movieDetailsPlaceHolder } from '../../../moviePlaceholder';
 import StarRatings from 'react-star-ratings';
 import ActorsList from '../../actors-list/ActorsList';
 import ButtonHolder from './ButtonHolder';
@@ -35,7 +35,7 @@ const MovieDetails = () => {
             }
         }
         async function fetchStreamProviders () {
-            const fetchedStreamProviders = await APIService.getStreamProviders(id);  
+            const fetchedStreamProviders = await APIService.getStreamProviders(id);
             if(!isCancelled && fetchedStreamProviders.US) {
                 setStreamProviders(fetchedStreamProviders.US.flatrate);
             }
@@ -64,7 +64,7 @@ const MovieDetails = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, )
-    
+
     const reduceToFiveStarRating = (averageVote:number):number => {
         return (averageVote / 2);
     }
@@ -91,18 +91,18 @@ const MovieDetails = () => {
     }
     return (
         <div style={{marginTop: "1.5rem"}}>
-            {ratingModalToggle ? <RateMovieModal 
-                rating={newRating} 
-                setNewRating={setNewRating} 
-                setRatingModalToggle={setRatingModalToggle} 
+            {ratingModalToggle ? <RateMovieModal
+                rating={newRating}
+                setNewRating={setNewRating}
+                setRatingModalToggle={setRatingModalToggle}
                 submitRating={handleRatingSubmit}
                 movie={currentMovie}
                 /> : <div />}
             <div className='movie-details-container'>
                     <div className='movie-details-information-container'>
                         <div className ='movie-details-title-container'>
-                        <div className='movie-details-title'>{currentMovie.title}</div>            
-                        <StarRatings 
+                        <div className='movie-details-title'>{currentMovie.title}</div>
+                        <StarRatings
                             rating={reduceToFiveStarRating(currentMovie.vote_average)}
                             starDimension="2rem"
                             starSpacing="1px"
@@ -114,7 +114,7 @@ const MovieDetails = () => {
                         <div className='movie-details-genres' style={{margin: "0.5rem 0"}}>
                                 {currentMovie.genres.map(genre => <div> {genre.name}</div>)}
                         </div>
-                        {streamProviders 
+                        {streamProviders
                             ? <div>
                                 <div style ={{textAlign:'center'}}>Stream On:</div>
                                 <div className='movie-details-stream-providers'>
@@ -129,20 +129,20 @@ const MovieDetails = () => {
                             <div className='movie-details-runtime'> <span style={{color:'grey', fontStyle:'italic'}}> Runtime: </span> {currentMovie.runtime} Minutes</div>
                         </div>
                         <div className='movie-details-production-company'>
-                            <div className='movie-details-company-logo-container'> 
+                            <div className='movie-details-company-logo-container'>
                             {currentMovie.production_companies.map((company, index) => {
                                 return (
-                                    <div> 
-                                        {company.logo_path && index < 5? 
+                                    <div>
+                                        {company.logo_path && index < 5?
                                             <div>
                                             <img className ='movie-details-company-logo'src={`https://image.tmdb.org/t/p/w500${company.logo_path}`} alt="production company"/>
-                                            </div> 
+                                            </div>
                                             : ''
                                         }
                                     </div>
                                 )
                             })}
-                            </div> 
+                            </div>
                         </div>
                         {accessToken ? <ButtonHolder setRatingModalToggle={setRatingModalToggle} setNewRating={setNewRating} watchedMovies={watchedMovies} 
                                         setWatchedMovies={setWatchedMovies} movie={currentMovie} flexColumn={false}/> : <div />}

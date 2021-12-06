@@ -16,6 +16,7 @@ import movieFilterReducer from '../features/modals/movieFilterSlice'
 import matchedMovieReduced from '../features/modals/matchedMovie'
 import userNameReducer from '../features/user/yourUserName'
 import activityListModalReducer from '../features/modals/activityListModal';
+import roomNameSlice from '../features/modals/roomNameSlice';
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -35,6 +36,7 @@ export const store = configureStore({
     matchedMovie: matchedMovieReduced,
     userName: userNameReducer,
     activityListModal: activityListModalReducer,
+    roomName:roomNameSlice
   },
 });
 
