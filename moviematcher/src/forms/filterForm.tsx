@@ -21,6 +21,7 @@ import { selectMovieFilter, turnOffMovieFilter } from '../redux/features/modals/
 import { selectSocketRef } from '../redux/features/socket/socketRefSlice';
 import { useEffect, useState } from 'react'
 import './filterForm.css'
+import { clearRoomName, selectRoomName } from '../redux/features/modals/roomNameSlice';
 
 interface ActorResult {
   adult?:boolean,
@@ -30,6 +31,14 @@ interface ActorResult {
   name:string,
   popularity:number,
   profile_path: string,
+}
+
+interface filterObject {
+  genres:string[],
+  avoidGenres:string[],
+  cast:string[],
+  providers:string[],
+  castIds: number[],
 }
 
 const streamProviders = [{
@@ -72,6 +81,7 @@ const streamProviders = [{
 
 const FilterForm = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const room = useAppSelector(selectRoomName);
     const open = useAppSelector(selectMovieFilter)
     const socket = useAppSelector(selectSocketRef)
     const dispatch = useAppDispatch()
@@ -110,66 +120,62 @@ const FilterForm = () => {
     }
 
     const handleSubmit = () => {
-      console.log('providers')
-      console.log(providers)
-      console.log('genres')
-      console.log(genres)
-      console.log('avoided genres')
-      console.log(avoidGenres)
-      console.log('cast')
-      console.log(cast)
+      const filterObject = {providers, genres, avoidGenres, cast}
+      console.log(filterObject)
+      socket.emit('filter', room, filterObject)
       handleClose()
     }
 
     const handleAddToggle = (genreId: string) => {
       if(genres.indexOf(genreId) === -1) {
-        setGenres([...genres, genreId])
+        setGenres([...genres, genreId]);
       }
       if(avoidGenres.indexOf(genreId) !== -1) {
-        setAvoidGenres(avoidGenres.filter(genre => genre !== genreId))
+        setAvoidGenres(avoidGenres.filter(genre => genre !== genreId));
       }
+      
     }
 
     const handleRemoveToggle = (genreId: string) => {
       if(genres.indexOf(genreId) !== -1) {
-        setGenres(genres.filter(genre => genre !== genreId))
+        setGenres(genres.filter(genre => genre !== genreId));
       }
       if(avoidGenres.indexOf(genreId) === -1) {
-        setAvoidGenres([...avoidGenres, genreId])
+        setAvoidGenres([...avoidGenres, genreId]);
       }  
     }
 
     const handleNeutralToggle = (genreId: string) => {
       if(genres.indexOf(genreId) !== -1) {
-        setGenres(genres.filter(genre => genre !== genreId))
+        setGenres(genres.filter(genre => genre !== genreId));
       }
       if(avoidGenres.indexOf(genreId) !== -1) {
-        setAvoidGenres(avoidGenres.filter(genre => genre !== genreId))
+        setAvoidGenres(avoidGenres.filter(genre => genre !== genreId));
       }
     }
 
     const handleStreamingSwitch = (providerId:string) => {
       if(providers.indexOf(providerId) === -1) {
-        setProviders([...providers, providerId])
+        setProviders([...providers, providerId]);
       } else {
-        setProviders(providers.filter(provider => provider !== providerId))
+        setProviders(providers.filter(provider => provider !== providerId));
       }
     };
 
     const handleChange = (value:string, callBackString:string, id: string) => {
-      const setState = eval(callBackString)
-      setState(value)
+      const setState = eval(callBackString);
+      setState(value);
       if (value === '+') {
-        handleAddToggle(id)
+        handleAddToggle(id);
       } else if (value === '-') {
-        handleRemoveToggle(id)
+        handleRemoveToggle(id);
       } else {
-        handleNeutralToggle(id)
+        handleNeutralToggle(id);
       }
     }
 
     const handleQueryChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-      setQuery(e.currentTarget.value)
+      setQuery(e.currentTarget.value);
     }
 
     const handleActorSubmit = (query:string) => {
@@ -178,14 +184,17 @@ const FilterForm = () => {
     }
 
     const handleActorClick = (id:number, name: string) => {
-      handleActorSubmit(name)
-      setCastIds([...castIds, id])
+      handleActorSubmit(name);
+      setCastIds([...castIds, id]);
     }
 
     useEffect(() => {
-        if(open) {
-            onOpen()
-        }
+      if(open && socket) {
+        onOpen()
+        socket.on('applyFilter', (room:string, filter:filterObject) => {
+          console.log(filter)
+        })
+      }
     }, [open])
 
     useEffect(() =>{
@@ -198,14 +207,13 @@ const FilterForm = () => {
           console.log(e)
         }
       }
-
-
+      
       if (query.length > 1) {
         //replace this with function from api service
         searchActors()
-
       }
     }, [query])
+    
 
     return (
       <DarkMode>

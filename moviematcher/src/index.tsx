@@ -25,6 +25,7 @@ import movieFilterReducer, {MovieFilterState} from './redux/features/modals/movi
 import matchedMovieReducer, {MatchedMovieState} from './redux/features/modals/matchedMovie'
 import activitiesReducer, { activitiesState } from './redux/features/user/activitiesSlice';
 import userNameReducer, { UserNameState} from './redux/features/user/yourUserName'
+import  roomNameReducer, {roomNameState}  from './redux/features/modals/roomNameSlice';
 const persistConfig = {
   key: 'root',
   storage,
@@ -46,6 +47,7 @@ interface IAppState {
   activities: activitiesState;
   matchedMovie: MatchedMovieState;
   userName: UserNameState;
+  roomName: roomNameState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -64,6 +66,7 @@ const rootReducer = combineReducers<IAppState>({
   activities: activitiesReducer,
   matchedMovie: matchedMovieReducer,
   userName: userNameReducer,
+  roomName: roomNameReducer
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);

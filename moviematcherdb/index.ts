@@ -25,6 +25,8 @@ interface ServerToClientEvents {
   foundMutualMovie: (room:string, movie:Movie) => void;
   acceptMovie: (movie:Movie) => void;
   bothUsersAccepted: () => void;
+  filter: (room: string, filters: {}) => void;
+  applyFilter:(room: string, filters:{}) => void;
 }
 
 interface ClientToServerEvents {
@@ -105,6 +107,15 @@ io.on("connection", (socket: Socket) => {
   })
   socket.on('bothUsersAccepted', (room:string) => {
     io.in(room).emit('bothUsersAccepted')
+  })
+  socket.on('filter', (room:string, filters:{
+    providers:string[],
+    genres:string[],
+    avoidGenres:string[],
+    cast:string[],
+  }) => {
+    console.log(filters)
+    io.in(room).emit('applyFilter', room, filters)
   })
 });
 

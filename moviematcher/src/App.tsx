@@ -45,6 +45,7 @@ function App() {
     invite: (room:string, otherUserName:string, username:string) => void;
     accepted: (room:string) => void;
     denied: (room:string) => void;
+    applyFilter: (room:string, filters:{}) => void;
   }
   interface ClientToServerEvents {
     login: (username:string) => void;

@@ -15,6 +15,7 @@ import MatchedMovieModal from './MatchedMovieModal/MatchedMovieModal';
 import { selectUserName } from '../../redux/features/user/yourUserName';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+import { setRoomName } from '../../redux/features/modals/roomNameSlice';
 
 const MovieMatch = () => {
   const { room } = useParams()
@@ -32,6 +33,9 @@ const MovieMatch = () => {
   const navigate = useNavigate();
   
   useEffect(()=>{
+    if (room) {dispatch(setRoomName(room))
+    dispatch(turnOnMovieFilter())
+    }
     socket.emit('join', room);
     socket.on('movies', ((movies: Movie[], room:string) => {
       const users = room.split('+');
@@ -61,7 +65,7 @@ const MovieMatch = () => {
       dispatch(turnOffMatchedMovie());
       setBothAccept(false);
     })
-
+    
   }, [])
 
   const handleDeny = () => {
@@ -99,6 +103,10 @@ const MovieMatch = () => {
     dispatch(turnOffMatchedMovie());
     socket.emit('declineWatchMovie', userName, room)
     setBothAccept(false);
+  }
+
+  const toggleFilter = () => {
+     
   }
 
   return (
