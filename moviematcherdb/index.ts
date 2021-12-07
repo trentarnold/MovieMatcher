@@ -22,7 +22,7 @@ interface ServerToClientEvents {
   loggedInUsers: (loggedInUsers:string[]) => void;
   invite: (room:string, otherUserName:string, username:string) => void;
   accepted: (room: string) => void;
-  movies: (movie: Movie[], room:string) => void;
+  movies: (movie: any[], room:string) => void;
   foundMutualMovie: (room:string, movie:Movie) => void;
   acceptMovie: (movie:Movie) => void;
   bothUsersAccepted: (userName:string, movieId:string, room:string) => void;
@@ -115,11 +115,34 @@ io.on("connection", (socket: Socket) => {
   socket.on('join', async (filters, room) => {
     const withGenres = `&with_genres=${filters.genres}`;
     const withoutGenres = `&without_genres=${filters.avoidGenres}`;
-    const cast = `&with_cast=${filters.cast.map((actor:any) =>actor.id)}`;
-    const watchProviders = `&with_watch_providers=${filters.providers}`;
-    const response = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + watchProviders);
-    const movieArray = response.results;
-    io.in(room).emit('movies', movieArray, room)
+    const cast = `&with_cast=${filters.cast.map((actor:any, index:number) =>{
+        return actor.id
+    })}`;
+    const movies = await Promise.all(
+    filters.providers.map( async(provider:number) => {
+      const response = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + `&with_watch_providers=${provider}`);
+      return response.results;
+    }))
+    const newMovies = movies.flat();
+    const filteredMovies = newMovies.filter((movie:any, index, self:any) => 
+        index === self.findIndex((selfMovie:any) => selfMovie.id === movie.id)
+    )
+  //   const filteredActorList = actorListIDS.cast.filter((actor, index, self) =>
+  //   index === self.findIndex((selfActor) => selfActor.id === actor.id)
+  // );
+    // const watchProviders = `&with_watch_providers=${filters.providers.join(',')}`;
+    // Promise.all(
+    //   products.map(async (product) => {
+    //     const productId = await getProductId(product);
+    //     console.log(productId);
+  
+    //     const capitalizedId = await capitalizeId(productId)
+    //     console.log(capitalizedId);
+    //   })
+    // )
+    // const movieArray = response.results;
+    // console.log(filteredMovies.flat());
+    io.in(room).emit('movies', filteredMovies.flat(), room)
     console.log('emitted movies')
   })
   socket.on('foundMutualMovie', (room:string, movie:Movie)=>{

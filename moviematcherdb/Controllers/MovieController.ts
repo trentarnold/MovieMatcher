@@ -58,7 +58,7 @@ async function getFileredMovies (req:RequestInstance,res:Response) {
   if((req.originalUrl.split('?')[1]) !== undefined) {
      params = '&' + (req.originalUrl.split('?')[1]);
   }
-
+  console.log(params);
   if(req.body.cast){
     let cast = req.body.cast;
     let castIDStr = '';
