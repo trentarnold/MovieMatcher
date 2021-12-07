@@ -21,7 +21,7 @@ import { selectCreateAccount, turnOffCreateAccount } from '../redux/features/mod
 import { useAppSelector, useAppDispatch } from '../redux/app/hooks';
 import { turnOnLogin } from '../redux/features/modals/loginSlice';
 import { ServerApiService } from '../services/ServerApi';
-import { setToken, selectAuth } from '../redux/features/modals/authSlice';
+import { setToken } from '../redux/features/modals/authSlice';
 import { setUserId } from '../redux/features/user/userIdSlice';
 
 const CreateAccountForm = () => {

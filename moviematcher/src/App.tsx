@@ -18,7 +18,6 @@ import { setFriendIds } from './redux/features/user/friendsIdSlice';
 import { IUser } from '../../interfaces/responses';
 import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
 import { setBlackListIds } from './redux/features/user/blackListids';
-import { Socket } from 'socket.io-client';
 import { setLoggedInUser} from './redux/features/user/loggedInUsers';
 import { setSocketRef } from './redux/features/socket/socketRefSlice';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +50,7 @@ function App() {
             openToast();
         })
         socket.on('denied', (room:string) => {
-          toast('You got denied bitch')
+          toast('Your request got denied')
         })
         socket.on('accepted', (room:string) => {
           navigate(`/movieMatch/${room}`)

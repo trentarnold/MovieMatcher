@@ -1,6 +1,6 @@
 import React from 'react'
 import './movie-thumb.css'
-import { Movie } from '../../../../../interfaces/movieInterface'
+import { IMovie } from '../../../../../interfaces/movieInterface'
 import {Button} from '@chakra-ui/react'
 import StarRatings from 'react-star-ratings';
 import {  useNavigate } from "react-router-dom";
@@ -10,11 +10,11 @@ import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } from '../../../redux/features/user/watchListIds'
 import { selectBlackListIds, setBlackListIds, removeBlackListIds } from '../../../redux/features/user/blackListids';
-import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
+import { IMovieDetails } from '../../../../../interfaces/MovieDetails'
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
 
 type Props = {
-  movie:Movie | MovieDetailsInterface;
+  movie:IMovie | IMovieDetails;
 }
 const MovieThumb:React.FC<Props> = ({movie}) => {
   const navigate = useNavigate();

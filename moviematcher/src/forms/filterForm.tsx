@@ -162,7 +162,7 @@ const FilterForm = () => {
   };
 
   const handleChange = (value:string, callBackString:string, id: string, sent:boolean) => {
-    const setState = eval(callBackString);
+    const setState = eval(callBackString); //this is to avoid a typescript error, I'm lazy - marshal
     setState(value);
     if (value === '+') {
       handleAddToggle(id);

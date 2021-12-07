@@ -4,6 +4,7 @@ import { selectSocketRef } from '../../redux/features/socket/socketRefSlice'
 import { Button } from '@chakra-ui/button';
 import './invite-toast.css';
 import { toast } from 'react-toastify'
+
 type Props = {
     room: string,
     toastRef: ReactText,
