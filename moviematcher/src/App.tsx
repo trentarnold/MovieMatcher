@@ -28,7 +28,7 @@ import { setRatings } from './redux/features/user/ratingsSlice';
 import { setActivities } from './redux/features/user/activitiesSlice';
 import { setUserName } from './redux/features/user/yourUserName';
 import {socket} from './socket'
-import {filterData} from '../../interfaces/filterFormInterface';
+import {IFilterData} from '../../interfaces/filterFormInterface';
 import { setUserStreaming } from './redux/features/user/userStreaming';
 import StreamingServiceList from './components/streaming-services/StreamingServiceList';
 
@@ -113,9 +113,8 @@ function App() {
       <FriendsList />
       <Routes>
           <Route path='/' element={<Home /> } />
-          <Route path='/recent' element={<RecentActivity />} />
-          <Route path='/recent/:movieId/:otherUserName' element={<RecentActivity />} />
-          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/recent' element={<RecentActivity profile={false}/>} />
+          <Route path='/recent/:movieId/:otherUserName' element={<RecentActivity profile={false}/>} />
           <Route path='/movieDetails/:id' element={<MoviePage />} />
           <Route path='/actorDetails/:id' element = {<ActorPage />} />
           <Route path='/profile/:id' element = {<ProfilePage />} />

@@ -7,7 +7,7 @@ const fileUpload = require('express-fileupload');
 import { connectDB } from './models';
 import { Request, Response } from 'express';
 import { Server, Socket } from "socket.io";
-import { Movie } from '../interfaces/movieInterface';
+import { IMovie } from '../interfaces/movieInterface';
 import { APIMovieService } from './Services/APIMovieService';
 const { createServer } = require("http");
 const httpServer = createServer(app);
@@ -21,9 +21,9 @@ interface ServerToClientEvents {
   loggedInUsers: (loggedInUsers:string[]) => void;
   invite: (room:string, otherUserName:string, username:string) => void;
   accepted: (room: string) => void;
-  movies: (movie: Movie[], room:string) => void;
-  foundMutualMovie: (room:string, movie:Movie) => void;
-  acceptMovie: (movie:Movie) => void;
+  movies: (movie: IMovie[], room:string) => void;
+  foundMutualMovie: (room:string, movie:IMovie) => void;
+  acceptMovie: (movie:IMovie) => void;
   bothUsersAccepted: (userName:string, movieId:string, room:string) => void;
   filter: (room: string, filter:filter) => void;
   sendFilter:(username: string, filters:filter) => void;
@@ -121,10 +121,10 @@ io.on("connection", (socket: Socket) => {
     io.in(room).emit('movies', movieArray, room)
     console.log('emitted movies')
   })
-  socket.on('foundMutualMovie', (room:string, movie:Movie)=>{
+  socket.on('foundMutualMovie', (room:string, movie:IMovie)=>{
     io.in(room).emit('foundMutualMovie', room, movie)
   })
-  socket.on('acceptMovie', async(room:string, movie:Movie) =>{
+  socket.on('acceptMovie', async(room:string, movie:IMovie) =>{
     io.in(room).emit('acceptMovie', movie)
   })
   socket.on('otherUserAccepted', (room:string, userName:string)=> {
