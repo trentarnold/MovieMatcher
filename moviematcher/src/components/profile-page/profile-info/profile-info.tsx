@@ -8,6 +8,8 @@ import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { useParams } from "react-router-dom";
 import { selectUserId } from '../../../redux/features/user/userIdSlice';
 import { addFriendId, removeFriendId } from '../../../redux/features/user/friendsIdSlice';
+import { selectSocketRef } from '../../../redux/features/socket/socketRefSlice';
+import { selectUserName } from '../../../redux/features/user/yourUserName';
 
 
 const ProfileInfo= () => {
@@ -22,6 +24,8 @@ const ProfileInfo= () => {
   const userID = useAppSelector(selectUserId);
   const params = useParams();
   const dispatch = useAppDispatch();
+  const socket = useAppSelector(selectSocketRef);
+  const username = useAppSelector(selectUserName);
 
   function handleChange (e: React.FormEvent<HTMLInputElement>) {
     if (e.currentTarget.files) setPic(e.currentTarget.files[0]);
@@ -85,7 +89,7 @@ const ProfileInfo= () => {
       }
     }
     
-    if (params.id){
+    if (Number(params.id) !== userID){
       getOtherUserInfo(Number(params.id));
       getFriends()
     } else  {
@@ -104,6 +108,10 @@ const ProfileInfo= () => {
       dispatch(addFriendId(Number(params.id)))
     }
   }  
+
+  function handleMatch() {
+    socket.emit('invite', {room:`${username}+${profileInfo.username}`, otherUserName: profileInfo.username, username})
+  }
 
 
   return (
@@ -125,7 +133,7 @@ const ProfileInfo= () => {
             <div className="profile-info-buttons">
               <div className="username-text">{profileInfo.username}</div>
               <Button onClick={handleToggleFriend} className="update-photo-btn" style={{marginRight: '0.5rem'}}>{userFriend ? 'Remove Friend' : 'Add Friend'}</Button>
-              <Button className="update-photo-btn">Match</Button>
+              <Button onClick={handleMatch} className="update-photo-btn">Match</Button>
             </div>
             }
           </div>
