@@ -102,12 +102,8 @@ const FilterForm = () => {
     const [genres, setGenres] = useState<string[]>([]);
     const [avoidGenres, setAvoidGenres] = useState<string[]>([]);
     const [cast, setCast] = useState<actorMini[]>([]);
-<<<<<<< HEAD
-
-=======
     const [otherUsername, setOtherUsername] = useState<string>('')
     const [castIds, setCastIds] = useState<number[]>([]);
->>>>>>> f26ea8b863119bc92cf695cc6588058ebc9a0f01
     const [providers, setProviders] = useState<number[]>([]);
     const [query, setQuery] = useState<string>('')
     const [queryResults, setQueryResults] = useState<ActorResult[]>([])
@@ -126,12 +122,7 @@ const FilterForm = () => {
         setShowYouAccepted(true)
       }else {
         const filters = {genres, avoidGenres, cast, providers}
-<<<<<<< HEAD
-        socket.emit('submitFilters', filters, room)
-=======
         socket.emit('join', filters, room);
-        // socket.emit('submitFilters', filters, room)
->>>>>>> f26ea8b863119bc92cf695cc6588058ebc9a0f01
         handleClose();
       }
 
@@ -224,39 +215,6 @@ const FilterForm = () => {
     }, [open])
 
       useEffect(() => {
-<<<<<<< HEAD
-        socket.on('sendFilter', (username:string, filter:filterObject) => {
-          console.log('getting filter')
-          console.log(filter)
-          if(username != loggedInUser) {
-            setOtherUserFilter({username, filter})
-          }
-        })
-        socket.on('handleAddToggle', (value, callBackString, id) => {
-          handleChange(value, callBackString, id, true);
-        })
-        socket.on('handleResetToggle', (value, callBackString, id) => {
-          handleChange(value, callBackString, id, true);
-        })
-        socket.on('handleRemoveToggle', (value, callBackString, id) => {
-          handleChange(value, callBackString, id, true);
-        })
-        socket.on('handleChangeStreamingProvied', (providerId) => {
-          console.log('recieved');
-          handleStreamingSwitch(providerId, true)
-        })
-        socket.on('handleAddActor', (id, name) =>{
-          setCast((oldCast) => [...oldCast, {id, name}])
-        })
-        socket.on('handleRemoveActor', (id) =>{
-          setCast((oldCast) => oldCast.filter(actor => actor.id != id))
-        })
-        socket.on('oneUserAccepted', (otherUsername) => {
-          alert('other user accepted');
-          setBothAcceptFilters(true);
-        })
-      }, []);
-=======
                 socket.on('sendFilter', (username:string, filter:filterObject) => {
                   console.log('getting filter')
                   console.log(filter)
@@ -328,7 +286,6 @@ const FilterForm = () => {
                   handleClose();
                 })
               }, []);
->>>>>>> f26ea8b863119bc92cf695cc6588058ebc9a0f01
 
     useEffect(() =>{
       async function searchActors () {
