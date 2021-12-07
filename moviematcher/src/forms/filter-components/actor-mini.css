@@ -1,0 +1,14 @@
+.actor-mini {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 6px;
+    background-color: white;
+    color: black;
+    padding: 6px;
+    max-width: 350;
+    margin: 6px
+}
+
+.actor-mini a {
+    color: grey
+}
