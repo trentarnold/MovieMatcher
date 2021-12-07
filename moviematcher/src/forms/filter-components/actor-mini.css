@@ -12,3 +12,7 @@
 .actor-mini a {
     color: grey
 }
+
+.actor-mini a:hover {
+    cursor:pointer
+}

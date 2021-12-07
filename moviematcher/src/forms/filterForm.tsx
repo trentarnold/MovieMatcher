@@ -313,7 +313,7 @@ const FilterForm = () => {
                   </FormLabel>
 
                   {cast.length > 0 && cast.map(actor=> <ActorMini actorName={actor.name} actorId={actor.id} onClickFunc={handleXClick}/>) }
-                  <Input type="text" id='actor' width="350px" value={query} onChange={handleQueryChange} margin="auto"/>
+                  <Input type="text" id='actor' width="350px" value={query} placeholder='Search actors...' onChange={handleQueryChange} margin="auto"/>
 
                   {/* add actor to a list in the component that renders actor cards for each item */}
                   {query.length > 2 &&
