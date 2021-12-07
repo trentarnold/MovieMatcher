@@ -94,7 +94,7 @@ const FilterForm = () => {
     const [war, setWar] = useState<string>('na')
     const [western, setWestern] = useState<string>('na')
     const [filters, setFilters] = useState<filterData[]>([])
-
+    const [bothAccepthFilters, setBothAcceptFilters] = useState<boolean>(false);
     const [otherUserFilters, setOtherUserFilter] = useState<filterData>()
 
     const [genres, setGenres] = useState<string[]>([]);
@@ -112,19 +112,14 @@ const FilterForm = () => {
     console.log(providers, 'this the providers')
 
     const handleSubmit = () => {
-      const filterObject = {providers, genres, avoidGenres, cast}
-      const username = loggedInUser
-      if(!otherUserFilters){
-        socket.emit('addFilter', room, username, filterObject)
-        handleClose()
-      }
-      if(otherUserFilters){
-        const userFiltersData = {
-          username,
-          filter: filterObject
-        }
-        socket.emit('sendBothFilters', room, userFiltersData, otherUserFilters)
-        handleClose()
+      if(!bothAccepthFilters) {
+        let users = room.split('+');
+        let otherUsername = users[0] === loggedInUser ? users[1] : users[0];
+        socket.emit('oneUserAccepted', room, otherUsername);
+        setBothAcceptFilters(true);
+      }else {
+        socket.emit('join');
+        handleClose();
       }
 
     }
@@ -241,6 +236,10 @@ const FilterForm = () => {
                 })
                 socket.on('handleRemoveActor', (id) =>{
                   setCast((oldCast) => oldCast.filter(actor => actor.id != id))
+                })
+                socket.on('oneUserAccepted', (otherUsername) => {
+                  alert('other user accepted');
+                  setBothAcceptFilters(true);
                 })
               }, []);
 

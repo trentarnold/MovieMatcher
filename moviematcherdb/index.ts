@@ -154,6 +154,9 @@ io.on("connection", (socket: Socket) => {
   socket.on('handleRemoveActor', (id:number, name:string, room:string) => {
     socket.to(room).emit('handleRemoveActor', id);
   })
+  socket.on('oneUserAccepted', (room, otherUsername) => {
+    socket.to(room).emit('oneUserAccepted', otherUsername)
+  })
 
 });
 
