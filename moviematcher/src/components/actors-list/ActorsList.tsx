@@ -19,6 +19,7 @@ const ActorsList:React.FC<Props>  = ({id}) => {
       async function fetchMovie () {
           setActorList(castArray)
           const actorListIDS = await APIService.getActorList(id);
+          console.log(actorListIDS);
           const filteredActorList = actorListIDS.cast.filter((actor, index, self) =>
             index === self.findIndex((selfActor) => selfActor.id === actor.id)
           );
@@ -28,14 +29,14 @@ const ActorsList:React.FC<Props>  = ({id}) => {
       }
       fetchMovie()
       return () => {
-        isCancelled = true;   
+        isCancelled = true;
       }
 
   }, [id])
   return (
     <div className="actor-list-container">
         <h1>Cast</h1>
-  
+
         <div className="movie-list" style={{maxWidth: toggle? '83.5%' : '100%'}}>
             {actorList.map((actor:any) => <ActorThumb key={Number(actor.id)} actor={actor} role={actor.character}/>)}
         </div>
