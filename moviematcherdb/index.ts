@@ -29,6 +29,7 @@ interface ServerToClientEvents {
   sendFilter:(username: string, filters:filter) => void;
   handleAddActor:(id:number, name:string, room:string) => void;
   handleRemoveActor:(id:number, name:string, room:string) => void;
+  changed: () => void;
 }
 
 interface ClientToServerEvents {
@@ -95,6 +96,10 @@ io.on("connection", (socket: Socket) => {
     if(socketId){
       io.to(socketId).emit('invite', room, otherUserName, username);
     }
+  })
+  socket.on('providers', (alreadySelectedStreamingServices, room) => {
+    console.log('providers made it here')
+    socket.to(room).emit('providers', alreadySelectedStreamingServices)
   })
   socket.on('accepted', async(room) => {
     await socket.join(room);
@@ -186,7 +191,10 @@ io.on("connection", (socket: Socket) => {
     const movieArray = response.results;
     io.in(room).emit('movies', movieArray, room)
   })
-
+  socket.on('changed', (room) => {
+    console.log('changed')
+    socket.to(room).emit('changed')
+  })
 });
 
 
