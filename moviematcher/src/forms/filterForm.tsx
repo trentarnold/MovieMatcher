@@ -96,11 +96,13 @@ const FilterForm = () => {
     const [filters, setFilters] = useState<filterData[]>([])
     const [bothAccepthFilters, setBothAcceptFilters] = useState<boolean>(false);
     const [otherUserFilters, setOtherUserFilter] = useState<filterData>()
-
+    const [showOtherFriendAccepts, setShowOtherFriendAccepts] = useState<boolean>(false);
+    const [showYouAccepted, setShowYouAccepted] = useState<boolean>(false)
+    const [changed, setChanged] = useState<boolean>(false);
     const [genres, setGenres] = useState<string[]>([]);
     const [avoidGenres, setAvoidGenres] = useState<string[]>([]);
     const [cast, setCast] = useState<actorMini[]>([]);
-
+    const [otherUsername, setOtherUsername] = useState<string>('')
     const [castIds, setCastIds] = useState<number[]>([]);
     const [providers, setProviders] = useState<number[]>([]);
     const [query, setQuery] = useState<string>('')
@@ -109,7 +111,7 @@ const FilterForm = () => {
         dispatch(turnOffMovieFilter())
         onClose();
     }
-    console.log(providers, 'this the providers')
+
 
     const handleSubmit = () => {
       if(!bothAccepthFilters) {
@@ -117,8 +119,14 @@ const FilterForm = () => {
         let otherUsername = users[0] === loggedInUser ? users[1] : users[0];
         socket.emit('oneUserAccepted', room, otherUsername);
         setBothAcceptFilters(true);
+        setShowYouAccepted(true)
       }else {
-        socket.emit('join');
+
+        const filters = {genres, avoidGenres, cast, providers}
+        socket.emit('join', filters, room);
+        // socket.emit('submitFilters', filters, room)
+        handleClose();
+
         handleClose();
       }
 
@@ -220,26 +228,66 @@ const FilterForm = () => {
                 })
                 socket.on('handleAddToggle', (value, callBackString, id) => {
                   handleChange(value, callBackString, id, true);
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
                 })
                 socket.on('handleResetToggle', (value, callBackString, id) => {
                   handleChange(value, callBackString, id, true);
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
                 })
                 socket.on('handleRemoveToggle', (value, callBackString, id) => {
                   handleChange(value, callBackString, id, true);
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
                 })
                 socket.on('handleChangeStreamingProvied', (providerId) => {
                   console.log('recieved');
                   handleStreamingSwitch(providerId, true)
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
                 })
                 socket.on('handleAddActor', (id, name) =>{
                   setCast((oldCast) => [...oldCast, {id, name}])
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
                 })
                 socket.on('handleRemoveActor', (id) =>{
                   setCast((oldCast) => oldCast.filter(actor => actor.id != id))
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
                 })
                 socket.on('oneUserAccepted', (otherUsername) => {
-                  alert('other user accepted');
+                  setShowOtherFriendAccepts(true)
                   setBothAcceptFilters(true);
+                  setOtherUsername(otherUsername);
+                })
+                socket.on('movies', () => {
+                  handleClose();
                 })
               }, []);
 
@@ -335,6 +383,9 @@ const FilterForm = () => {
                     </div>
                 </Flex>
                 <Flex justifyContent='space-between' margin="10px">
+                { changed && <div style={{color:'red'}}>{`${otherUsername} has changed the filters`}</div>}
+                { showOtherFriendAccepts && <div style={{color:'green'}}>{`${otherUsername} has accepted these filters`}</div>}
+                { showYouAccepted && <div style={{color:'green'}}>{`You have accepted these filters, waiting for ${otherUsername}`}</div>}
                   <Button onClick={handleSubmit} >Apply Filters</Button>
                 </Flex>
               </FormControl>
