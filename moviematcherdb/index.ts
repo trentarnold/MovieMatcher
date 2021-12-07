@@ -11,6 +11,7 @@ import axios from 'axios';
 import { Movie } from '../interfaces/movieInterface';
 const { createServer } = require("http");
 const httpServer = createServer(app);
+const {APIMovieService} = require('./Services/APIMovieService')
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(httpServer, { /* options */ });
 
 interface ServerToClientEvents {
@@ -51,9 +52,9 @@ interface filter {
   cast:string[],
 }
 
-interface filterData {
+interface actorData {
   username:string,
-  filter:filter,
+  id:string,
 }
     
 app.use(cors());
@@ -129,10 +130,6 @@ io.on("connection", (socket: Socket) => {
     io.in(room).emit('sendFilter', username, filter)
   })
 
-  socket.on('sendBothFilters', (room:string, userFilterObject:filterData, otherUserFilterObject:filterData) => {
-    console.log(userFilterObject);
-    console.log(otherUserFilterObject);
-  })
   socket.on('handleAddToggle', (value, callBackString, id, room) => {
     socket.to(room).emit('handleAddToggle', value, callBackString, id);
   })
@@ -153,6 +150,15 @@ io.on("connection", (socket: Socket) => {
 
   socket.on('handleRemoveActor', (id:number, name:string, room:string) => {
     socket.to(room).emit('handleRemoveActor', id);
+  })
+
+  socket.on('submitFilters', async (filters, room) => {
+    const withGenres = `&with_genres=${filters.genres}`;
+    const withoutGenres = `&without_genres=${filters.avoidGenres}`;
+    const cast = `&with_cast=${filters.cast.map((actor:actorData) =>actor.id)}`;
+    const watchProviders = `&with_watch_providers=${filters.providers}`;
+    const movieArray = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + watchProviders);
+    io.in(room).emit('movies', movieArray, room)
   })
 
 });

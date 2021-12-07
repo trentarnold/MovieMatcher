@@ -110,21 +110,12 @@ const FilterForm = () => {
     console.log(providers, 'this the providers')
 
     const handleSubmit = () => {
-      const filterObject = {providers, genres, avoidGenres, cast}
-      const username = loggedInUser
-      if(!otherUserFilters){
-        socket.emit('addFilter', room, username, filterObject)
-        handleClose()
-      }
-      if(otherUserFilters){
-        const userFiltersData = {
-          username,
-          filter: filterObject
-        }
-        socket.emit('sendBothFilters', room, userFiltersData, otherUserFilters)
-        handleClose()
-      }
-
+      console.log(genres)
+      console.log(avoidGenres)
+      console.log(cast)
+      console.log(providers)
+      const filters = {genres, avoidGenres, cast, providers}
+      socket.emit('submitFilters', filters)
     }
 
     const handleAddToggle = (genreId: string) => {
