@@ -28,7 +28,7 @@ import { setRatings } from './redux/features/user/ratingsSlice';
 import { setActivities } from './redux/features/user/activitiesSlice';
 import { setUserName } from './redux/features/user/yourUserName';
 import {socket} from './socket'
-import {filterData} from '../../interfaces/filterFormInterface';
+import {IFilterData} from '../../interfaces/filterFormInterface';
 import { setUserStreaming } from './redux/features/user/userStreaming';
 import StreamingServiceList from './components/streaming-services/StreamingServiceList';
 
@@ -106,7 +106,7 @@ function App() {
       getUsername();
     }
   }, [accessToken])
- 
+
   return (
     <div className="App">
       <Navbar />
@@ -127,7 +127,7 @@ function App() {
       </div>
       <LoginForm />
       <CreateAccountForm />
-      <ToastContainer 
+      <ToastContainer
         position ='top-center'
         autoClose={30000}
         closeOnClick={false}
