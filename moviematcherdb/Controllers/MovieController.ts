@@ -114,7 +114,6 @@ async function getActorsList(req:RequestInstance,res:Response) {
   }
   params = Number(params);
     const actors =  await APIMovieService.getActorListQuery(params);
-    console.log(actors, "ActorsList")
     res.status(200).send(actors);
 
   } catch (err: any) {
