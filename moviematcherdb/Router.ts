@@ -22,7 +22,8 @@ const {
    addBlacklist,
    deleteBlacklist,
    getBlacklist,
-   getByUsername
+   getByUsername,
+   toggleStreaming
 } = require('./Controllers/UserController');
 
 router.put('/user/profile',authMiddleware, updatePictureMiddleware, updateUser);
@@ -43,6 +44,7 @@ router.post('/user/blacklist', authMiddleware, addBlacklist);
 router.delete('/user/blacklist', authMiddleware, deleteBlacklist);
 router.get('/user/blacklist', authMiddleware, getBlacklist);
 router.post('/blacklist', authMiddleware, getBlacklist);
+router.put('/user/streaming/:streamID', authMiddleware, toggleStreaming);
 
 
 //Movie Controller Routes

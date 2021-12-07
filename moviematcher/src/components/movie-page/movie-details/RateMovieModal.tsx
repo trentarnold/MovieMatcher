@@ -1,16 +1,17 @@
-import React from 'react'
+
 import StarRatings from 'react-star-ratings';
-require('./RateMovieModal.css')
+require('./RateMovieModal.css');
 
 const RateMovieModal = (props: any) => {
   function handleSubmit () {
     props.submitRating();
     props.setRatingModalToggle(false);
-  }
+  };
+
   function handleReset() {
     props.setNewRating(0);
     props.setRatingModalToggle(false);
-  }
+  };
 
   return (
     <div className="rating-modal">
@@ -29,7 +30,7 @@ const RateMovieModal = (props: any) => {
         <button onClick={handleSubmit}>Submit</button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RateMovieModal
+export default RateMovieModal;

@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import './movie-list.css';
 import MovieThumb from './movie-thumb/movie-thumb';
-import {Movie} from '../../../../interfaces/movieInterface';
+import {IMovie} from '../../../../interfaces/movieInterface';
 import { useAppSelector } from '../../redux/app/hooks';
+
 type Props  = {
-  movieList: Movie[],
+  movieList: IMovie[],
   criteria: string
 }
 
 const MovieList: React.FC<Props> = ({movieList, criteria}) => {
 
-  function shuffleArray (arr: Movie[]) {
+  function shuffleArray (arr: IMovie[]) {
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
