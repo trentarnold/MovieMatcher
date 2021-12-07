@@ -220,7 +220,7 @@ export const ServerApiService = {
       return await response.json();
     } catch (e) {
       console.log(e)
-      return {id:0, username: '', password:'', email:'',profile_pic:'',createdAt:'', updatedAt:''}
+      return {id:0, username: '', password:'', email:'',profile_pic:'',streaming: [],createdAt:'', updatedAt:''}
     }
   },
   addToBlackList: async(accessToken:string, movieID:number): Promise<IFavoriteMovie[]> => {
@@ -425,6 +425,22 @@ export const ServerApiService = {
         body: JSON.stringify(movie)
       })
       return await response.json();
+    } catch (err) {
+      console.log(err)
+      return []
+    }
+  },
+  toggleStreaming: async(accessToken: string, streamID: number): Promise<number[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/streaming/${streamID}`, {
+        method: 'PUT',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      })
+      return (await response.json()).streaming;
     } catch (err) {
       console.log(err)
       return []

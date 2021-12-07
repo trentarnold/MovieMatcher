@@ -28,6 +28,10 @@ import { setRatings } from './redux/features/user/ratingsSlice';
 import { setActivities } from './redux/features/user/activitiesSlice';
 import { setUserName } from './redux/features/user/yourUserName';
 import {socket} from './socket'
+import {filterData} from '../../interfaces/filterFormInterface';
+import { setUserStreaming } from './redux/features/user/userStreaming';
+import StreamingServiceList from './components/streaming-services/StreamingServiceList';
+
 
 function App() {
   const dispatch = useAppDispatch();
@@ -91,6 +95,7 @@ function App() {
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
+      dispatch(setUserStreaming(info.streaming));
     }
     if(accessToken) {
       fetchFriends();
@@ -115,6 +120,7 @@ function App() {
           <Route path='/actorDetails/:id' element = {<ActorPage />} />
           <Route path='/profile/:id' element = {<ProfilePage />} />
           <Route path ='/movieMatch/:room' element = {<MovieMatch />} />
+          <Route path ='/streaming' element = {<StreamingServiceList />} />
       </Routes>
       <div className="outlet">
         <Outlet />

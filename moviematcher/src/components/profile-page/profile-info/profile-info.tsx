@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 
 const ProfileInfo= () => {
 
-  const [profileInfo, setProfileInfo] = useState<IProfileInfo>({ id: 0, username: "", email: "", profile_pic: "", createdAt: "", updatedAt: "" })
+  const [profileInfo, setProfileInfo] = useState<IProfileInfo>({ id: 0, username: "", email: "", profile_pic: "", streaming: [], createdAt: "", updatedAt: "" })
   const [pic, setPic] = useState<File>();
   const token = useAppSelector(selectAuth);
   const params = useParams();
