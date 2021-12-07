@@ -27,6 +27,8 @@ interface ServerToClientEvents {
   bothUsersAccepted: (userName:string, movieId:string, room:string) => void;
   filter: (room: string, filter:filter) => void;
   sendFilter:(username: string, filters:filter) => void;
+  handleAddActor:(id:number, name:string, room:string) => void;
+  handleRemoveActor:(id:number, name:string, room:string) => void;
 }
 
 interface ClientToServerEvents {
@@ -139,6 +141,14 @@ io.on("connection", (socket: Socket) => {
   })
   socket.on('handleResetToggle', (value, callBackString, id, room) => {
     socket.to(room).emit('handleResetToggle', value, callBackString, id);
+  })
+  
+  socket.on('handleAddActor', (id:number, name:string, room:string) => {
+    socket.to(room).emit('handleAddActor', id, name);
+  })
+
+  socket.on('handleRemoveActor', (id:number, name:string, room:string) => {
+    socket.to(room).emit('handleRemoveActor', id);
   })
 
 });

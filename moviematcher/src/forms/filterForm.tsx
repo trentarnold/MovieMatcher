@@ -10,9 +10,6 @@ import {
     Input,
     ModalContent,
     Text,
-    RadioGroup,
-    Radio,
-    Stack,
     Button,
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/hooks';
@@ -23,8 +20,10 @@ import { useEffect, useState } from 'react'
 import './filterForm.css'
 import { clearRoomName, selectRoomName } from '../redux/features/modals/roomNameSlice';
 import { selectUserName } from '../redux/features/user/yourUserName';
-import {filterObject, filterData, ActorResult} from '../../../interfaces/filterFormInterface';
+import {filterObject, filterData, ActorResult, actorMini} from '../../../interfaces/filterFormInterface';
 import ThreeWayToggle from './filter-components/three-way-toggle';
+import ActorMini from './filter-components/actor-mini';
+import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
 
 const streamProviders = [{
     display_priority: 1,
@@ -100,7 +99,8 @@ const FilterForm = () => {
 
     const [genres, setGenres] = useState<string[]>([]);
     const [avoidGenres, setAvoidGenres] = useState<string[]>([]);
-    const [cast, setCast] = useState<string[]>([]);
+    const [cast, setCast] = useState<actorMini[]>([]);
+
     const [castIds, setCastIds] = useState<number[]>([]);
     const [providers, setProviders] = useState<string[]>([]);
     const [query, setQuery] = useState<string>('')
@@ -163,6 +163,7 @@ const FilterForm = () => {
         setProviders(providers.filter(provider => provider !== providerId));
       }
     };
+
     const handleChange = (value:string, callBackString:string, id: string, sent:boolean) => {
       const setState = eval(callBackString);
       setState(value);
@@ -194,15 +195,18 @@ const FilterForm = () => {
       setQuery(e.currentTarget.value);
     }
 
-    const handleActorSubmit = (query:string) => {
-      setCast([...cast, query]);
+    const handleActorClick = (id:number, name: string) => {
+      const actorMiniObject:actorMini = {id, name};
+      setCast([...cast, actorMiniObject])
       setQuery('');
+      socket.emit('handleAddActor', id, name, room)
     }
 
-    const handleActorClick = (id:number, name: string) => {
-      handleActorSubmit(name);
-      setCastIds([...castIds, id]);
+    const handleXClick = (id:number, actorName:string,) => {
+      setCast(cast.filter(actor => actor.id != id))
+      socket.emit('handleRemoveActor', id, actorName, room)
     }
+
 
     useEffect(() => {
       if(open) {
@@ -236,6 +240,12 @@ const FilterForm = () => {
                 socket.on('handleRemoveToggle', (value, callBackString, id) => {
                   console.log(id, 'handleAddToggle')
                   handleChange(value, callBackString, id, true);
+                })
+                socket.on('handleAddActor', (id, name) =>{
+                  setCast([...cast, {id, name}])
+                })
+                socket.on('handleRemoveActor', (id) =>{
+                  setCast(cast.filter(actor => actor.id != id))
                 })
               }, []);
 
@@ -301,8 +311,10 @@ const FilterForm = () => {
                   <FormLabel htmlFor='actor' textAlign="center" mb="2px" mt="10px">
                    Include Actor
                   </FormLabel>
-                  {cast.length > 0 && cast.map(actor=> <p>{actor}</p>) }
-                  <Input type="text" id='actor' width="350px" value={query} onChange={handleQueryChange} margin="auto"/>
+
+                  {cast.length > 0 && cast.map(actor=> <ActorMini actorName={actor.name} actorId={actor.id} onClickFunc={handleXClick}/>) }
+                  <Input type="text" id='actor' width="350px" value={query} placeholder='Search actors...' onChange={handleQueryChange} margin="auto"/>
+
                   {/* add actor to a list in the component that renders actor cards for each item */}
                   {query.length > 2 &&
                   <div className='filter-search-results'>
