@@ -93,7 +93,6 @@ const FilterForm = () => {
     const [thriller, setThriller] = useState<string>('na')
     const [war, setWar] = useState<string>('na')
     const [western, setWestern] = useState<string>('na')
-    const [filters, setFilters] = useState<filterData[]>([])
 
     const [otherUserFilters, setOtherUserFilter] = useState<filterData>()
 
@@ -101,7 +100,6 @@ const FilterForm = () => {
     const [avoidGenres, setAvoidGenres] = useState<string[]>([]);
     const [cast, setCast] = useState<actorMini[]>([]);
 
-    const [castIds, setCastIds] = useState<number[]>([]);
     const [providers, setProviders] = useState<number[]>([]);
     const [query, setQuery] = useState<string>('')
     const [queryResults, setQueryResults] = useState<ActorResult[]>([])
@@ -216,33 +214,33 @@ const FilterForm = () => {
     }, [open])
 
       useEffect(() => {
-                socket.on('sendFilter', (username:string, filter:filterObject) => {
-                  console.log('getting filter')
-                  console.log(filter)
-                  if(username != loggedInUser) {
-                    setOtherUserFilter({username, filter})
-                  }
-                })
-                socket.on('handleAddToggle', (value, callBackString, id) => {
-                  handleChange(value, callBackString, id, true);
-                })
-                socket.on('handleResetToggle', (value, callBackString, id) => {
-                  handleChange(value, callBackString, id, true);
-                })
-                socket.on('handleRemoveToggle', (value, callBackString, id) => {
-                  handleChange(value, callBackString, id, true);
-                })
-                socket.on('handleChangeStreamingProvied', (providerId) => {
-                  console.log('recieved');
-                  handleStreamingSwitch(providerId, true)
-                })
-                socket.on('handleAddActor', (id, name) =>{
-                  setCast([...cast, {id, name}])
-                })
-                socket.on('handleRemoveActor', (id) =>{
-                  setCast(cast.filter(actor => actor.id != id))
-                })
-              }, []);
+        socket.on('sendFilter', (username:string, filter:filterObject) => {
+          console.log('getting filter')
+          console.log(filter)
+          if(username != loggedInUser) {
+            setOtherUserFilter({username, filter})
+          }
+        })
+        socket.on('handleAddToggle', (value, callBackString, id) => {
+          handleChange(value, callBackString, id, true);
+        })
+        socket.on('handleResetToggle', (value, callBackString, id) => {
+          handleChange(value, callBackString, id, true);
+        })
+        socket.on('handleRemoveToggle', (value, callBackString, id) => {
+          handleChange(value, callBackString, id, true);
+        })
+        socket.on('handleChangeStreamingProvied', (providerId) => {
+          console.log('recieved');
+          handleStreamingSwitch(providerId, true)
+        })
+        socket.on('handleAddActor', (id, name) =>{
+          setCast([...cast, {id, name}])
+        })
+        socket.on('handleRemoveActor', (id) =>{
+          setCast(cast.filter(actor => actor.id != id))
+        })
+      }, []);
 
     useEffect(() =>{
       async function searchActors () {
@@ -325,13 +323,12 @@ const FilterForm = () => {
                   <div className='movie-details-stream-providers'>
                     {/* conditionally render / map stream providers for both users */}
                         {streamProviders && streamProviders.map((provider:any) => {
-                            return(
-                                <div key={provider.provider_id} style={{display: 'flex', flexDirection:"column", justifyContent: "center" }}>
-                                <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name}/>
-                                <Switch onChange={() => handleStreamingSwitch(provider.provider_id, false)} id={provider.provider_name} isChecked={providers.includes(provider.provider_id)}/>
-                                </div>
-                            ) 
-                            })
+                          return (
+                            <div key={provider.provider_id} style={{display: 'flex', flexDirection:"column", justifyContent: "center" }}>
+                              <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name}/>
+                              <Switch onChange={() => handleStreamingSwitch(provider.provider_id, false)} id={provider.provider_name} isChecked={providers.includes(provider.provider_id)}/>
+                            </div>) 
+                          })
                         }
                     </div>
                 </Flex>
