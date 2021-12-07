@@ -27,6 +27,7 @@ import activitiesReducer, { activitiesState } from './redux/features/user/activi
 import userNameReducer, { UserNameState} from './redux/features/user/yourUserName';
 import activityListModalReducer, {ActivityListModalState} from './redux/features/modals/activityListModal'
 import  roomNameReducer, {roomNameState}  from './redux/features/modals/roomNameSlice';
+import userStreamingReducer, {userStreamingState} from './redux/features/user/userStreaming';
 import { SocketContext, socket } from './socket';
 
 const persistConfig = {
@@ -52,6 +53,7 @@ interface IAppState {
   userName: UserNameState;
   activityListModal: ActivityListModalState;
   roomName: roomNameState;
+  userStreaming: userStreamingState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -71,7 +73,8 @@ const rootReducer = combineReducers<IAppState>({
   matchedMovie: matchedMovieReducer,
   userName: userNameReducer,
   activityListModal: activityListModalReducer,
-  roomName: roomNameReducer
+  roomName: roomNameReducer,
+  userStreaming: userStreamingReducer,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);

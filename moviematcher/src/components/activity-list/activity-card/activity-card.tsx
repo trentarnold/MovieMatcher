@@ -8,8 +8,10 @@ import APIService from '../../../services/APISevice';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectUserId } from '../../../redux/features/user/userIdSlice';
+import { useNavigate } from "react-router-dom";
 
 const ActivityCard = ({activity}: any) => {
+    const navigate = useNavigate();
     const accessToken = useAppSelector(selectAuth);
     const userID = useAppSelector(selectUserId);
     const [doer, setDoer] = useState<IProfileInfo>()
@@ -54,7 +56,7 @@ const ActivityCard = ({activity}: any) => {
         <div className="activity-card">
             <div>
                 {movie 
-                    ? <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" style={{height: "6rem"}}></img>
+                    ? <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" style={{height: "6rem"}} onClick={() => navigate(`/movieDetails/${movie.id}`)}></img>
                     : <div />
                 }
             </div>

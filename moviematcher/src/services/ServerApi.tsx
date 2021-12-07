@@ -219,7 +219,7 @@ export const ServerApiService = {
       return await response.json();
     } catch (e) {
       console.log(e)
-      return {id:0, username: '', password:'', email:'',profile_pic:'',createdAt:'', updatedAt:''}
+      return {id:0, username: '', password:'', email:'',profile_pic:'',streaming: [],createdAt:'', updatedAt:''}
     }
   },
   addToBlackList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {

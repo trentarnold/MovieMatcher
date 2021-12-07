@@ -29,12 +29,12 @@ const Navbar = () => {
         <>
         <NavLink to='/recent' 
           style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
-          borderRadius: isActive ? '1rem': '',})} className='navlink-item enlarge-on-hover'>
+          borderRadius: isActive ? '1rem': '', fontSize: "1rem", marginLeft: "6vw"})} className='navlink-item enlarge-on-hover'>
           Recent Activity
         </NavLink>
         <NavLink to='/profile'
           style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
-          borderRadius: isActive ? '1rem': '',})} className='navlink-item enlarge-on-hover'>
+          borderRadius: isActive ? '1rem': '', fontSize: "1rem"})} className='navlink-item enlarge-on-hover'>
           Profile
         </NavLink>
         </>

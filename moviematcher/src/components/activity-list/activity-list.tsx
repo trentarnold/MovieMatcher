@@ -44,6 +44,9 @@ const ActivityList = () => {
                     if (act.friendid === actArr.friendid && act.movieid === actArr.movieid && moment(act.createdAt).diff(actArr.createdAt, 'days') === 0) {
                         trigger = true;
                     }
+                    if (act.uid === actArr.friendid && act.friendid === actArr.uid && act.movieid === actArr.movieid && moment(act.createdAt).diff(actArr.createdAt, 'days') === 0) {
+                        trigger = true;
+                    }
                 }
                 if (!trigger) activitiesArr.push(act)
             } else {activitiesArr.push(act)}

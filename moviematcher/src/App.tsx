@@ -32,6 +32,7 @@ import { setActivities } from './redux/features/user/activitiesSlice';
 import { setUserName } from './redux/features/user/yourUserName';
 import {socket} from './socket'
 import {filterData} from '../../interfaces/filterFormInterface';
+import { setUserStreaming } from './redux/features/user/userStreaming';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -85,9 +86,9 @@ function App() {
 
   useEffect(() => {
     const fetchFriends = async() => {
-     let userFriends = await ServerApiService.getFriends(accessToken);
-     let ids = userFriends.map((friend:User) => friend.id);
-     dispatch(setFriendIds(ids));
+      let userFriends = await ServerApiService.getFriends(accessToken);
+      let ids = userFriends.map((friend:User) => friend.id);
+      dispatch(setFriendIds(ids));
     }
     const fetchFavoriteMovies = async() => {
       let favoriteMovies  = await ServerApiService.getWatchList(accessToken);
@@ -113,6 +114,7 @@ function App() {
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
+      dispatch(setUserStreaming(info.streaming));
     }
     if(accessToken) {
       fetchFriends();
