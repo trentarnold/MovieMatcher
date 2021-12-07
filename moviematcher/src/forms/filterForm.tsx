@@ -93,7 +93,8 @@ const FilterForm = () => {
     const [thriller, setThriller] = useState<string>('na')
     const [war, setWar] = useState<string>('na')
     const [western, setWestern] = useState<string>('na')
-
+    const [filters, setFilters] = useState<filterData[]>([])
+    const [bothAccepthFilters, setBothAcceptFilters] = useState<boolean>(false);
     const [otherUserFilters, setOtherUserFilter] = useState<filterData>()
 
     const [genres, setGenres] = useState<string[]>([]);
@@ -110,12 +111,17 @@ const FilterForm = () => {
     console.log(providers, 'this the providers')
 
     const handleSubmit = () => {
-      console.log(genres)
-      console.log(avoidGenres)
-      console.log(cast)
-      console.log(providers)
-      const filters = {genres, avoidGenres, cast, providers}
-      socket.emit('submitFilters', filters)
+      if(!bothAccepthFilters) {
+        let users = room.split('+');
+        let otherUsername = users[0] === loggedInUser ? users[1] : users[0];
+        socket.emit('oneUserAccepted', room, otherUsername);
+        setBothAcceptFilters(true);
+      }else {
+        const filters = {genres, avoidGenres, cast, providers}
+        socket.emit('submitFilters', filters, room)
+        handleClose();
+      }
+
     }
 
     const handleAddToggle = (genreId: string) => {
@@ -205,33 +211,37 @@ const FilterForm = () => {
     }, [open])
 
       useEffect(() => {
-                socket.on('sendFilter', (username:string, filter:filterObject) => {
-                  console.log('getting filter')
-                  console.log(filter)
-                  if(username != loggedInUser) {
-                    setOtherUserFilter({username, filter})
-                  }
-                })
-                socket.on('handleAddToggle', (value, callBackString, id) => {
-                  handleChange(value, callBackString, id, true);
-                })
-                socket.on('handleResetToggle', (value, callBackString, id) => {
-                  handleChange(value, callBackString, id, true);
-                })
-                socket.on('handleRemoveToggle', (value, callBackString, id) => {
-                  handleChange(value, callBackString, id, true);
-                })
-                socket.on('handleChangeStreamingProvied', (providerId) => {
-                  console.log('recieved');
-                  handleStreamingSwitch(providerId, true)
-                })
-                socket.on('handleAddActor', (id, name) =>{
-                  setCast((oldCast) => [...oldCast, {id, name}])
-                })
-                socket.on('handleRemoveActor', (id) =>{
-                  setCast((oldCast) => oldCast.filter(actor => actor.id != id))
-                })
-              }, []);
+        socket.on('sendFilter', (username:string, filter:filterObject) => {
+          console.log('getting filter')
+          console.log(filter)
+          if(username != loggedInUser) {
+            setOtherUserFilter({username, filter})
+          }
+        })
+        socket.on('handleAddToggle', (value, callBackString, id) => {
+          handleChange(value, callBackString, id, true);
+        })
+        socket.on('handleResetToggle', (value, callBackString, id) => {
+          handleChange(value, callBackString, id, true);
+        })
+        socket.on('handleRemoveToggle', (value, callBackString, id) => {
+          handleChange(value, callBackString, id, true);
+        })
+        socket.on('handleChangeStreamingProvied', (providerId) => {
+          console.log('recieved');
+          handleStreamingSwitch(providerId, true)
+        })
+        socket.on('handleAddActor', (id, name) =>{
+          setCast((oldCast) => [...oldCast, {id, name}])
+        })
+        socket.on('handleRemoveActor', (id) =>{
+          setCast((oldCast) => oldCast.filter(actor => actor.id != id))
+        })
+        socket.on('oneUserAccepted', (otherUsername) => {
+          alert('other user accepted');
+          setBothAcceptFilters(true);
+        })
+      }, []);
 
     useEffect(() =>{
       async function searchActors () {

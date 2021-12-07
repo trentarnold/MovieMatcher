@@ -151,14 +151,19 @@ io.on("connection", (socket: Socket) => {
   socket.on('handleRemoveActor', (id:number, name:string, room:string) => {
     socket.to(room).emit('handleRemoveActor', id);
   })
+  socket.on('oneUserAccepted', (room, otherUsername) => {
+    socket.to(room).emit('oneUserAccepted', otherUsername)
+  })
 
   socket.on('submitFilters', async (filters, room) => {
     const withGenres = `&with_genres=${filters.genres}`;
     const withoutGenres = `&without_genres=${filters.avoidGenres}`;
     const cast = `&with_cast=${filters.cast.map((actor:actorData) =>actor.id)}`;
     const watchProviders = `&with_watch_providers=${filters.providers}`;
-    const movieArray = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + watchProviders);
+    const response = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + watchProviders);
+    const movieArray = response.results;
     io.in(room).emit('movies', movieArray, room)
+    console.log('emitted movies')
   })
 
 });
