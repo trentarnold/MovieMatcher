@@ -6,7 +6,8 @@ import { ActorListInterface } from '../../../interfaces/ActorList'
 import { actorListPlaceholder } from '../actorListPlaceholder';
 import ActorDetailsInterface from '../../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
-const BASE_URL = 'http://localhost:3001/'
+import ActorsList from '../components/actors-list/ActorsList';
+const BASE_URL = 'http://localhost:3001'
 
 const APIService = {
   fetchMovie: async (id: number) =>{
@@ -20,8 +21,13 @@ const APIService = {
 
   getPopularMovies: async(): Promise<Results> => {
     try {
-      const popularMovies = await fetch('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US')
-      return await popularMovies.json();
+      const response = await fetch(`${BASE_URL}/movies/Popular`, {
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      return await response.json();
     } catch (e) {
       console.log(e);
       return {results:[]};
@@ -30,8 +36,13 @@ const APIService = {
 
   getUpcomingMovies: async(): Promise<Results> => {
     try {
-      const latestMovies = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&page=1')
-      return await latestMovies.json();
+      const response = await fetch(`${BASE_URL}/movies/Upcoming`, {
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      return await response.json();
     } catch (e) {
       console.log(e);
       return {results:[]};
@@ -40,8 +51,14 @@ const APIService = {
 
   getHorrorMovies: async(): Promise<Results> => {
     try{
-      const horrorMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=27&with_watch_monetization_types=flatrate');
-      return await horrorMovies.json();
+      const response = await fetch((`${BASE_URL}/movies/APIservice`), {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return await response.json();
     } catch (e) {
       console.log(e);
       return {results:[]}
@@ -99,8 +116,14 @@ const APIService = {
   },
   getActorList: async(id:number): Promise<ActorListInterface> => {
     try {
-        const actorList = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=66be68e2d9a8be7fee88a803b45d654b`)
-        return await actorList.json()
+      const actorList = await fetch((`${BASE_URL}/movies/ActorList/${id}` ), {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return await actorList.json()
     } catch(err) {
       console.log(err)
       return actorListPlaceholder

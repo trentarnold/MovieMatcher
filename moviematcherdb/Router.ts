@@ -66,7 +66,7 @@ router.post('/user/movieCount', authMiddleware, movieWatchCount)
 router.post('/movies/APIservice?:params', getFileredMovies )
 router.get('/movies/Popular', getPopularMovies); //
 router.get('/movies/Upcoming', getUpcomingMovies); //
-router.get('/movies/ActorList?:params', getActorsList); //
+router.get('/movies/ActorList/:id', getActorsList); //
 router.get('/movies/Providers', getStreamProviders); //
 router.get('/movies/Similar', getSimilarMovies); //
 router.get('/movies/ActorDetails?:params', getActorsDetails);//

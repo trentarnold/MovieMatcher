@@ -31,7 +31,7 @@ export const APIMovieService = {
   getUpcomingMovies: async(): Promise<Results> => {
     try {
       const latestMovies = await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&page=1')
-      return latestMovies.data.results;//.json();
+      return latestMovies.data;//.json();
     } catch (e) {
       console.log(e);
       return {results:[]};
