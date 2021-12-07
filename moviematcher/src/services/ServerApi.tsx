@@ -428,6 +428,22 @@ export const ServerApiService = {
       console.log(err)
       return []
     }
+  },
+  toggleStreaming: async(accessToken: string, streamID: number): Promise<number[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/streaming/${streamID}`, {
+        method: 'PUT',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+      })
+      return (await response.json()).streaming;
+    } catch (err) {
+      console.log(err)
+      return []
+    }
   }
 }
 

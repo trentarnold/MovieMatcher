@@ -41,14 +41,12 @@ export async function updateUserQuery(id: number, fields:{ username?: string, em
 export async function toggleStreamingService(id: number, streamID: number) {
   const services = await User.findOne({ where: { id }, attributes: ['streaming']});
   if (services?.dataValues?.streaming?.includes(streamID)) {
-    console.log('delete')
     await deleteStreamingService(id, streamID);
   } else {
-    console.log('add')
     await addStreamingService(id, streamID);
   }
   const res = await User.findOne({ where: { id }, attributes: ['streaming']})
-  return res?.dataValues;
+  return res?.dataValues !== null ? res?.dataValues : [];
 }
 
 async function addStreamingService(id: number, streamID: number) {

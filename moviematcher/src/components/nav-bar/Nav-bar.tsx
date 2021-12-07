@@ -37,6 +37,11 @@ const Navbar = () => {
           borderRadius: isActive ? '1rem': '', fontSize: "1rem"})} className='navlink-item enlarge-on-hover'>
           Profile
         </NavLink>
+        <NavLink to='/streaming'
+          style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
+          borderRadius: isActive ? '1rem': '', fontSize: "1rem"})} className='navlink-item enlarge-on-hover'>
+          Stream Providers
+        </NavLink>
         </>
       }
       </div>
