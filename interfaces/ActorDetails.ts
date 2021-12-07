@@ -1,4 +1,4 @@
-export default interface ActorDetailsInterface {
+export default interface IActorDetails {
   adult: boolean,
   also_known_as: string[],
   biography: string,

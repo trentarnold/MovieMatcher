@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './friend-icon.css';
-import {IUser} from '../../../../../interfaces/userInterface';
-import { User } from '../../../../../interfaces/responses';
+import { IUser } from '../../../../../interfaces/responses';
 import {  useNavigate } from "react-router-dom";
-import { ServerApiService } from '../../../services/ServerApi'
-import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks'
-import { selectAuth } from '../../../redux/features/modals/authSlice'
-import {setFriendIds} from '../../../redux/features/user/friendsIdSlice'
+import { ServerApiService } from '../../../services/ServerApi';
+import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
+import { selectAuth } from '../../../redux/features/modals/authSlice';
+import {setFriendIds} from '../../../redux/features/user/friendsIdSlice';
 import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers';
-import { selectSocketRef } from '../../../redux/features/socket/socketRefSlice'
+import { selectSocketRef } from '../../../redux/features/socket/socketRefSlice';
 import { selectUserName } from '../../../redux/features/user/yourUserName';
 
 type Props = {
-    user: User,
+    user: IUser,
     friend: boolean,
-}
+};
 
 const FriendIcon:React.FC<Props> = ({user, friend}) => {
-    // const [username, setUsername] = useState('')
+
     const username = useAppSelector(selectUserName);
     const accessToken = useAppSelector(selectAuth);
     const navigate = useNavigate();
@@ -30,14 +29,16 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
 
     const handleAdd = async() => {
         const friendsList = await ServerApiService.addFriend(accessToken, user.id);
-        let ids = friendsList.map((friend:User) => friend.id);
+        let ids = friendsList.map((friend:IUser) => friend.id);
         dispatch(setFriendIds(ids));
     };
+
     const handleRemove = async() => {
         const friendsList = await ServerApiService.removeFriend(accessToken, user.id);
-        let ids = friendsList.map((friend:User) => friend.id);
+        let ids = friendsList.map((friend:IUser) => friend.id);
         dispatch(setFriendIds(ids));
-    }
+    };
+
     const handleProfile = () => {
         navigate(`/profile/${user.id}`);
     };
@@ -46,7 +47,7 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
       if (user.profile_pic === 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png') {
           return user.profile_pic
       } else return `http://localhost:3001${user.profile_pic}`
-    }
+    };
 
     return (
         <div className="friend-icon">
@@ -62,7 +63,7 @@ const FriendIcon:React.FC<Props> = ({user, friend}) => {
             </div>
             <div className={loggedInUsers.includes(user.username) ?  "online-status" : 'offline-status'}></div>
         </div>
-    )
-}
+    );
+};
 
-export default FriendIcon
+export default FriendIcon;

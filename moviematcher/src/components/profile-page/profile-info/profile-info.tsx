@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '@chakra-ui/button';
 import './profile-info.css'
-import { IUser, IProfileInfo } from '../../../../../interfaces/userInterface';
+import { IProfileInfo } from '../../../../../interfaces/userInterface';
 import { ServerApiService } from '../../../services/ServerApi';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
@@ -24,7 +24,7 @@ const ProfileInfo= () => {
       if(pic){
         await ServerApiService.changeProfilePicture(token, pic);
         window.location.reload();
-      }
+      };
     } catch (e) {
       console.log (e);
       alert('error uploading picture')
