@@ -143,7 +143,6 @@ function App() {
       </div>
       <LoginForm />
       <CreateAccountForm />
-      <FilterForm />
       <ToastContainer 
         position ='top-center'
         autoClose={30000}

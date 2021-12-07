@@ -16,6 +16,7 @@ import { selectUserName } from '../../redux/features/user/yourUserName';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import { setRoomName } from '../../redux/features/modals/roomNameSlice';
+import FilterForm from '../../forms/filterForm';
 
 const MovieMatch = () => {
   const { room } = useParams()
@@ -139,6 +140,7 @@ const MovieMatch = () => {
       </div>
       <MatchedMovieModal  currentMovie = {matchedMovie} otherUserName = {otherUserName} showOtherFriendAccept = {showOtherFriendAccept}
                           declineWatchMovie = {declineWatchMovie} acceptWatchMovie = {acceptWatchMovie}/>
+      <FilterForm />
     </div>
   )
 }

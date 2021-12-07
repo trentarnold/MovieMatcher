@@ -140,7 +140,10 @@ io.on("connection", (socket: Socket) => {
   socket.on('handleResetToggle', (value, callBackString, id, room) => {
     socket.to(room).emit('handleResetToggle', value, callBackString, id);
   })
-
+  socket.on('handleChangeStreamingProvied', (providerId, room) => {
+    console.log('recieved')
+    socket.to(room).emit('handleChangeStreamingProvied', providerId)
+  })
 });
 
 
