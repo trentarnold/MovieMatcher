@@ -10,6 +10,7 @@ export interface  User {
     email: string,
     password: string,
     profile_pic: string,
+    streaming: number[] | null;
     createdAt: string,
     updatedAt: string
 }

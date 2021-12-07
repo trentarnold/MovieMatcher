@@ -39,21 +39,13 @@ const ActivityCard = ({activity}: any) => {
         if (doer && movie) {
             switch (activity.type){
                 case 'whitelist':
-                    return doer.username === 'You' 
-                        ? <p>{doer.username} added {movie.original_title} to your Watchlist</p>
-                        : <p>{doer.username} added {movie.original_title} to their Watchlist</p>
+                    return <p>{doer.username} added {movie.original_title} to {doer.username === 'You' ? 'your' : 'their'} Watchlist</p>
                 case 'blacklist':
-                    return doer.username === 'You' 
-                        ? <p>{doer.username} added {movie.original_title} to your Blacklist</p>
-                        : <p>{doer.username} added {movie.original_title} to their Blacklist</p>
+                    return <p>{doer.username} added {movie.original_title} to {doer.username === 'You' ? "your" : 'their'} Blacklist</p>
                 case 'rating':
-                    return activity.rating > 1
-                        ? <p>{doer.username} rated {movie.original_title} {activity.rating} stars</p>
-                        : <p>{doer.username} rated {movie.original_title} {activity.rating} star</p>
+                    return <p>{doer.username} rated {movie.original_title} {activity.rating} {activity.rating > 1 ? "stars" : "star"}</p>
                 case 'watched_movie':
-                    return friend 
-                        ? <p>{doer.username} watched {movie.original_title} with {friend.username}</p>
-                        : <p>{doer.username} watched {movie.original_title}</p>
+                    return <p>{doer.username} watched {movie.original_title}{friend ? ' with ' + friend.username : ''}</p>
             }
         } else return <div>Loading</div>
     }
