@@ -197,13 +197,13 @@ const FilterForm = () => {
 
     const handleActorClick = (id:number, name: string) => {
       const actorMiniObject:actorMini = {id, name};
-      setCast([...cast, actorMiniObject])
+      setCast((oldCast) => [...oldCast, actorMiniObject])
       setQuery('');
       socket.emit('handleAddActor', id, name, room)
     }
 
     const handleXClick = (id:number, actorName:string,) => {
-      setCast(cast.filter(actor => actor.id != id))
+      setCast((oldCast) => oldCast.filter(actor => actor.id != id))
       socket.emit('handleRemoveActor', id, actorName, room)
     }
 
@@ -237,10 +237,10 @@ const FilterForm = () => {
                   handleStreamingSwitch(providerId, true)
                 })
                 socket.on('handleAddActor', (id, name) =>{
-                  setCast([...cast, {id, name}])
+                  setCast((oldCast) => [...oldCast, {id, name}])
                 })
                 socket.on('handleRemoveActor', (id) =>{
-                  setCast(cast.filter(actor => actor.id != id))
+                  setCast((oldCast) => oldCast.filter(actor => actor.id != id))
                 })
               }, []);
 
