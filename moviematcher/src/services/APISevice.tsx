@@ -1,8 +1,7 @@
-import {Movie, Results} from '../../../interfaces/movieInterface';
+import { IMovie, IResults} from '../../../interfaces/movieInterface';
 import { movieDetailsPlaceHolder } from '../moviePlaceholder';
-import { MovieDetailsInterface, Cast } from '../../../interfaces/MovieDetails'
-import { Observable } from 'redux';
-import { ActorListInterface } from '../../../interfaces/ActorList'
+import { IMovieDetails } from '../../../interfaces/MovieDetails'
+import { IActorList } from '../../../interfaces/ActorList'
 import { actorListPlaceholder } from '../actorListPlaceholder';
 import ActorDetailsInterface from '../../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
@@ -18,7 +17,7 @@ const APIService = {
     }
   },
 
-  getPopularMovies: async(): Promise<Results> => {
+  getPopularMovies: async(): Promise<IResults> => {
     try {
       const popularMovies = await fetch('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US')
       return await popularMovies.json();
@@ -28,7 +27,7 @@ const APIService = {
     }
   },
 
-  getUpcomingMovies: async(): Promise<Results> => {
+  getUpcomingMovies: async(): Promise<IResults> => {
     try {
       const latestMovies = await fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&page=1')
       return await latestMovies.json();
@@ -38,7 +37,7 @@ const APIService = {
     }
   },
 
-  getHorrorMovies: async(): Promise<Results> => {
+  getHorrorMovies: async(): Promise<IResults> => {
     try{
       const horrorMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=27&with_watch_monetization_types=flatrate');
       return await horrorMovies.json();
@@ -48,7 +47,7 @@ const APIService = {
     }
   },
 
-  getComedyMovies: async(): Promise<Results> => {
+  getComedyMovies: async(): Promise<IResults> => {
     try{
       const comedyMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=35&with_watch_monetization_types=flatrate');
       return await comedyMovies.json();
@@ -58,7 +57,7 @@ const APIService = {
     }
   },
 
-  getActionMovies: async(): Promise<Results> => {
+  getActionMovies: async(): Promise<IResults> => {
     try{
       const actionMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=28&with_watch_monetization_types=flatrate');
       return await actionMovies.json();
@@ -68,7 +67,7 @@ const APIService = {
     }
   },
 
-  getSciFiMovies: async(): Promise<Results> => {
+  getSciFiMovies: async(): Promise<IResults> => {
     try{
       const sciFiMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=878&with_watch_monetization_types=flatrate');
       return await sciFiMovies.json();
@@ -78,7 +77,7 @@ const APIService = {
     }
   },
 
-  getDramaMovies: async(): Promise<Results> => {
+  getDramaMovies: async(): Promise<IResults> => {
     try{
       const dramaMovies = await fetch('https://api.themoviedb.org/3/discover/movie?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=18&with_watch_monetization_types=flatrate');
       return await dramaMovies.json();
@@ -88,7 +87,7 @@ const APIService = {
     }
   },
 
-  getIndividualMovie: async(id:string | number): Promise<MovieDetailsInterface>  => {
+  getIndividualMovie: async(id:string | number): Promise<IMovieDetails>  => {
     try {
       const movie  = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);
       return await movie.json()
@@ -97,7 +96,7 @@ const APIService = {
       return movieDetailsPlaceHolder
     }
   },
-  getActorList: async(id:number): Promise<ActorListInterface> => {
+  getActorList: async(id:number): Promise<IActorList> => {
     try {
         const actorList = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=66be68e2d9a8be7fee88a803b45d654b`)
         return await actorList.json()
@@ -116,7 +115,7 @@ const APIService = {
       return actorListPlaceholder
     }
   },
-  getSimilarMovies: async(id:number): Promise<Results> => {
+  getSimilarMovies: async(id:number): Promise<IResults> => {
     try {
       const similarMovies = await fetch(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US`)
       return await similarMovies.json();
@@ -135,7 +134,7 @@ const APIService = {
       return actorDetailsPlaceholder;
     }
   },
-  getCombinedCredits: async(actorId:number): Promise<Movie[]> => {
+  getCombinedCredits: async(actorId:number): Promise<IMovie[]> => {
     try {
       const similarMovies = await fetch(`https://api.themoviedb.org/3/person/${actorId}/combined_credits?api_key=66be68e2d9a8be7fee88a803b45d654b`)
       let data = await similarMovies.json();

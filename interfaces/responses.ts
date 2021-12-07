@@ -1,10 +1,10 @@
-export interface AccessTokenResponse {
-  user:User
+export interface IAccessTokenResponse {
+  user:IUser
   accessToken:string
 }
 
 
-export interface  User {
+export interface IUser {
     id: number,
     username: string,
     email: string,
@@ -14,7 +14,7 @@ export interface  User {
     updatedAt: string
 }
 
-export interface PictureChange {
+export interface IPictureChange {
   data:{
     fileName:string,
     filePath:string

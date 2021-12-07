@@ -1,4 +1,4 @@
-export interface activityInterface {
+export interface IActivityInterface {
   id: number,
   uid: number,
   movieid: number,
