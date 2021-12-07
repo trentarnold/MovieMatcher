@@ -178,7 +178,7 @@ async function getCombinedCredits(req:RequestInstance,res:Response) {
      params = (req.originalUrl.split('?')[1]);
   }
   params = Number(params);
-    const Credits = APIMovieService.getActorDetailsQuery(params);
+    const Credits = await APIMovieService.getActorDetailsQuery(params);
     res.status(200).send(Credits);
   } catch (err: any) {
     console.log(err.message);
@@ -195,7 +195,7 @@ async function getIndividualMovie(req:RequestInstance,res:Response) {
      params = (req.originalUrl.split('?')[1]);
   }
   params = Number(params);
-    const Credits = APIMovieService.getActorDetailsQuery(params);
+    const Credits = await APIMovieService.getActorDetailsQuery(params);
     res.status(200).send(Credits);
   } catch (err: any) {
     console.log(err.message);
