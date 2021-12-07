@@ -37,14 +37,11 @@ const MovieMatch = () => {
     if (room) {dispatch(setRoomName(room))
     dispatch(turnOnMovieFilter())
     }
-    socket.on('movies',  (async(movieArray: Movie[], room:string) => {
+    socket.on('movies', ((movies: Movie[], room:string) => {
       const users = room.split('+');
       users[0] === userName ? setOtherUserName(users[1]) : setOtherUserName(users[0]);
-      console.log(movieArray, 'movies from server')
-      await setMovies(() => movieArray)
-      console.log(movies, 'after set movies')
-      await setCurrentMovie(movies[0])
-
+      setMovies(movies)
+      setCurrentMovie(movies[0])
     }))
     socket.on('acceptMovie', (movie:Movie)=>{
       setAcceptedMovie(acceptedMovies => [...acceptedMovies, movie]);

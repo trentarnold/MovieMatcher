@@ -96,11 +96,18 @@ const FilterForm = () => {
     const [filters, setFilters] = useState<filterData[]>([])
     const [bothAccepthFilters, setBothAcceptFilters] = useState<boolean>(false);
     const [otherUserFilters, setOtherUserFilter] = useState<filterData>()
-
+    const [showOtherFriendAccepts, setShowOtherFriendAccepts] = useState<boolean>(false);
+    const [showYouAccepted, setShowYouAccepted] = useState<boolean>(false)
+    const [changed, setChanged] = useState<boolean>(false);
     const [genres, setGenres] = useState<string[]>([]);
     const [avoidGenres, setAvoidGenres] = useState<string[]>([]);
     const [cast, setCast] = useState<actorMini[]>([]);
+<<<<<<< HEAD
 
+=======
+    const [otherUsername, setOtherUsername] = useState<string>('')
+    const [castIds, setCastIds] = useState<number[]>([]);
+>>>>>>> f26ea8b863119bc92cf695cc6588058ebc9a0f01
     const [providers, setProviders] = useState<number[]>([]);
     const [query, setQuery] = useState<string>('')
     const [queryResults, setQueryResults] = useState<ActorResult[]>([])
@@ -108,7 +115,7 @@ const FilterForm = () => {
         dispatch(turnOffMovieFilter())
         onClose();
     }
-    console.log(providers, 'this the providers')
+
 
     const handleSubmit = () => {
       if(!bothAccepthFilters) {
@@ -116,9 +123,15 @@ const FilterForm = () => {
         let otherUsername = users[0] === loggedInUser ? users[1] : users[0];
         socket.emit('oneUserAccepted', room, otherUsername);
         setBothAcceptFilters(true);
+        setShowYouAccepted(true)
       }else {
         const filters = {genres, avoidGenres, cast, providers}
+<<<<<<< HEAD
         socket.emit('submitFilters', filters, room)
+=======
+        socket.emit('join', filters, room);
+        // socket.emit('submitFilters', filters, room)
+>>>>>>> f26ea8b863119bc92cf695cc6588058ebc9a0f01
         handleClose();
       }
 
@@ -211,6 +224,7 @@ const FilterForm = () => {
     }, [open])
 
       useEffect(() => {
+<<<<<<< HEAD
         socket.on('sendFilter', (username:string, filter:filterObject) => {
           console.log('getting filter')
           console.log(filter)
@@ -242,6 +256,79 @@ const FilterForm = () => {
           setBothAcceptFilters(true);
         })
       }, []);
+=======
+                socket.on('sendFilter', (username:string, filter:filterObject) => {
+                  console.log('getting filter')
+                  console.log(filter)
+                  if(username != loggedInUser) {
+                    setOtherUserFilter({username, filter})
+                  }
+                })
+                socket.on('handleAddToggle', (value, callBackString, id) => {
+                  handleChange(value, callBackString, id, true);
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
+                })
+                socket.on('handleResetToggle', (value, callBackString, id) => {
+                  handleChange(value, callBackString, id, true);
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
+                })
+                socket.on('handleRemoveToggle', (value, callBackString, id) => {
+                  handleChange(value, callBackString, id, true);
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
+                })
+                socket.on('handleChangeStreamingProvied', (providerId) => {
+                  console.log('recieved');
+                  handleStreamingSwitch(providerId, true)
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
+                })
+                socket.on('handleAddActor', (id, name) =>{
+                  setCast((oldCast) => [...oldCast, {id, name}])
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
+                })
+                socket.on('handleRemoveActor', (id) =>{
+                  setCast((oldCast) => oldCast.filter(actor => actor.id != id))
+                  if(showYouAccepted) {
+                    setChanged(true)
+                    setBothAcceptFilters(false)
+                    setShowYouAccepted(false)
+                    socket.emit('changed', room)
+                  }
+                })
+                socket.on('oneUserAccepted', (otherUsername) => {
+                  setShowOtherFriendAccepts(true)
+                  setBothAcceptFilters(true);
+                  setOtherUsername(otherUsername);
+                })
+                socket.on('movies', () => {
+                  handleClose();
+                })
+              }, []);
+>>>>>>> f26ea8b863119bc92cf695cc6588058ebc9a0f01
 
     useEffect(() =>{
       async function searchActors () {
@@ -334,6 +421,9 @@ const FilterForm = () => {
                     </div>
                 </Flex>
                 <Flex justifyContent='space-between' margin="10px">
+                { changed && <div style={{color:'red'}}>{`${otherUsername} has changed the filters`}</div>}
+                { showOtherFriendAccepts && <div style={{color:'green'}}>{`${otherUsername} has accepted these filters`}</div>}
+                { showYouAccepted && <div style={{color:'green'}}>{`You have accepted these filters, waiting for ${otherUsername}`}</div>}
                   <Button onClick={handleSubmit} >Apply Filters</Button>
                 </Flex>
               </FormControl>
