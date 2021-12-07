@@ -121,12 +121,9 @@ const FilterForm = () => {
         setBothAcceptFilters(true);
         setShowYouAccepted(true)
       }else {
-
         const filters = {genres, avoidGenres, cast, providers}
         socket.emit('join', filters, room);
         // socket.emit('submitFilters', filters, room)
-        handleClose();
-
         handleClose();
       }
 
