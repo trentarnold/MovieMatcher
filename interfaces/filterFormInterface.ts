@@ -19,3 +19,8 @@ export interface ActorResult {
     username: string,
     filter:filterObject
   }
+
+  export interface actorMini {
+    name: string,
+    id: number,
+  }

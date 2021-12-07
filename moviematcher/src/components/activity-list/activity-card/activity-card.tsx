@@ -25,7 +25,10 @@ const ActivityCard = ({activity}: any) => {
             setDoer(doer);
             if (activity.friendid) {
                 const friend = await ServerApiService.getSpecificUser(accessToken, activity.friendid);
-                if (friend.id === userID) friend.username = 'You';
+                if (friend.id === userID) {
+                    friend.username = doer.username;
+                    doer.username = 'You'
+                };
                 setFriend(friend)
             }
         }
@@ -38,11 +41,11 @@ const ActivityCard = ({activity}: any) => {
                 case 'whitelist':
                     return doer.username === 'You' 
                         ? <p>{doer.username} added {movie.original_title} to your Watchlist</p>
-                        : <p>{doer.username} added {movie.original_title} to thier Watchlist</p>
+                        : <p>{doer.username} added {movie.original_title} to their Watchlist</p>
                 case 'blacklist':
                     return doer.username === 'You' 
                         ? <p>{doer.username} added {movie.original_title} to your Blacklist</p>
-                        : <p>{doer.username} added {movie.original_title} to thier Blacklist</p>
+                        : <p>{doer.username} added {movie.original_title} to their Blacklist</p>
                 case 'rating':
                     return activity.rating > 1
                         ? <p>{doer.username} rated {movie.original_title} {activity.rating} stars</p>

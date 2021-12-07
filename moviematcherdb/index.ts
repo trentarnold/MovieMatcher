@@ -27,6 +27,8 @@ interface ServerToClientEvents {
   bothUsersAccepted: (userName:string, movieId:string, room:string) => void;
   filter: (room: string, filter:filter) => void;
   sendFilter:(username: string, filters:filter) => void;
+  handleAddActor:(id:number, name:string, room:string) => void;
+  handleRemoveActor:(id:number, name:string, room:string) => void;
 }
 
 interface ClientToServerEvents {
@@ -140,10 +142,22 @@ io.on("connection", (socket: Socket) => {
   socket.on('handleResetToggle', (value, callBackString, id, room) => {
     socket.to(room).emit('handleResetToggle', value, callBackString, id);
   })
+<<<<<<< HEAD
   socket.on('handleChangeStreamingProvied', (providerId, room) => {
     console.log('recieved')
     socket.to(room).emit('handleChangeStreamingProvied', providerId)
   })
+=======
+  
+  socket.on('handleAddActor', (id:number, name:string, room:string) => {
+    socket.to(room).emit('handleAddActor', id, name);
+  })
+
+  socket.on('handleRemoveActor', (id:number, name:string, room:string) => {
+    socket.to(room).emit('handleRemoveActor', id);
+  })
+
+>>>>>>> 1353ccd436a3c629142614c35f8a3719534a2b4b
 });
 
 
