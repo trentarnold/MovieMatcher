@@ -102,14 +102,14 @@ const FilterForm = () => {
     const [cast, setCast] = useState<actorMini[]>([]);
 
     const [castIds, setCastIds] = useState<number[]>([]);
-    const [providers, setProviders] = useState<string[]>([]);
+    const [providers, setProviders] = useState<number[]>([]);
     const [query, setQuery] = useState<string>('')
     const [queryResults, setQueryResults] = useState<ActorResult[]>([])
-    console.log('genres', genres);
     const handleClose = () => {
         dispatch(turnOffMovieFilter())
         onClose();
     }
+    console.log(providers, 'this the providers')
 
     const handleSubmit = () => {
       const filterObject = {providers, genres, avoidGenres, cast}
@@ -156,12 +156,18 @@ const FilterForm = () => {
       }
     }
 
-    const handleStreamingSwitch = (providerId:string) => {
-      if(providers.indexOf(providerId) === -1) {
-        setProviders([...providers, providerId]);
-      } else {
-        setProviders(providers.filter(provider => provider !== providerId));
+    const handleStreamingSwitch = (providerId:number, sent:boolean) => {
+      setProviders((newProviders) => {
+        if(newProviders.indexOf(providerId) === -1) {
+          return [...newProviders, providerId]
+        }else {
+          return newProviders.filter(provider => provider !== providerId)
+        }
+      })
+      if(!sent) {
+        socket.emit('handleChangeStreamingProvied', providerId, room)
       }
+
     };
 
     const handleChange = (value:string, callBackString:string, id: string, sent:boolean) => {
@@ -184,12 +190,6 @@ const FilterForm = () => {
         }
       }
     }
-    // socket.on('handleRemoveToggle', (value, callBackString, id, room) => {
-    //   socket.to(room).emit('handleRemoveToggle', value, callBackString, id);
-    // })
-    // socket.on('handleResetToggle', (value, callBackString, id, room) => {
-    //   socket.to(room).emit('handleResetToggle', value, callBackString, id);
-    // })
 
     const handleQueryChange = (e:React.ChangeEvent<HTMLInputElement>) => {
       setQuery(e.currentTarget.value);
@@ -214,12 +214,6 @@ const FilterForm = () => {
         setOtherUserFilter(undefined);
       }
     }, [open])
-    // useEffect(() => {
-    //   console.log(genres);
-    // }, genres)
-    useEffect (()=>{
-      console.log(otherUserFilters)
-      },[otherUserFilters])
 
       useEffect(() => {
                 socket.on('sendFilter', (username:string, filter:filterObject) => {
@@ -230,16 +224,17 @@ const FilterForm = () => {
                   }
                 })
                 socket.on('handleAddToggle', (value, callBackString, id) => {
-                  console.log(id, 'handleAddToggle')
                   handleChange(value, callBackString, id, true);
                 })
                 socket.on('handleResetToggle', (value, callBackString, id) => {
-                  console.log(id, 'handleAddToggle')
                   handleChange(value, callBackString, id, true);
                 })
                 socket.on('handleRemoveToggle', (value, callBackString, id) => {
-                  console.log(id, 'handleAddToggle')
                   handleChange(value, callBackString, id, true);
+                })
+                socket.on('handleChangeStreamingProvied', (providerId) => {
+                  console.log('recieved');
+                  handleStreamingSwitch(providerId, true)
                 })
                 socket.on('handleAddActor', (id, name) =>{
                   setCast([...cast, {id, name}])
@@ -333,7 +328,7 @@ const FilterForm = () => {
                             return(
                                 <div key={provider.provider_id} style={{display: 'flex', flexDirection:"column", justifyContent: "center" }}>
                                 <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name}/>
-                                <Switch onChange={() => handleStreamingSwitch(provider.provider_id)} id={provider.provider_name} />
+                                <Switch onChange={() => handleStreamingSwitch(provider.provider_id, false)} id={provider.provider_name} isChecked={providers.includes(provider.provider_id)}/>
                                 </div>
                             ) 
                             })
