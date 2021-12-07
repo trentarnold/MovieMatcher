@@ -195,13 +195,13 @@ const FilterForm = () => {
 
     const handleActorClick = (id:number, name: string) => {
       const actorMiniObject:actorMini = {id, name};
-      setCast([...cast, actorMiniObject])
+      setCast((oldCast) => [...oldCast, actorMiniObject])
       setQuery('');
       socket.emit('handleAddActor', id, name, room)
     }
 
     const handleXClick = (id:number, actorName:string,) => {
-      setCast(cast.filter(actor => actor.id != id))
+      setCast((oldCast) => oldCast.filter(actor => actor.id != id))
       socket.emit('handleRemoveActor', id, actorName, room)
     }
 
@@ -214,33 +214,33 @@ const FilterForm = () => {
     }, [open])
 
       useEffect(() => {
-        socket.on('sendFilter', (username:string, filter:filterObject) => {
-          console.log('getting filter')
-          console.log(filter)
-          if(username != loggedInUser) {
-            setOtherUserFilter({username, filter})
-          }
-        })
-        socket.on('handleAddToggle', (value, callBackString, id) => {
-          handleChange(value, callBackString, id, true);
-        })
-        socket.on('handleResetToggle', (value, callBackString, id) => {
-          handleChange(value, callBackString, id, true);
-        })
-        socket.on('handleRemoveToggle', (value, callBackString, id) => {
-          handleChange(value, callBackString, id, true);
-        })
-        socket.on('handleChangeStreamingProvied', (providerId) => {
-          console.log('recieved');
-          handleStreamingSwitch(providerId, true)
-        })
-        socket.on('handleAddActor', (id, name) =>{
-          setCast([...cast, {id, name}])
-        })
-        socket.on('handleRemoveActor', (id) =>{
-          setCast(cast.filter(actor => actor.id != id))
-        })
-      }, []);
+                socket.on('sendFilter', (username:string, filter:filterObject) => {
+                  console.log('getting filter')
+                  console.log(filter)
+                  if(username != loggedInUser) {
+                    setOtherUserFilter({username, filter})
+                  }
+                })
+                socket.on('handleAddToggle', (value, callBackString, id) => {
+                  handleChange(value, callBackString, id, true);
+                })
+                socket.on('handleResetToggle', (value, callBackString, id) => {
+                  handleChange(value, callBackString, id, true);
+                })
+                socket.on('handleRemoveToggle', (value, callBackString, id) => {
+                  handleChange(value, callBackString, id, true);
+                })
+                socket.on('handleChangeStreamingProvied', (providerId) => {
+                  console.log('recieved');
+                  handleStreamingSwitch(providerId, true)
+                })
+                socket.on('handleAddActor', (id, name) =>{
+                  setCast((oldCast) => [...oldCast, {id, name}])
+                })
+                socket.on('handleRemoveActor', (id) =>{
+                  setCast((oldCast) => oldCast.filter(actor => actor.id != id))
+                })
+              }, []);
 
     useEffect(() =>{
       async function searchActors () {
