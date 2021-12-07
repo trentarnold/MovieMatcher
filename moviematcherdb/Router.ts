@@ -22,7 +22,8 @@ const {
    addBlacklist,
    deleteBlacklist,
    getBlacklist,
-   getByUsername
+   getByUsername,
+   toggleStreaming
 } = require('./Controllers/UserController');
 
 router.put('/user/profile',authMiddleware, updatePictureMiddleware, updateUser);
@@ -43,7 +44,7 @@ router.post('/user/blacklist', authMiddleware, addBlacklist);
 router.delete('/user/blacklist', authMiddleware, deleteBlacklist);
 router.get('/user/blacklist', authMiddleware, getBlacklist);
 router.post('/blacklist', authMiddleware, getBlacklist);
-
+router.put('/user/streaming/:streamID', authMiddleware, toggleStreaming);
 
 //Movie Controller Routes
 const {
@@ -60,7 +61,7 @@ const {
   getCombinedCredits
 
 } = require('./Controllers/MovieController');
-router.post('/user/watched', authMiddleware, getWatchedMovie)
+router.post('/user/watched', authMiddleware, getWatchedMovie) 
 router.post('/user/addWatched', authMiddleware, addWatchedMovie)
 router.post('/user/movieCount', authMiddleware, movieWatchCount)
 router.post('/movies/APIservice?:params', getFileredMovies )
@@ -82,6 +83,6 @@ const {
 router.post('/activity',authMiddleware, getActivity)
 router.post('/rating', authMiddleware, addRating)
 router.delete('/rating', authMiddleware, deleteRating)
-router.get('/rating/:movieID?', authMiddleware, getRatings)
+router.get('/rating/:movieID?', authMiddleware, getRatings) 
 
 module.exports = router;

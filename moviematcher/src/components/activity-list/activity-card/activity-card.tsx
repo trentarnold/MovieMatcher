@@ -1,68 +1,62 @@
-import React, {useState, useEffect} from 'react'
-import moment from 'moment'
-import './activity-card.css'
-import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
+import {useState, useEffect} from 'react';
+import moment from 'moment';
+import './activity-card.css';
+import { IMovieDetails } from '../../../../../interfaces/MovieDetails';
 import {IProfileInfo} from '../../../../../interfaces/userInterface';
 import { ServerApiService } from '../../../services/ServerApi';
 import APIService from '../../../services/APISevice';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectUserId } from '../../../redux/features/user/userIdSlice';
+import { useNavigate } from "react-router-dom";
 
 const ActivityCard = ({activity}: any) => {
+    const navigate = useNavigate();
     const accessToken = useAppSelector(selectAuth);
     const userID = useAppSelector(selectUserId);
-    const [doer, setDoer] = useState<IProfileInfo>()
+    const [doer, setDoer] = useState<IProfileInfo>();
     const [friend, setFriend] = useState<IProfileInfo>();
-    const [movie, setMovie] = useState<MovieDetailsInterface>();
+    const [movie, setMovie] = useState<IMovieDetails>();
 
     useEffect(() => {
         async function fetchData() {
-            const movie = await APIService.getIndividualMovie(activity.movieid)
+            const movie = await APIService.getIndividualMovie(activity.movieid);
             setMovie(movie);
-            const doer = await ServerApiService.getSpecificUser(accessToken, activity.uid)
+            const doer = await ServerApiService.getSpecificUser(accessToken, activity.uid);
             if (doer.id === userID) doer.username = 'You';
             setDoer(doer);
             if (activity.friendid) {
                 const friend = await ServerApiService.getSpecificUser(accessToken, activity.friendid);
                 if (friend.id === userID) {
                     friend.username = doer.username;
-                    doer.username = 'You'
+                    doer.username = 'You';
                 };
-                setFriend(friend)
+                setFriend(friend);
             }
-        }
-        fetchData()
-    }, [activity])
+        };
+        fetchData();
+    }, [activity]);
 
     function outputActivity() {
         if (doer && movie) {
-            switch (activity.type){
+            switch (activity.type) {
                 case 'whitelist':
-                    return doer.username === 'You' 
-                        ? <p>{doer.username} added {movie.original_title} to your Watchlist</p>
-                        : <p>{doer.username} added {movie.original_title} to their Watchlist</p>
+                    return <p>{doer.username} added {movie.original_title} to {doer.username === 'You' ? 'your' : 'their'} Watchlist</p>
                 case 'blacklist':
-                    return doer.username === 'You' 
-                        ? <p>{doer.username} added {movie.original_title} to your Blacklist</p>
-                        : <p>{doer.username} added {movie.original_title} to their Blacklist</p>
+                    return <p>{doer.username} added {movie.original_title} to {doer.username === 'You' ? "your" : 'their'} Blacklist</p>
                 case 'rating':
-                    return activity.rating > 1
-                        ? <p>{doer.username} rated {movie.original_title} {activity.rating} stars</p>
-                        : <p>{doer.username} rated {movie.original_title} {activity.rating} star</p>
+                    return <p>{doer.username} rated {movie.original_title} {activity.rating} {activity.rating > 1 ? "stars" : "star"}</p>
                 case 'watched_movie':
-                    return friend 
-                        ? <p>{doer.username} watched {movie.original_title} with {friend.username}</p>
-                        : <p>{doer.username} watched {movie.original_title}</p>
+                    return <p>{doer.username} watched {movie.original_title}{friend ? ' with ' + friend.username : ''}</p>
             }
         } else return <div>Loading</div>
-    }
+    };
 
     return (
         <div className="activity-card">
             <div>
                 {movie 
-                    ? <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" style={{height: "6rem"}}></img>
+                    ? <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" style={{height: "6rem"}} onClick={() => navigate(`/movieDetails/${movie.id}`)}></img>
                     : <div />
                 }
             </div>
@@ -72,7 +66,7 @@ const ActivityCard = ({activity}: any) => {
             </div>
             <div className="activity-movie-thumb"></div>
         </div>
-    )
-}
+    );
+};
 
-export default ActivityCard
+export default ActivityCard;

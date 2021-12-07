@@ -17,6 +17,7 @@ export interface IProfileInfo {
   username: string,
   email: string,
   profile_pic: string,
+  streaming: number[] | null;
   createdAt: string,
   updatedAt: string,
 }

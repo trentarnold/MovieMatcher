@@ -1,4 +1,4 @@
-export interface StreamProviders {
+export interface IStreamProviders {
   id:number,
   results: []
 }

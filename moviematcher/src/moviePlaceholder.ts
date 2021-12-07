@@ -1,6 +1,6 @@
-import { Movie } from '../../interfaces/movieInterface';
-import { MovieDetailsInterface } from '../../interfaces/MovieDetails';
-export const moviePlaceholder:Movie = {
+import { IMovie } from '../../interfaces/movieInterface';
+import { IMovieDetails } from '../../interfaces/MovieDetails';
+export const moviePlaceholder:IMovie = {
   adult: true,
   backdrop_path: 'String',
   genre_ids: [1,2],
@@ -34,7 +34,7 @@ const productionCompany = {
   iso_639_1: 'string',
   name: 'string'
   }
-export const movieDetailsPlaceHolder:MovieDetailsInterface = {
+export const movieDetailsPlaceHolder:IMovieDetails = {
   adult: true,
   backdrop_path: 'string',
   belongs_to_collection:'any',

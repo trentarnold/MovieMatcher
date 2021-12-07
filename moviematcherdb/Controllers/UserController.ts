@@ -4,7 +4,7 @@ const path = require('path');
 import {Request, Response } from 'express';
 import { RequestInstance } from '../middleware/authMiddleware'
 import { addFriendQuery, deleteFriendQuery, findAllFriends } from '../models/queries/friendsQueries';
-import { createUserQuery, fetchUserQuery, getAllPeopleQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
+import { toggleStreamingService, createUserQuery, fetchUserQuery, getAllPeopleQuery, searchByUsername, updateUserQuery } from '../models/queries/userQueries';
 import {addWhitelistQuery, fetchWhitelistQuery, deleteWhitelistQuery,fetchBlacklistQuery, addBlacklistQuery, deleteBlacklistQuery } from '../models/queries/listQueries'
 require('dotenv').config();
 
@@ -269,8 +269,21 @@ async function getBlacklist (req: RequestInstance, res: Response) {
     console.log(err.message)
     res.sendStatus(500)
   }
-
 }
+
+async function toggleStreaming (req:RequestInstance,res:Response) {
+  try {
+    if(req.user && req.params){
+      const streamingServices = await toggleStreamingService(req.user.id, Number(req.params.streamID));
+      res.status(200).send(streamingServices);
+      }
+  }
+  catch (err:any) {
+    console.log(err.message)
+    res.sendStatus(500)
+  }
+}
+
 
 module.exports = {
   updateUser,
@@ -289,4 +302,5 @@ module.exports = {
   deleteBlacklist,
   getBlacklist,
   getSpecificUser,
+  toggleStreaming,
 }

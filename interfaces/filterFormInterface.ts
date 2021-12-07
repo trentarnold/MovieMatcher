@@ -1,4 +1,4 @@
-export interface ActorResult {
+export interface IActorResult {
     adult?:boolean,
     gender: number,
     id: number,
@@ -8,19 +8,19 @@ export interface ActorResult {
     profile_path: string,
   }
   
- export interface filterObject {
+ export interface IFilterObject {
     genres:string[],
     avoidGenres:string[],
     cast:string[],
     providers:string[],
   }
   
- export interface filterData {
+ export interface IFilterData {
     username: string,
-    filter:filterObject
+    filter: IFilterObject
   }
 
-  export interface actorMini {
+  export interface IActorMini {
     name: string,
     id: number,
   }

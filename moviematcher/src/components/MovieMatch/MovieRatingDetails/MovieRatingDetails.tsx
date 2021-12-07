@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import './MovieRatingDetails.css'
 import APIService from '../../../services/APISevice'
-import { Movie } from '../../../../../interfaces/movieInterface'
-import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
+import { IMovie } from '../../../../../interfaces/movieInterface'
+import { IMovieDetails } from '../../../../../interfaces/MovieDetails'
 import { movieDetailsPlaceHolder } from '../../../moviePlaceholder'
 import StarRatings from 'react-star-ratings';
 import ButtonHolder from '../../movie-page/movie-details/ButtonHolder'
@@ -12,19 +12,19 @@ import {useAppSelector, useAppDispatch} from '../../../redux/app/hooks';
 import {selectAuth} from '../../../redux/features/modals/authSlice'
 import {setActivities} from '../../../redux/features/user/activitiesSlice'
 import {addRating} from '../../../redux/features/user/ratingsSlice'
-import { FavoriteMovieInterface } from '../../../../../interfaces/favoriteMovieInterface'
+import { IFavoriteMovie } from '../../../../../interfaces/favoriteMovieInterface'
 import moment from 'moment';
 type Props = {
-  currentMovie:Movie,
+  currentMovie:IMovie,
   handleAccept: () => void;
   handleDeny: () => void;
 }
 
 const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleDeny}) => {
-  const [movieDetails, setMovieDetails] = useState<MovieDetailsInterface>(movieDetailsPlaceHolder);
+  const [movieDetails, setMovieDetails] = useState<IMovieDetails>(movieDetailsPlaceHolder);
   const [streamProviders, setStreamProviders] = useState<any>({flatrate:[]});
   const [ratingModalToggle, setRatingModalToggle] = useState<boolean>(false);
-  const [watchedMovies, setWatchedMovies] = useState<FavoriteMovieInterface[]>([])
+  const [watchedMovies, setWatchedMovies] = useState<IFavoriteMovie[]>([])
   const accessToken = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const [newRating, setNewRating] = useState<number>(0)
@@ -47,7 +47,7 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
    async function fetchWatchedMovie() {
     const movies = await ServerApiService.getWatchedMovies(accessToken);
     if (Array.isArray(movies)) {
-        let movieArr:FavoriteMovieInterface[] = [];
+        let movieArr:IFavoriteMovie[] = [];
         movies.map(movie => {
             if (movie.movieid === Number(currentMovie.id)) {
                 movieArr.push(movie);
@@ -111,7 +111,7 @@ function daysSince(date: string) {
                 </div>
                 <div className='movie-details-description'>{currentMovie.overview}</div>
                 <div className='movie-details-genres'>
-                        {movieDetails.genres.length && movieDetails.genres.map(genre => <div key={genre.id}> {genre.name}</div>)}
+                        {movieDetails.genres.length && movieDetails.genres.map((genre:any) => <div key={genre.id}> {genre.name}</div>)}
                 </div>
 
                 {streamProviders.flatrate.length &&
@@ -126,7 +126,7 @@ function daysSince(date: string) {
                 }
                 <div className='movie-details-production-company'>
                     <div className='movie-details-company-logo-container'>
-                    {movieDetails.production_companies.map((company, index) => {
+                    {movieDetails.production_companies.map((company:any, index:number) => {
                         return (
                             <div>
                                 {company.logo_path && index < 5?

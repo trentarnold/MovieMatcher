@@ -15,46 +15,29 @@ import { useAppDispatch, useAppSelector } from './redux/app/hooks';
 import { ServerApiService } from './services/ServerApi';
 import { selectAuth } from './redux/features/modals/authSlice';
 import { setFriendIds } from './redux/features/user/friendsIdSlice';
-import { User } from '../../interfaces/responses';
+import { IUser } from '../../interfaces/responses';
 import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
 import { setBlackListIds } from './redux/features/user/blackListids';
-import io, { Socket } from 'socket.io-client';
 import { setLoggedInUser} from './redux/features/user/loggedInUsers';
-import { setSocketRef, selectSocketRef } from './redux/features/socket/socketRefSlice';
+import { setSocketRef } from './redux/features/socket/socketRefSlice';
 import { useNavigate } from 'react-router-dom';
 import  MovieMatch  from './components/MovieMatch/MovieMatch'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setRatings } from './redux/features/user/ratingsSlice';
-import { selectMovieFilter, turnOnMovieFilter } from './redux/features/modals/movieFilterSlice';
-import FilterForm from './forms/filterForm';
 import { setActivities } from './redux/features/user/activitiesSlice';
 import { setUserName } from './redux/features/user/yourUserName';
 import {socket} from './socket'
 import {filterData} from '../../interfaces/filterFormInterface';
+import { setUserStreaming } from './redux/features/user/userStreaming';
+import StreamingServiceList from './components/streaming-services/StreamingServiceList';
+
 
 function App() {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(selectAuth);
   const navigate = useNavigate();
-  const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>();
   const toastRef = useRef<ReactText>('');
-  interface ServerToClientEvents {
-    noArg: () => void;
-    basicEmit: (a: number, b: string, c: Buffer) => void;
-    withAck: (d: string, callback: (e: number) => void) => void;
-    message: () => void;
-    loggedInUsers: (loggedInUsers:string[]) => void;
-    invite: (room:string, otherUserName:string, username:string) => void;
-    accepted: (room:string) => void;
-    denied: (room:string) => void;
-    applyFilter: (room:string, filters:{}) => void;
-  }
-  interface ClientToServerEvents {
-    login: (username:string) => void;
-    accepted: (room:string) => void;
-  }
-  
 
   useEffect(() => {
     document.title = "Movie Matcher"
@@ -71,7 +54,7 @@ function App() {
             openToast();
         })
         socket.on('denied', (room:string) => {
-          toast('You got denied bitch')
+          toast('Your request got denied')
         })
         socket.on('accepted', (room:string) => {
           navigate(`/movieMatch/${room}`)
@@ -82,11 +65,10 @@ function App() {
     }
   }, [accessToken]);
 
-
   useEffect(() => {
     const fetchFriends = async() => {
      let userFriends = await ServerApiService.getFriends(accessToken);
-     let ids = userFriends.map((friend:User) => friend.id);
+     let ids = userFriends.map((friend:IUser) => friend.id);
      dispatch(setFriendIds(ids));
     }
     const fetchFavoriteMovies = async() => {
@@ -113,6 +95,7 @@ function App() {
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
+      dispatch(setUserStreaming(info.streaming));
     }
     if(accessToken) {
       fetchFriends();
@@ -137,6 +120,7 @@ function App() {
           <Route path='/actorDetails/:id' element = {<ActorPage />} />
           <Route path='/profile/:id' element = {<ProfilePage />} />
           <Route path ='/movieMatch/:room' element = {<MovieMatch />} />
+          <Route path ='/streaming' element = {<StreamingServiceList />} />
       </Routes>
       <div className="outlet">
         <Outlet />

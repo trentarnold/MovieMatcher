@@ -1,6 +1,6 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Button } from '@chakra-ui/button';
-import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../../../../interfaces/MovieDetails';
 import {useAppDispatch, useAppSelector} from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } from '../../../redux/features/user/watchListIds';
@@ -11,8 +11,9 @@ import { selectRatings, removeRating } from '../../../redux/features/user/rating
 import StarRatings from 'react-star-ratings';
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
 require('./ButtonHolder.css');
+
 type Props = {
-  movie:MovieDetailsInterface,
+  movie:IMovieDetails,
   setRatingModalToggle?:any,
   setNewRating?: any,
   flexColumn?: boolean,
