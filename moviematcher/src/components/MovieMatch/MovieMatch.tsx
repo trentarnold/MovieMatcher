@@ -37,7 +37,7 @@ const MovieMatch = () => {
     if (room) {dispatch(setRoomName(room))
     dispatch(turnOnMovieFilter())
     }
-    socket.emit('join', room);
+    // socket.emit('join', room);
     socket.on('movies', ((movies: Movie[], room:string) => {
       const users = room.split('+');
       users[0] === userName ? setOtherUserName(users[1]) : setOtherUserName(users[0]);

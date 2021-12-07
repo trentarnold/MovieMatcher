@@ -9,6 +9,7 @@ import { Request, Response } from 'express';
 import { Server, Socket } from "socket.io";
 import axios from 'axios';
 import { Movie } from '../interfaces/movieInterface';
+import { APIMovieService } from './Services/APIMovieService';
 const { createServer } = require("http");
 const httpServer = createServer(app);
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(httpServer, { /* options */ });
@@ -106,10 +107,20 @@ io.on("connection", (socket: Socket) => {
   socket.on('declineWatchMovie', (userName, room, title) => {
     socket.to(room).emit('declineWatchMovie', userName, title)
   })
-  socket.on('join',async(room) =>{
-    const response =  await axios.get('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US');
-    const movieArray = response.data.results
+  // socket.on('join',async(room) =>{
+  //   const response =  await axios.get('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US');
+  //   const movieArray = response.data.results
+  //   io.in(room).emit('movies', movieArray, room)
+  // })
+  socket.on('join', async (filters, room) => {
+    const withGenres = `&with_genres=${filters.genres}`;
+    const withoutGenres = `&without_genres=${filters.avoidGenres}`;
+    const cast = `&with_cast=${filters.cast.map((actor:any) =>actor.id)}`;
+    const watchProviders = `&with_watch_providers=${filters.providers}`;
+    const response = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + watchProviders);
+    const movieArray = response.results;
     io.in(room).emit('movies', movieArray, room)
+    console.log('emitted movies')
   })
   socket.on('foundMutualMovie', (room:string, movie:Movie)=>{
     io.in(room).emit('foundMutualMovie', room, movie)
