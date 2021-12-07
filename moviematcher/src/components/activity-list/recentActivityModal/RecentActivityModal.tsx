@@ -15,9 +15,8 @@ import { selectActivityListModal, turnOffActivityListModal } from '../../../redu
 import { ServerApiService } from '../../../services/ServerApi';
 import APIService from '../../../services/APISevice';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
-import { User } from '../../../../../interfaces/responses';
 import { UserPlaceholder } from '../../../UserPlaceholder';
-import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../../../../interfaces/MovieDetails';
 import { movieDetailsPlaceHolder} from '../../../moviePlaceholder';
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
 import { addRating } from '../../../redux/features/user/ratingsSlice';
@@ -29,37 +28,41 @@ type Props ={
 }
 
 const RecentActivityModal:React.FC<Props> = ({otherUserName, movieId}) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [currentMovie, setCurrentMovie] = useState<MovieDetailsInterface>(movieDetailsPlaceHolder)
+  const { onOpen, onClose } = useDisclosure();
+  const [currentMovie, setCurrentMovie] = useState<IMovieDetails>(movieDetailsPlaceHolder);
   const open = useAppSelector(selectActivityListModal);
   const accessToken = useAppSelector(selectAuth);
-  const [otherUserInformation, setOtherUserInformation] = useState<any>(UserPlaceholder)
-  const [ratingModalToggle, setRatingModalToggle] = useState<boolean>(false)
+  const [otherUserInformation, setOtherUserInformation] = useState<any>(UserPlaceholder);
+  const [ratingModalToggle, setRatingModalToggle] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const [newRating, setNewRating] = useState<number>(0)
+  const [newRating, setNewRating] = useState<number>(0);
+
   useEffect(() => {
     let isCancelled = false;
+
     const getOtherUserInformation = async() => {
       const otherUser = await ServerApiService.getOtherUserByUserName(accessToken, otherUserName);
       if(!isCancelled) {
         setOtherUserInformation(otherUser);
       }
-    }
+    };
 
     async function fetchMovie () {
         const movieDetails = await APIService.getIndividualMovie(movieId);
         if(!isCancelled) {
             setCurrentMovie(movieDetails);
         }
-    }
+    };
+
     if(open) {
-      onOpen()
-      fetchMovie()
+      onOpen();
+      fetchMovie();
       getOtherUserInformation();
-    }
+    };
+
     return () => {
       isCancelled = true;
-    }
+    };
     
   }, [open])
   const handleClose = () => {
@@ -77,7 +80,7 @@ const handleAddToWatched = async() => {
   let response = await ServerApiService.addWatchedMovie(accessToken, {movieID: Number(movieId), friendID: otherUserInformation.id});
   const activities = await ServerApiService.getActivities(accessToken);
   dispatch(setActivities(activities));
-  handleClose()
+  handleClose();
 }
   return (
     <DarkMode>

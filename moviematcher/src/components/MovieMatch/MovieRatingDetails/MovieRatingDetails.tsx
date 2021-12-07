@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from 'react'
 import './MovieRatingDetails.css'
 import APIService from '../../../services/APISevice'
-import { Movie } from '../../../../../interfaces/movieInterface'
-import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
+import { IMovie } from '../../../../../interfaces/movieInterface'
+import { IMovieDetails } from '../../../../../interfaces/MovieDetails'
 import { movieDetailsPlaceHolder } from '../../../moviePlaceholder'
 import StarRatings from 'react-star-ratings';
 import ButtonHolder from '../../movie-page/movie-details/ButtonHolder'
 import { Button } from '@chakra-ui/react'
 import { FaThumbsUp, FaThumbsDown} from 'react-icons/fa';
 type Props = {
-  currentMovie:Movie,
+  currentMovie:IMovie,
   handleAccept: () => void;
   handleDeny: () => void;
 }
 
 const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleDeny}) => {
-  const [movieDetails, setMovieDetails] = useState<MovieDetailsInterface>(movieDetailsPlaceHolder);
+  const [movieDetails, setMovieDetails] = useState<IMovieDetails>(movieDetailsPlaceHolder);
   const [streamProviders, setStreamProviders] = useState<any>();
   useEffect(() => {
     if(currentMovie.title === 'String') return

@@ -7,7 +7,6 @@ const fileUpload = require('express-fileupload');
 import { connectDB } from './models';
 import { Request, Response } from 'express';
 import { Server, Socket } from "socket.io";
-import axios from 'axios';
 import { Movie } from '../interfaces/movieInterface';
 import { APIMovieService } from './Services/APIMovieService';
 const { createServer } = require("http");
@@ -52,9 +51,9 @@ interface filter {
   cast:string[],
 }
 
-interface filterData {
+interface actorData {
   username:string,
-  filter:filter,
+  id:string,
 }
     
 app.use(cors());
@@ -134,16 +133,6 @@ io.on("connection", (socket: Socket) => {
   socket.on('bothUsersAccepted', (room:string, userName, movieId) => {
     io.in(room).emit('bothUsersAccepted', userName, movieId, room)
   })
-
-  socket.on('addFilter', (room:string, username:string, filter:filter) => {
-    
-    io.in(room).emit('sendFilter', username, filter)
-  })
-
-  socket.on('sendBothFilters', (room:string, userFilterObject:filterData, otherUserFilterObject:filterData) => {
-    console.log(userFilterObject);
-    console.log(otherUserFilterObject);
-  })
   socket.on('handleAddToggle', (value, callBackString, id, room) => {
     socket.to(room).emit('handleAddToggle', value, callBackString, id);
   })
@@ -154,19 +143,25 @@ io.on("connection", (socket: Socket) => {
     socket.to(room).emit('handleResetToggle', value, callBackString, id);
   })
   socket.on('handleChangeStreamingProvied', (providerId, room) => {
-    console.log('recieved')
     socket.to(room).emit('handleChangeStreamingProvied', providerId)
   })
-  
   socket.on('handleAddActor', (id:number, name:string, room:string) => {
     socket.to(room).emit('handleAddActor', id, name);
   })
-
   socket.on('handleRemoveActor', (id:number, name:string, room:string) => {
     socket.to(room).emit('handleRemoveActor', id);
   })
   socket.on('oneUserAccepted', (room, otherUsername) => {
     socket.to(room).emit('oneUserAccepted', otherUsername)
+  })
+  socket.on('submitFilters', async (filters, room) => {
+    const withGenres = `&with_genres=${filters.genres}`;
+    const withoutGenres = `&without_genres=${filters.avoidGenres}`;
+    const cast = `&with_cast=${filters.cast.map((actor:actorData) =>actor.id)}`;
+    const watchProviders = `&with_watch_providers=${filters.providers}`;
+    const response = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + watchProviders);
+    const movieArray = response.results;
+    io.in(room).emit('movies', movieArray, room)
   })
 
 });

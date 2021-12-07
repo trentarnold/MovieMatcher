@@ -2,7 +2,7 @@ import './movie-details.css'
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router';
 import APIService from '../../../services/APISevice';
-import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../../../../interfaces/MovieDetails';
 import { movieDetailsPlaceHolder } from '../../../moviePlaceholder';
 import StarRatings from 'react-star-ratings';
 import ActorsList from '../../actors-list/ActorsList';
@@ -13,17 +13,17 @@ import RateMovieModal from './RateMovieModal';
 import { ServerApiService } from '../../../services/ServerApi';
 import { addRating } from '../../../redux/features/user/ratingsSlice';
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
-import { FavoriteMovieInterface } from '../../../../../interfaces/favoriteMovieInterface';
+import { IFavoriteMovie } from '../../../../../interfaces/favoriteMovieInterface';
 import moment from 'moment';
 
 const MovieDetails = () => {
     const { id }: any = useParams();
     const accessToken = useAppSelector(selectAuth);
-    const [currentMovie, setCurrentMovie] = useState<MovieDetailsInterface>(movieDetailsPlaceHolder)
+    const [currentMovie, setCurrentMovie] = useState<IMovieDetails>(movieDetailsPlaceHolder)
     const [streamProviders, setStreamProviders] = useState<any>();
     const [newRating, setNewRating] = useState<number>(0)
     const [ratingModalToggle, setRatingModalToggle] = useState<boolean>(false)
-    const [watchedMovies, setWatchedMovies] = useState<FavoriteMovieInterface[]>([])
+    const [watchedMovies, setWatchedMovies] = useState<IFavoriteMovie[]>([])
     const dispatch = useAppDispatch();
     useEffect(() => {
         setWatchedMovies([]);
@@ -43,7 +43,7 @@ const MovieDetails = () => {
         async function fetchWatchedMovie() {
             const movies = await ServerApiService.getWatchedMovies(accessToken);
             if (Array.isArray(movies)) {
-                let movieArr:FavoriteMovieInterface[] = [];
+                let movieArr:IFavoriteMovie[] = [];
                 movies.map(movie => {
                     if (movie.movieid === Number(id)) {
                         movieArr.push(movie);

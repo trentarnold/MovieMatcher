@@ -1,21 +1,21 @@
-import React, {useState, useEffect} from 'react'
-import { Movie } from '../../../../interfaces/movieInterface';
+import {useState, useEffect} from 'react';
+import { IMovie } from '../../../../interfaces/movieInterface';
 import MovieList from '../movie-list/movie-list';
 import APIService from '../../services/APISevice';
 import BlackAndWatchList from '../BlackAndWatchList';
 import { useAppSelector } from '../../redux/app/hooks';
 import { selectAuth } from '../../redux/features/modals/authSlice';
-import './home.css'
+import './home.css';
 
 const Home = () => {
-    const [popularMovies, setPopularMovies] = useState<Movie[]>([])
-    const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([])
-    const [horrorMovies, setHorrorMovies] = useState<Movie[]>([])
-    const [comedyMovies, setComedyMovies] = useState<Movie[]>([])
-    const [dramaMovies, setDramaMovies] = useState<Movie[]>([])
-    const [sciFiMovies, setSciFiMovies] = useState<Movie[]>([])
-    const [actionMovies, setActionMovies] = useState<Movie[]>([])
-    const accessToken = useAppSelector(selectAuth)
+    const [popularMovies, setPopularMovies] = useState<IMovie[]>([]);
+    const [upcomingMovies, setUpcomingMovies] = useState<IMovie[]>([]);
+    const [horrorMovies, setHorrorMovies] = useState<IMovie[]>([]);
+    const [comedyMovies, setComedyMovies] = useState<IMovie[]>([]);
+    const [dramaMovies, setDramaMovies] = useState<IMovie[]>([]);
+    const [sciFiMovies, setSciFiMovies] = useState<IMovie[]>([]);
+    const [actionMovies, setActionMovies] = useState<IMovie[]>([]);
+    const accessToken = useAppSelector(selectAuth);
     
     useEffect(() => {
         async function fetchPopular () {
@@ -33,10 +33,11 @@ const Home = () => {
             setDramaMovies(dramaMoviesRes.results);
             setSciFiMovies(sciFiMoviesRes.results);
             setActionMovies(actionMoviesRes.results);
-        }
-        fetchPopular()
+        };
 
-    }, [])
+        fetchPopular();
+
+    }, []);
     
     
     return (
@@ -64,7 +65,7 @@ const Home = () => {
             <MovieList criteria="Drama Movies" movieList={dramaMovies}/>
             
         </div>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

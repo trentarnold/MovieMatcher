@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { activityInterface } from '../../../../../interfaces/activityInterface';
+import { IActivity } from '../../../../../interfaces/activityInterface';
 
 export interface activitiesState {
-  value: activityInterface[];
+  value: IActivity[];
 }
 const initialState: activitiesState = {
   value: [],
@@ -14,7 +14,7 @@ export const activitiesSlice = createSlice({
   name: 'friendIds',
   initialState,
   reducers: {
-    setActivities: (state, action: PayloadAction<activityInterface[]>) => {
+    setActivities: (state, action: PayloadAction<IActivity[]>) => {
       state.value = action.payload;
     },
     clearActivities: (state) => {
