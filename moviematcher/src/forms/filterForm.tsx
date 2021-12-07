@@ -157,8 +157,6 @@ const FilterForm = () => {
     }
 
     const handleStreamingSwitch = (providerId:number, sent:boolean) => {
-      console.log(providerId, 'provider id');
-      console.log(providers, 'providers');
       setProviders((newProviders) => {
         if(newProviders.indexOf(providerId) === -1) {
           return [...newProviders, providerId]
@@ -191,12 +189,6 @@ const FilterForm = () => {
         }
       }
     }
-    // socket.on('handleRemoveToggle', (value, callBackString, id, room) => {
-    //   socket.to(room).emit('handleRemoveToggle', value, callBackString, id);
-    // })
-    // socket.on('handleResetToggle', (value, callBackString, id, room) => {
-    //   socket.to(room).emit('handleResetToggle', value, callBackString, id);
-    // })
 
     const handleQueryChange = (e:React.ChangeEvent<HTMLInputElement>) => {
       setQuery(e.currentTarget.value);
@@ -218,12 +210,6 @@ const FilterForm = () => {
         setOtherUserFilter(undefined);
       }
     }, [open])
-    // useEffect(() => {
-    //   console.log(genres);
-    // }, genres)
-    // useEffect (()=>{
-    //   console.log(otherUserFilters)
-    //   },[otherUserFilters])
 
       useEffect(() => {
                 socket.on('sendFilter', (username:string, filter:filterObject) => {
