@@ -30,19 +30,18 @@ const MoviePage = () => {
     return () => {
         isCancelled = true;
     };
-
   }, [id]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-    return (
-        <div>
-            <MovieDetails />
-            <MovieList criteria = 'Similar Movies' movieList = {similarMovies} />
-        </div>
-    );
+  return (
+    <div>
+      <MovieDetails />
+      <MovieList criteria = 'Similar Movies' movieList = {similarMovies} />
+    </div>
+  );
 };
 
 export default MoviePage;

@@ -31,7 +31,7 @@ const ProfileInfo= () => {
     if (e.currentTarget.files) setPic(e.currentTarget.files[0]);
   }
 
-  async function updatePicture () {
+  const updatePicture = async () => {
     setInputToggle(!inputToggle)
     try{
       if(pic){
@@ -45,32 +45,32 @@ const ProfileInfo= () => {
   }
 
   useEffect(() => {
-    async function getWatched() {
+    const getWatched = async () => {
       try{
         const watched = await ServerApiService.getWatchList(token);
         if (watched.length === 1) setWatchedMovieCount('1 movie');
         if (watched.length > 1) setWatchedMovieCount(`${watched.length} movies`);
       }catch (e) {
         console.error(e);
-      }
-    }
+      };
+    };
 
-    async function getRated() {
+    const getRated = async () => {
       try{
         const rated = await ServerApiService.getUserRatings(token);
         if (rated.length === 1) setRatingCount('1 movie');
         if (rated.length > 1) setRatingCount(`${rated.length} movies`);
       } catch (e) {
         console.error(e);
-      }
-    }
+      };
+    };
 
-    getWatched()
-    getRated()
-  }, [])
+    getWatched();
+    getRated();
+  }, []);
 
   useEffect(() => {
-    async function getFriends() {
+    const getFriends = async () => {
       try{
         const res = await ServerApiService.getFriends(token);
         res.map(friend => {
@@ -82,77 +82,76 @@ const ProfileInfo= () => {
         })
       } catch (e) {
         console.error(e);
-      }
-    }
+      };
+    };
 
-    async function getInfo() {
+    const getInfo = async () => {
       try {
         const info = await ServerApiService.getUser(token);
         setProfileInfo(info);
       } catch (e) {
         console.error(e);;
-      }
-    }
+      };
+    };
     
-    async function getOtherUserInfo(id: number) {
+    const getOtherUserInfo = async (id: number) => {
       try {
         const info = await ServerApiService.getSpecificUser(token, id);
         setProfileInfo(info);
       } catch (e) {
         console.error(e);;
-      }
-    }
+      };
+    };
     
-    if (Number(params.id) !== userID){
+    if (Number(params.id) !== userID) {
       getOtherUserInfo(Number(params.id));
-      getFriends()
+      getFriends();
     } else  {
       getInfo();
-    }
-  }, [token, params])
+    };
+  }, [token, params]);
 
-  function handleToggleFriend() {
+  const handleToggleFriend = () => {
     if (userFriend) {
       ServerApiService.removeFriend(token, Number(params.id));
       setUserFriend(false);
-      dispatch(removeFriendId(Number(params.id)))
+      dispatch(removeFriendId(Number(params.id)));
     } else {
       ServerApiService.addFriend(token, Number(params.id));
       setUserFriend(true);
-      dispatch(addFriendId(Number(params.id)))
-    }
-  }  
+      dispatch(addFriendId(Number(params.id)));
+    };
+  };
 
-  function handleMatch() {
+  const handleMatch = () => {
     socket.emit('invite', {room:`${username}+${profileInfo.username}`, otherUserName: profileInfo.username, username})
   }
 
-
   return (
-      <div className='profile-info'>
-          <div className='profile-info-icons'>
-            <img src={`http://localhost:3001${profileInfo.profile_pic}`} alt="profile"/>
-            {Number(params.id) === userID && <>
-              <div>
-                <button className="update-photo-btn" onClick={updatePicture}>{inputToggle ? 'Update' : 'Update Photo'}</button>
-                {inputToggle && <input type="file" onChange={handleChange} style={{fontSize: "0.9rem"}}/>}
-                <div className="username-text">{profileInfo.username}</div>
-                <div className="username-text-sub">You've watched {watchedMovieCount} </div>
-                <div className="username-text-sub">You've rated {ratingCount} </div>
-              </div>
-            </>}
-          </div>
-          <div className='profile-info-details'>
-            {Number(params.id) !== userID &&
-            <div className="profile-info-buttons">
+    <div className='profile-info'>
+        <div className='profile-info-icons'>
+          <img src={`http://localhost:3001${profileInfo.profile_pic}`} alt="profile"/>
+          {Number(params.id) === userID && <>
+            <div>
+              <button className="update-photo-btn" onClick={updatePicture}>{inputToggle ? 'Update' : 'Update Photo'}</button>
+              {inputToggle && <input type="file" onChange={handleChange} style={{fontSize: "0.9rem"}}/>}
               <div className="username-text">{profileInfo.username}</div>
-              <Button onClick={handleToggleFriend} className="update-photo-btn" style={{marginRight: '0.5rem'}}>{userFriend ? 'Remove Friend' : 'Add Friend'}</Button>
-              <Button onClick={handleMatch} className="update-photo-btn">Match</Button>
+              <div className="username-text-sub">You've watched {watchedMovieCount} </div>
+              <div className="username-text-sub">You've rated {ratingCount} </div>
             </div>
-            }
+          </>}
+        </div>
+        <div className='profile-info-details'>
+          {Number(params.id) !== userID &&
+          <div className="profile-info-buttons">
+            <div className="username-text">{profileInfo.username}</div>
+            <Button onClick={handleToggleFriend} className="update-photo-btn" style={{marginRight: '0.5rem'}}>{userFriend ? 'Remove Friend' : 'Add Friend'}</Button>
+            <Button onClick={handleMatch} className="update-photo-btn">Match</Button>
           </div>
-      </div>
-  )
-}
+          }
+        </div>
+    </div>
+  );
+};
 
-export default ProfileInfo
+export default ProfileInfo;

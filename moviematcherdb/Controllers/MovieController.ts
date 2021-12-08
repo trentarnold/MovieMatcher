@@ -2,8 +2,7 @@ import { RequestInstance } from '../middleware/authMiddleware'
 import {Request, Response} from 'express';
 import { addWatchedMovieQuery, fetchWatchedMoviesQuery, timesWatchedMovieQuery } from '../models/queries/movieQueries';
 import {APIMovieService} from '../Services/APIMovieService';
-import { createSemanticDiagnosticsBuilderProgram } from 'typescript';
-const axios = require('axios')
+
 require('dotenv').config();
 
 async function getWatchedMovie (req:RequestInstance,res:Response) {
