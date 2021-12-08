@@ -21,7 +21,7 @@ interface ServerToClientEvents {
   loggedInUsers: (loggedInUsers:string[]) => void;
   invite: (room:string, otherUserName:string, username:string) => void;
   accepted: (room: string) => void;
-  movies: (movie: IMovie[], room:string) => void;
+  movies: (movie: any, room:string) => void;
   foundMutualMovie: (room:string, movie:IMovie) => void;
   acceptMovie: (movie:IMovie) => void;
   bothUsersAccepted: (userName:string, movieId:string, room:string) => void;
@@ -29,6 +29,7 @@ interface ServerToClientEvents {
   sendFilter:(username: string, filters:filter) => void;
   handleAddActor:(id:number, name:string, room:string) => void;
   handleRemoveActor:(id:number, name:string, room:string) => void;
+  changed: () => void;
 }
 
 interface ClientToServerEvents {
@@ -55,7 +56,7 @@ interface actorData {
   username:string,
   id:string,
 }
-    
+
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
@@ -96,6 +97,9 @@ io.on("connection", (socket: Socket) => {
       io.to(socketId).emit('invite', room, otherUserName, username);
     }
   })
+  socket.on('providers', (alreadySelectedStreamingServices, room) => {
+    socket.to(room).emit('providers', alreadySelectedStreamingServices)
+  })
   socket.on('accepted', async(room) => {
     await socket.join(room);
     io.in(room).emit('accepted', room);
@@ -114,12 +118,34 @@ io.on("connection", (socket: Socket) => {
   socket.on('join', async (filters, room) => {
     const withGenres = `&with_genres=${filters.genres}`;
     const withoutGenres = `&without_genres=${filters.avoidGenres}`;
-    const cast = `&with_cast=${filters.cast.map((actor:any) =>actor.id)}`;
-    const watchProviders = `&with_watch_providers=${filters.providers}`;
-    const response = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + watchProviders);
-    const movieArray = response.results;
-    io.in(room).emit('movies', movieArray, room)
-    console.log('emitted movies')
+    const cast = `&with_cast=${filters.cast.map((actor:any, index:number) =>{
+        return actor.id
+    })}`;
+    const movies = await Promise.all(
+    filters.providers.map( async(provider:number) => {
+      const response = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + `&with_watch_providers=${provider}`);
+      return response.results;
+    }))
+    const newMovies = movies.flat();
+    const filteredMovies = newMovies.filter((movie:any, index, self:any) => 
+        index === self.findIndex((selfMovie:any) => selfMovie.id === movie.id)
+    )
+  //   const filteredActorList = actorListIDS.cast.filter((actor, index, self) =>
+  //   index === self.findIndex((selfActor) => selfActor.id === actor.id)
+  // );
+    // const watchProviders = `&with_watch_providers=${filters.providers.join(',')}`;
+    // Promise.all(
+    //   products.map(async (product) => {
+    //     const productId = await getProductId(product);
+    //     console.log(productId);
+  
+    //     const capitalizedId = await capitalizeId(productId)
+    //     console.log(capitalizedId);
+    //   })
+    // )
+    // const movieArray = response.results;
+    // console.log(filteredMovies.flat());
+    io.in(room).emit('movies', filteredMovies.flat(), room)
   })
   socket.on('foundMutualMovie', (room:string, movie:IMovie)=>{
     io.in(room).emit('foundMutualMovie', room, movie)
@@ -163,7 +189,10 @@ io.on("connection", (socket: Socket) => {
     const movieArray = response.results;
     io.in(room).emit('movies', movieArray, room)
   })
-
+  socket.on('changed', (room) => {
+    console.log('changed')
+    socket.to(room).emit('changed')
+  })
 });
 
 

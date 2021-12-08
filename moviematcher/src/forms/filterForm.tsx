@@ -23,7 +23,7 @@ import { selectUserName } from '../redux/features/user/yourUserName';
 import { IActorResult, IActorMini} from '../../../interfaces/filterFormInterface';
 import ThreeWayToggle from './filter-components/three-way-toggle';
 import ActorMini from './filter-components/actor-mini';
-
+import { selectUserStreaming } from '../redux/features/user/userStreaming';
 const streamProviders = [
   {
     display_priority: 1,
@@ -89,7 +89,7 @@ const FilterForm = () => {
   const [thriller, setThriller] = useState<string>('na');
   const [war, setWar] = useState<string>('na');
   const [western, setWestern] = useState<string>('na');
-
+  const alreadySelectedStreamingServices = useAppSelector(selectUserStreaming)
   const [bothAccepthFilters, setBothAcceptFilters] = useState<boolean>(false);
   const [showOtherFriendAccepts, setShowOtherFriendAccepts] = useState<boolean>(false);
   const [showYouAccepted, setShowYouAccepted] = useState<boolean>(false);
@@ -101,7 +101,6 @@ const FilterForm = () => {
   const [providers, setProviders] = useState<number[]>([]);
   const [query, setQuery] = useState<string>('')
   const [queryResults, setQueryResults] = useState<IActorResult[]>([]);
-
   const handleClose = () => {
     dispatch(turnOffMovieFilter())
     onClose();
@@ -114,6 +113,7 @@ const FilterForm = () => {
       socket.emit('oneUserAccepted', room, otherUsername);
       setBothAcceptFilters(true);
       setShowYouAccepted(true)
+      setChanged(false)
     }else {
       const filters = {genres, avoidGenres, cast, providers}
       socket.emit('join', filters, room);
@@ -158,6 +158,11 @@ const FilterForm = () => {
     });
     if(!sent) {
       socket.emit('handleChangeStreamingProvied', providerId, room)
+      if(showOtherFriendAccepts) {
+        socket.emit('changed', room)
+        setBothAcceptFilters(false)
+        setShowOtherFriendAccepts(false)
+      }
     };
   };
 
@@ -168,16 +173,31 @@ const FilterForm = () => {
       handleAddToggle(id);
       if (!sent) {
         socket.emit('handleAddToggle', value, callBackString, id, room);
+        if(showOtherFriendAccepts) {
+          socket.emit('changed', room)
+          setBothAcceptFilters(false)
+          setShowOtherFriendAccepts(false)
+        }
       };
     } else if (value === '-') {
       handleRemoveToggle(id);
       if(!sent) {
         socket.emit('handleRemoveToggle', value, callBackString, id, room);
+        if(showOtherFriendAccepts) {
+          socket.emit('changed', room)
+          setBothAcceptFilters(false)
+          setShowOtherFriendAccepts(false)
+        }
       };
     } else {
       handleNeutralToggle(id);
       if(!sent) {
         socket.emit('handleResetToggle', value, callBackString, id, room);
+        if(showOtherFriendAccepts) {
+          socket.emit('changed', room)
+          setBothAcceptFilters(false)
+          setShowOtherFriendAccepts(false)
+        }
       };
     };
   };
@@ -190,11 +210,21 @@ const FilterForm = () => {
     setCast((oldCast) => [...oldCast, actorMiniObject])
     setQuery('');
     socket.emit('handleAddActor', id, name, room)
+    if(showOtherFriendAccepts) {
+      socket.emit('changed', room)
+      setBothAcceptFilters(false)
+      setShowOtherFriendAccepts(false)
+    }
   };
 
   const handleXClick = (id:number, actorName:string,) => {
     setCast((oldCast) => oldCast.filter(actor => actor.id !== id))
     socket.emit('handleRemoveActor', id, actorName, room)
+    if(showOtherFriendAccepts) {
+      socket.emit('changed', room)
+      setBothAcceptFilters(false)
+      setShowOtherFriendAccepts(false)
+    }
   };
 
   useEffect(() => {
@@ -206,67 +236,49 @@ const FilterForm = () => {
   useEffect(() => {
     socket.on('handleAddToggle', (value, callBackString, id) => {
       handleChange(value, callBackString, id, true);
-      if(showYouAccepted) {
-        setChanged(true)
-        setBothAcceptFilters(false)
-        setShowYouAccepted(false)
-        socket.emit('changed', room)
-      }
     });
     socket.on('handleResetToggle', (value, callBackString, id) => {
       handleChange(value, callBackString, id, true);
-      if(showYouAccepted) {
-        setChanged(true)
-        setBothAcceptFilters(false)
-        setShowYouAccepted(false)
-        socket.emit('changed', room)
-      }
     });
     socket.on('handleRemoveToggle', (value, callBackString, id) => {
+      console.log('here')
       handleChange(value, callBackString, id, true);
-      if(showYouAccepted) {
-        setChanged(true)
-        setBothAcceptFilters(false)
-        setShowYouAccepted(false)
-        socket.emit('changed', room)
-      }
     });
     socket.on('handleChangeStreamingProvied', (providerId) => {
-      console.log('recieved');
       handleStreamingSwitch(providerId, true)
-      if(showYouAccepted) {
-        setChanged(true)
-        setBothAcceptFilters(false)
-        setShowYouAccepted(false)
-        socket.emit('changed', room)
-      }
     });
     socket.on('handleAddActor', (id, name) =>{
       setCast((oldCast) => [...oldCast, {id, name}])
-      if(showYouAccepted) {
-        setChanged(true)
-        setBothAcceptFilters(false)
-        setShowYouAccepted(false)
-        socket.emit('changed', room)
-      }
     });
     socket.on('handleRemoveActor', (id) =>{
       setCast((oldCast) => oldCast.filter(actor => actor.id != id))
-      if(showYouAccepted) {
-        setChanged(true)
-        setBothAcceptFilters(false)
-        setShowYouAccepted(false)
-        socket.emit('changed', room)
-      }
     });
     socket.on('oneUserAccepted', (otherUsername) => {
       setShowOtherFriendAccepts(true)
       setBothAcceptFilters(true);
-      setOtherUsername(otherUsername);
+      setChanged(false);
     });
     socket.on('movies', () => {
       handleClose();
     })
+    socket.emit('providers', alreadySelectedStreamingServices, room);
+    socket.on('providers', (alreadySelectedStreamingServices) => {
+      setProviders((oldProviders) => {
+        let uniqueServices = alreadySelectedStreamingServices.map((service:any) => oldProviders.includes(service) ? '' : service);
+        uniqueServices = uniqueServices.filter((serv:any) => serv !=='')
+        return [...oldProviders, ...uniqueServices];
+      })
+    })
+    socket.on('changed', () => {
+      setShowOtherFriendAccepts(false);
+      setShowYouAccepted(false);
+      setChanged(true);
+      setBothAcceptFilters(false);
+    })
+    setProviders((oldProviders) => [...oldProviders, ...alreadySelectedStreamingServices])
+    let users = room.split('+');
+    let otherUsername = users[0] === loggedInUser ? users[1] : users[0];
+    setOtherUsername(otherUsername)
   }, []);
 
   useEffect(() =>{
@@ -292,7 +304,7 @@ const FilterForm = () => {
         <ModalOverlay/>
         <ModalContent style={{borderRadius:'2rem', color:'white'}}>
           <ModalBody>
-            <FormControl display='flex' justifyContent="space-between" flexDirection='column'>
+            <FormControl display='flex' isDisabled={showYouAccepted} justifyContent="space-between" flexDirection='column'>
               <Text textAlign="center"> Select Genres</Text>
               <Flex  justifyContent="center">
                 <Flex flexDirection="column" tm='0' alignItems="center">
@@ -342,17 +354,18 @@ const FilterForm = () => {
                         return (
                           <div key={provider.provider_id} style={{display: 'flex', flexDirection:"column", justifyContent: "center" }}>
                             <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name}/>
-                            <Switch onChange={() => handleStreamingSwitch(provider.provider_id, false)} id={provider.provider_name} isChecked={providers.includes(provider.provider_id)}/>
+                            <Switch onChange={() => handleStreamingSwitch(provider.provider_id, false)} id={provider.provider_name} 
+                                            isChecked={providers.includes(provider.provider_id)}  />
                           </div>) 
                         })
                       }
                   </div>
               </Flex>
-              <Flex justifyContent='space-between' margin="10px">
+              <Flex justifyContent='flex-end' margin="10px">
               { changed && <div style={{color:'red'}}>{`${otherUsername} has changed the filters`}</div>}
               { showOtherFriendAccepts && <div style={{color:'green'}}>{`${otherUsername} has accepted these filters`}</div>}
               { showYouAccepted && <div style={{color:'green'}}>{`You have accepted these filters, waiting for ${otherUsername}`}</div>}
-                <Button onClick={handleSubmit} >Apply Filters</Button>
+                <Button marginLeft='10px'  isDisabled={showYouAccepted} onClick={handleSubmit} >Apply Filters</Button>
               </Flex>
             </FormControl>
           </ModalBody>

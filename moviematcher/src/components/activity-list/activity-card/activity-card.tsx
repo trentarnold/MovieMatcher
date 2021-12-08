@@ -9,7 +9,7 @@ import { useAppSelector } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectUserId } from '../../../redux/features/user/userIdSlice';
 import { useNavigate } from "react-router-dom";
-
+import StarRatings from 'react-star-ratings';
 const ActivityCard = ({activity}: any) => {
     const navigate = useNavigate();
     const accessToken = useAppSelector(selectAuth);
@@ -36,7 +36,9 @@ const ActivityCard = ({activity}: any) => {
         };
         fetchData();
     }, [activity]);
-
+    const reduceToFiveStarRating = (averageVote:number):number => {
+        return (averageVote / 2);
+    }
     function outputActivity() {
         if (doer && movie) {
             switch (activity.type) {
@@ -45,7 +47,14 @@ const ActivityCard = ({activity}: any) => {
                 case 'blacklist':
                     return <p>{doer.username} added {movie.original_title} to {doer.username === 'You' ? "your" : 'their'} Blacklist</p>
                 case 'rating':
-                    return <p>{doer.username} rated {movie.original_title} {activity.rating} {activity.rating > 1 ? "stars" : "star"}</p>
+                    return <p style={{display:'flex', alignItems:'center', justifyContent:'flex-start'}}>{doer.username} rated {movie.original_title}
+                                                                         <span style={{marginLeft:'15px'}}><StarRatings
+                                                                            rating={activity.rating}
+                                                                            starDimension="1.2rem"
+                                                                            starSpacing="1px"
+                                                                            starRatedColor='gold'
+                                                                            /></span>
+                            </p>
                 case 'watched_movie':
                     return <p>{doer.username} watched {movie.original_title}{friend ? ' with ' + friend.username : ''}</p>
             }

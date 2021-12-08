@@ -19,7 +19,7 @@ const RateMovieModal = (props: any) => {
       <div className="rating-modal-input">
         <div className="modal-movie-title">{props.movie.title}</div>
         <div style={{paddingBottom: "0.5rem"}}>Rate:</div>
-        <StarRatings 
+        <StarRatings
           rating={props.rating}
           changeRating={(rating) => props.setNewRating(rating)}
           starDimension="2rem"

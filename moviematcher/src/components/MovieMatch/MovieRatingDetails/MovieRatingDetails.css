@@ -10,3 +10,8 @@
 .movie-details-information-conainter {
   box-shadow: 0 5px 50px 5px #4B4B4B;
 }
+.movie-details-container.fixed-height {
+  height: 50vh;
+  overflow: scroll;
+  margin-top: 5vh;
+}

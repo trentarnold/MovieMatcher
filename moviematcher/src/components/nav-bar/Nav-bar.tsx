@@ -27,24 +27,29 @@ const Navbar = () => {
   return (
     <div className="nav-bar">
       <div className="nav-areas">
-        <NavLink to="/">
-          <img className="logo enlarge-on-hover" src="/logo.svg" alt="logo" />
+        <NavLink to="/"  
+        // style={({ isActive }) => ({ padding:'10px', backgroundColor:isActive ? "rgb(26, 26, 200)" : "", borderTopRightRadius: isActive ? '1rem' : '', borderBottomRightRadius: isActive ? '1rem' : '', 
+        //  boxShadow: isActive ? "0 3px 40px 3px rgb(26, 26, 212)" : ''})} className='enlarge-on-hover'
+         >
+          <div>
+          <img className="logo" src="/logo.svg" alt="logo" />
+          </div>
         </ NavLink>
         { auth &&
         <>
         <NavLink to='/recent' 
-          style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
-          borderRadius: isActive ? '1rem': '', fontSize: "1rem", marginLeft: "6vw"})} className='navlink-item enlarge-on-hover'>
+          style={({ isActive }) => ({ padding:'10px', backgroundColor:isActive ? "rgb(26, 26, 200)" : "", borderRadius: isActive ? "1rem": "",
+           marginLeft: "6vw", boxShadow: isActive ? "0 3px 40px 3px rgb(26, 26, 212)" : '', fontSize : "1rem"})} className='navlink-item enlarge-on-hover'>
           Recent Activity
         </NavLink>
         <NavLink to={`/profile/${userID}`}
-          style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
-          borderRadius: isActive ? '1rem': '', fontSize: "1rem"})} className='navlink-item enlarge-on-hover'>
+          style={({ isActive }) => ({ padding:'10px', backgroundColor:isActive ? "rgb(26, 26, 200)" : "", borderRadius: isActive ? "1rem": "",
+          marginLeft: "6vw", boxShadow: isActive ? "0 3px 40px 3px rgb(26, 26, 212)" : '', fontSize : "1rem"})} className='navlink-item enlarge-on-hover'>
           Profile
         </NavLink>
         <NavLink to='/streaming'
-          style={({ isActive }) => ({  border: isActive ? '2px solid gray': '', padding:'10px',
-          borderRadius: isActive ? '1rem': '', fontSize: "1rem"})} className='navlink-item enlarge-on-hover'>
+          style={({ isActive }) => ({ padding:'10px', backgroundColor:isActive ? "rgb(26, 26, 200)" : "", borderRadius: isActive ? "1rem": "",
+          marginLeft: "6vw", boxShadow: isActive ? "0 3px 40px 3px rgb(26, 26, 212)" : '', fontSize : "1rem"})} className='navlink-item enlarge-on-hover'>
           Stream Providers
         </NavLink>
         </>
