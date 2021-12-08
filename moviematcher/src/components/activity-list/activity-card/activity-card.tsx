@@ -8,8 +8,10 @@ import APIService from '../../../services/APISevice';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectUserId } from '../../../redux/features/user/userIdSlice';
-
+import { useNavigate } from "react-router-dom";
+import StarRatings from 'react-star-ratings';
 const ActivityCard = ({activity}: any) => {
+    const navigate = useNavigate();
     const accessToken = useAppSelector(selectAuth);
     const userID = useAppSelector(selectUserId);
     const [doer, setDoer] = useState<IProfileInfo>();
@@ -34,26 +36,27 @@ const ActivityCard = ({activity}: any) => {
         };
         fetchData();
     }, [activity]);
-
+    const reduceToFiveStarRating = (averageVote:number):number => {
+        return (averageVote / 2);
+    }
     function outputActivity() {
         if (doer && movie) {
             switch (activity.type) {
                 case 'whitelist':
-                    return doer.username === 'You' 
-                        ? <p>{doer.username} added {movie.original_title} to your Watchlist</p>
-                        : <p>{doer.username} added {movie.original_title} to their Watchlist</p>
+                    return <p>{doer.username} added {movie.original_title} to {doer.username === 'You' ? 'your' : 'their'} Watchlist</p>
                 case 'blacklist':
-                    return doer.username === 'You' 
-                        ? <p>{doer.username} added {movie.original_title} to your Blacklist</p>
-                        : <p>{doer.username} added {movie.original_title} to their Blacklist</p>
+                    return <p>{doer.username} added {movie.original_title} to {doer.username === 'You' ? "your" : 'their'} Blacklist</p>
                 case 'rating':
-                    return activity.rating > 1
-                        ? <p>{doer.username} rated {movie.original_title} {activity.rating} stars</p>
-                        : <p>{doer.username} rated {movie.original_title} {activity.rating} star</p>
+                    return <p style={{display:'flex', alignItems:'center', justifyContent:'flex-start'}}>{doer.username} rated {movie.original_title}
+                                                                         <span style={{marginLeft:'15px'}}><StarRatings
+                                                                            rating={activity.rating}
+                                                                            starDimension="1.2rem"
+                                                                            starSpacing="1px"
+                                                                            starRatedColor='gold'
+                                                                            /></span>
+                            </p>
                 case 'watched_movie':
-                    return friend 
-                        ? <p>{doer.username} watched {movie.original_title} with {friend.username}</p>
-                        : <p>{doer.username} watched {movie.original_title}</p>
+                    return <p>{doer.username} watched {movie.original_title}{friend ? ' with ' + friend.username : ''}</p>
             }
         } else return <div>Loading</div>
     };
@@ -62,7 +65,7 @@ const ActivityCard = ({activity}: any) => {
         <div className="activity-card">
             <div>
                 {movie 
-                    ? <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" style={{height: "6rem"}}></img>
+                    ? <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" style={{height: "6rem"}} onClick={() => navigate(`/movieDetails/${movie.id}`)}></img>
                     : <div />
                 }
             </div>

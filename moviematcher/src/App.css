@@ -1,3 +1,8 @@
+:root {
+  --toastify-color-progress-dark: #0d1fbe !important;
+   --toastify-color-dark: #121212;
+}
+
 .App {
   min-height: 100vh;
   display: flex;
@@ -12,4 +17,8 @@
 .enlarge-on-hover:hover {
   transition: .2s;
   transform: scale(1.25);
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }

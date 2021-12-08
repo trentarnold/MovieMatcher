@@ -58,7 +58,7 @@ async function getFileredMovies (req:RequestInstance,res:Response) {
   if((req.originalUrl.split('?')[1]) !== undefined) {
      params = '&' + (req.originalUrl.split('?')[1]);
   }
-
+  console.log(params);
   if(req.body.cast){
     let cast = req.body.cast;
     let castIDStr = '';
@@ -71,7 +71,6 @@ async function getFileredMovies (req:RequestInstance,res:Response) {
   }
 
   let movies = {};
-
   if(params !== undefined) {
     movies = await APIMovieService.getFilteredMoviesQuery(params);
   } else {
@@ -116,6 +115,7 @@ async function getActorsList(req:RequestInstance,res:Response) {
   params = Number(params);
     const actors =  await APIMovieService.getActorListQuery(params);
     res.status(200).send(actors);
+
   } catch (err: any) {
     console.log(err.message);
     res.sendStatus(500);
@@ -163,7 +163,6 @@ async function getActorsDetails(req:RequestInstance,res:Response) {
   }
    const actorId = Number(params);
    const details =await APIMovieService.getActorDetailsQuery(actorId);
-   console.log(details, "  details")
     res.status(200).send(details);
   } catch (err: any) {
     console.log(err.message);
@@ -175,17 +174,34 @@ async function getCombinedCredits(req:RequestInstance,res:Response) {
   try {
     let params;
 
-  if((req.originalUrl.split('?')[1]) !== undefined) {
-     params = (req.originalUrl.split('?')[1]);
+  if((req.originalUrl.split('=')[1]) !== undefined) {
+     params = (req.originalUrl.split('=')[1]);
   }
   params = Number(params);
-    const Credits = APIMovieService.getActorDetailsQuery(params);
+    const Credits = APIMovieService.getCombinedCreditsQuery(params);
     res.status(200).send(Credits);
   } catch (err: any) {
     console.log(err.message);
     res.sendStatus(500);
   }
 
+}
+
+async function getIndividualMovie(req:RequestInstance,res:Response) {
+  try {
+    let params;
+
+  if((req.originalUrl.split('=')[1]) !== undefined) {
+     params = (req.originalUrl.split('=')[1]);
+  }
+  params = Number(params);
+    const Credits = await APIMovieService.getSpecificMovieQuery(params);
+    console.log(Credits, "individual movie");
+    res.status(200).send(Credits);
+  } catch (err: any) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
 }
 
 module.exports = {
@@ -199,5 +215,6 @@ module.exports = {
   getStreamProviders,
   getSimilarMovies,
   getActorsDetails,
-  getCombinedCredits
+  getCombinedCredits,
+  getIndividualMovie
 }
