@@ -16,7 +16,7 @@
 }
 .enlarge-on-hover:hover {
   transition: .2s;
-  transform: scale(1.25);
+  transform: scale(1.15);
 }
 ::-webkit-scrollbar {
   width: 0px;
