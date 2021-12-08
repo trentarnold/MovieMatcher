@@ -9,16 +9,20 @@ const StreamingMovies = () => {
   console.log(params, 'PARMs')
   const [movies, setMovies] = useState<IMovieDetails[]>([])
 
-  // useEffect(() => {
-  //   const movies = await APIService.
-  //   setMovies(movies);
-  // }, [])
+  useEffect(() => {
+    async function getProviders() {
+      const res = await APIService.getMoviesByStreamProvider(Number(params.id));
+      setMovies(res);
+    }
+    getProviders();
+  }, [])
 
   return (
-    <div>
-      <div>{params.provider}</div>
-      <div style={{flexWrap: 'wrap'}}>
-        {/* movies.map(movie => <MovieThumb movie={movie}/>) */}
+    <div >
+      <div style={{textAlign: "center", fontSize: "2rem", fontWeight: "500"}}>{params.provider}</div>
+      <div style={{borderBottom: "2px solid grey", width: "40%", margin: "auto"}}></div>
+      <div style={{display: "flex", flexWrap: 'wrap', justifyContent: "center", marginTop: "1rem"}}>
+        {movies.length && movies.map(movie => <MovieThumb key={movie.id} movie={movie}/>)}
       </div>
     </div>
   )

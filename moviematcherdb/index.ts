@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port:number = 3001;
+require('dotenv').config()
+const port:number = Number(process.env.PORT) || 3001;
 const router = require('./Router');
 const fileUpload = require('express-fileupload');
 import { connectDB } from './models';

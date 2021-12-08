@@ -201,6 +201,16 @@ async function getIndividualMovie(req:RequestInstance,res:Response) {
   }
 }
 
+async function getAllStreamProviders(req:Request,res:Response) {
+  try{
+    const providers = await APIMovieService.getStreamingServiceProviders();
+    res.status(200).send(providers);
+  } catch (err: any) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
+}
+
 module.exports = {
   getWatchedMovie,
   addWatchedMovie,
@@ -213,5 +223,6 @@ module.exports = {
   getSimilarMovies,
   getActorsDetails,
   getCombinedCredits,
-  getIndividualMovie
+  getIndividualMovie,
+  getAllStreamProviders
 }

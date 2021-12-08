@@ -6,6 +6,7 @@ import { actorListPlaceholder } from '../actorListPlaceholder';
 import ActorDetailsInterface from '../../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
 import ActorsList from '../components/actors-list/ActorsList';
+import { IStreamProvider } from '../../../interfaces/StreamProviders';
 const BASE_URL = 'http://localhost:3001'
 
 const APIService = {
@@ -130,8 +131,6 @@ const APIService = {
 
   getIndividualMovie: async(id:string | number): Promise<IMovieDetails>  => {
     try {
-      // const movie  = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);
-      // return await movie.json()
       const movie = await fetch((`${BASE_URL}/movies/Specific?movie=${id}` ), {
         method: 'GET',
         mode: 'cors',
@@ -228,6 +227,41 @@ const APIService = {
       return []
     }
   },
+  getAllStreamProviders: async(): Promise<IStreamProvider[]> => {
+    try {
+      const providers = await fetch((`${BASE_URL}/streamProviders` ), {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return await providers.json();
+    }catch(e) {
+      console.log(e)
+      return []
+    }
+  },
+  getMoviesByStreamProvider: async(id:number) : Promise<IMovieDetails[]> => {
+    try {
+      const movies = []
+      for (let i = 1; i < 6; i++) {
+        const res = await fetch(`${BASE_URL}/movies/APIService?stream_provider=${id}&page=${i}`, {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await res.json()
+        movies.push(...data.results)
+      }
+      return movies;
+    } catch(e) {
+      console.log(e);
+      return []
+    }
+  }
 };
 
 

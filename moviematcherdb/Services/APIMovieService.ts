@@ -6,7 +6,7 @@ import { IActorList } from '../../interfaces/ActorList';
 import { actorListPlaceholder } from '../../moviematcher/src/actorListPlaceholder';
 import  ActorDetailsInterface  from '../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../../moviematcher/src/actorDetailsPlaceholder';
-
+import { IStreamProvider, IStreamProviders } from '../../interfaces/StreamProviders';
 
 export const APIMovieService = {
   fetchMovie: async (id: number) =>{
@@ -110,7 +110,7 @@ export const APIMovieService = {
       return actorDetails.data//.json();
 
     }catch(e) {
-     console.log(e)
+    console.log(e)
       return actorDetailsPlaceholder;
     }
   },
@@ -129,10 +129,18 @@ export const APIMovieService = {
       const movie  = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);
       return movie.data;
     } catch(err) {
-     console.log(err);
+    console.log(err);
       return movieDetailsPlaceHolder
     }
-
+  },
+  getStreamingServiceProviders: async(): Promise<IStreamProvider[]> => {
+    try {
+      const providers = await axios.get(`https://api.themoviedb.org/3/watch/providers/movie?api_key=bb4d2a2c87649509a7f5db093eec838e&language=en-US&watch_region=US`);
+      return await providers.data.results
+    } catch(err) {
+    console.log(err);
+      return []
+    }
   }
 }
 
