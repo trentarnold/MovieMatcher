@@ -28,7 +28,7 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
   const accessToken = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const [newRating, setNewRating] = useState<number>(0)
-  console.log(streamProviders.flatrate, 'this the object');
+  console.log(movieDetails.genres)
   useEffect(() => {
     if(currentMovie.title === 'String') return
     let isCancelled = false;
@@ -37,6 +37,7 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
       if(!isCancelled) {
         setMovieDetails(details)
       }
+
     }
     async function fetchStreamProviders () {
       const fetchedStreamProviders = await APIService.getStreamProviders(currentMovie.id);
@@ -111,7 +112,7 @@ function daysSince(date: string) {
                 </div>
                 <div className='movie-details-description'>{currentMovie.overview}</div>
                 <div className='movie-details-genres'>
-                        {movieDetails.genres! ?  movieDetails.genres.map((genre:any) => <div key={genre.id}> {genre.name}</div>) : <></>}
+                        {movieDetails.genres.length ?  movieDetails.genres.map((genre:any) => <div key={genre.id}> {genre.name}</div>) : <></>}
                 </div>
 
                 {streamProviders.flatrate.length &&
