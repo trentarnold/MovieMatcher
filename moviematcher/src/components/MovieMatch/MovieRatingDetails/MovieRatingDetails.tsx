@@ -22,7 +22,7 @@ type Props = {
 
 const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleDeny}) => {
   const [movieDetails, setMovieDetails] = useState<IMovieDetails>(movieDetailsPlaceHolder);
-  const [streamProviders, setStreamProviders] = useState<any>({flatrate:[]});
+  const [streamProviders, setStreamProviders] = useState<any>();
   const [ratingModalToggle, setRatingModalToggle] = useState<boolean>(false);
   const [watchedMovies, setWatchedMovies] = useState<IFavoriteMovie[]>([])
   const accessToken = useAppSelector(selectAuth);
@@ -43,15 +43,16 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
       }
     }
     async function fetchStreamProviders () {
-      try { 
-        const fetchedStreamProviders = await APIService.getStreamProviders(currentMovie.id);
-        if(!isCancelled && fetchedStreamProviders.US) {
-          setStreamProviders(fetchedStreamProviders.US);
+        try {
+            const fetchedStreamProviders = await APIService.getStreamProviders(currentMovie.id);
+            console.log(fetchedStreamProviders)
+            if(!isCancelled && fetchedStreamProviders.results?.US?.flatrate) {
+                setStreamProviders(fetchedStreamProviders.results?.US?.flatrate);
+            }
+        } catch (e) {
+            console.error(e);;
         }
-      } catch (e) {
-        console.error(e);
-      }
-   }
+    }
    async function fetchWatchedMovie() {
      try{
        const movies = await ServerApiService.getWatchedMovies(accessToken);
@@ -129,17 +130,17 @@ function daysSince(date: string) {
                 <div className='movie-details-genres' style={{margin: "0.5rem 0"}}>
                                 {movieDetails && movieDetails.genres && movieDetails.genres.length  == undefined ? <></> : movieDetails.genres?.map(genre => <div> {genre.name}</div>)}
                 </div>
-
-                {streamProviders.flatrate &&
-                <>
-                  <div style ={{textAlign:'center'}}>Stream On:</div>
-                  <div className='movie-details-stream-providers'>
-                      {streamProviders.flatrate.length && streamProviders.flatrate.map((provider:any) => <img key={provider.id} className = 'movie-details-stream-provider'
-                       src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider'/>)
-                      }
-                  </div>
-                </>
-                }
+                {streamProviders
+                            ? <div>
+                                <div style ={{textAlign:'center'}}>Stream On:</div>
+                                <div className='movie-details-stream-providers'>
+                                    {streamProviders && streamProviders.map((provider:any) => <img className = 'movie-details-stream-provider' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt='stream provider' title={provider.provider_name}/>)
+                                    }
+                                </div>
+                            </div>
+                            : <div style ={{textAlign:'center', marginBottom: "0.75rem", color: "red"}}>Not Found on Any Streaming Services</div>
+                        }
+                
                 <div className='movie-details-production-company'>
                     <div className='movie-details-company-logo-container'>
                     {movieDetails.production_companies.map((company:any, index:number) => {
