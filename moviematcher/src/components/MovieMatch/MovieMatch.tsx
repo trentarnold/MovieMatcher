@@ -110,7 +110,7 @@ const MovieMatch = () => {
   return (
     <>
     <div className="movie-match-container">
-      {currentMovie.overview !==  'String' &&
+      {currentMovie && currentMovie.overview !==  'String' &&
       <div>
         <MovieRatingDetails currentMovie = {currentMovie} handleAccept = {handleAccept} handleDeny = {handleDeny}/>
         <div className="movie-match-buttons">

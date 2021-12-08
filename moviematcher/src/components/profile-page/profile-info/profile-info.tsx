@@ -128,19 +128,44 @@ const ProfileInfo= () => {
   }
 
   return (
-    <div className='profile-info'>
-        <div className='profile-info-icons'>
-          <img src={`http://localhost:3001${profileInfo.profile_pic}`} alt="profile"/>
-          {Number(params.id) === userID && <>
-            <div>
-              <button className="update-photo-btn" onClick={updatePicture}>{inputToggle ? 'Update' : 'Update Photo'}</button>
-              {inputToggle && <input type="file" onChange={handleChange} style={{fontSize: "0.9rem"}}/>}
+      <div className='profile-info'>
+          <div className='profile-info-icons'>
+            <img src={`http://localhost:3001${profileInfo.profile_pic}`} alt="profile"/>
+            {Number(params.id) === userID && <>
+              <div>
+                <button className="update-photo-btn enlarge-on-hover" onClick={updatePicture}>{inputToggle ? 'Update' : 'Update Photo'}</button>
+                {inputToggle && <>
+                 <input type="button" style={{width:'fit-content', cursor:'pointer'}} className="update-photo-btn enlarge-on-hover" id="loadFileXml" value="Select File" onClick={() => {
+                   let file = document.getElementById('file');
+                   if(file) file.click()
+                }} />
+                  <input type="file" style={{display:"none"}} id="file" name="file" onChange={(e) => handleChange(e)}/>
+                  </>
+                 }
+                <div className="username-text">{profileInfo.username}</div>
+                <div className="username-text-sub">You've watched {watchedMovieCount} </div>
+                <div className="username-text-sub">You've rated {ratingCount} </div>
+              </div>
+            </>}
+          </div>
+          <div className='profile-info-details'>
+            {Number(params.id) !== userID &&
+            <div className="profile-info-buttons">
               <div className="username-text">{profileInfo.username}</div>
-              <div className="username-text-sub">You've watched {watchedMovieCount} </div>
-              <div className="username-text-sub">You've rated {ratingCount} </div>
+              <Button
+                _hover = {{
+                  bgColor: 'rgb(26, 26, 212)'
+                }}
+                bgColor = "rgb(59, 59, 143)"
+               onClick={handleToggleFriend} className="enlarge-on-hover" style={{marginRight: '1.1rem'}}>{userFriend ? 'Remove Friend' : 'Add Friend'}</Button>
+              <Button 
+                _hover = {{
+                  bgColor: 'rgb(26, 26, 212)'
+                }}
+                bgColor = "rgb(59, 59, 143)"
+                 onClick={handleMatch} className="enlarge-on-hover">Match</Button>
             </div>
-          </>}
-        </div>
+          }
         <div className='profile-info-details'>
           {Number(params.id) !== userID &&
           <div className="profile-info-buttons">
@@ -150,6 +175,7 @@ const ProfileInfo= () => {
           </div>
           }
         </div>
+    </div>
     </div>
   );
 };

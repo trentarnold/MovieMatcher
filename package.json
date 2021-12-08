@@ -1,0 +1,30 @@
+{
+  "name": "moviematcher",
+  "version": "1.0.0",
+  "description": "SOCKET IO BRANCH",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "concurrently \"npx ts-node moviematcherdb/index.ts\" \"npm run client\"",
+    "client": "cd moviematcher && npm start",
+    "server": "npx ts-node moviematcherdb/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swelch1/MovieMatcher.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/swelch1/MovieMatcher/issues"
+  },
+  "homepage": "https://github.com/swelch1/MovieMatcher#readme",
+  "dependencies": {
+    "concurrently": "^6.4.0",
+    "ts-node": "^10.4.0"
+  },
+  "engines": {
+    "node": "16.1"
+  }
+}
