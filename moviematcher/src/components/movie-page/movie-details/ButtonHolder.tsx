@@ -85,7 +85,7 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
   }
   return (
     <div className={`movie-details-button-holder ${flexColumn ? 'column': ''}`} style={{margin: "1.5rem 0"}}>
-      <Button 
+      <Button
         style={{backgroundColor:'transparent'}}
         className='enlarge-on-hover'
         onClick={handleAddToWatchList}
@@ -100,20 +100,20 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
         { blackListIds.includes(movie.id) ? <FaMinus color='red'/> : <FaSkull color='red' /> }
         <span style={{fontStyle:'italic'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Blacklist It'}</span>
       </Button>
-      {checkRatings() 
+      {checkRatings()
         ? <Button style={{backgroundColor:'transparent'}} title="click to delete rating" className="enlarge-on-hover" onClick={handleDeleteRating}>
-          You rated: 
-          <StarRatings 
+          You rated:
+          <StarRatings
             rating={checkRatings()}
             starDimension="1.25rem"
             starSpacing="1px"
             starRatedColor='gold'
           />
-          </Button> 
+          </Button>
         : <Button style={{backgroundColor:'transparent'}} onClick={() => setRatingModalToggle(true)}>Rate</Button>
       }
 
-     { flexColumn ? <></> :  watchedMovieToggle 
+     { flexColumn ? <></> :  watchedMovieToggle
       ? watchedMovieDateToggle
         ? <div className="date-form" style={{display: "flex"}}>
           <input className='enlarge-on-hover' type="datetime-local" onChange={(e) => updateWatchDate(e)}></input>

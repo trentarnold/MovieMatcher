@@ -82,10 +82,12 @@ function App() {
       dispatch(setBlackListIds(ids));
     }
     const fetchRatings = async() => {
+      console.log('hit fetch ratings')
       let ratingsFull = await ServerApiService.getUserRatings(accessToken);
       let ratings = ratingsFull.map(rating => {
         return {rating: rating.rating, movieid: rating.movieid}
       })
+      console.log(ratings);
       dispatch(setRatings(ratings))
     }
     const fetchActivities = async() => {
