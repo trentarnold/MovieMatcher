@@ -9,7 +9,6 @@ const initialState: roomNameState = {
   value: "",
 };
 
-
 export const roomNameSlice = createSlice({
   name: 'roomName',
   initialState,
