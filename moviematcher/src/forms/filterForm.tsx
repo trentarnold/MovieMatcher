@@ -236,59 +236,22 @@ const FilterForm = () => {
   useEffect(() => {
     socket.on('handleAddToggle', (value, callBackString, id) => {
       handleChange(value, callBackString, id, true);
-      // if(showYouAccepted) {
-      //   setChanged(true)
-      //   setBothAcceptFilters(false)
-      //   setShowYouAccepted(false)
-      //   socket.emit('changed', room)
-      // }
     });
     socket.on('handleResetToggle', (value, callBackString, id) => {
       handleChange(value, callBackString, id, true);
-      // if(showYouAccepted) {
-      //   setChanged(true)
-      //   setBothAcceptFilters(false)
-      //   setShowYouAccepted(false)
-      //   socket.emit('changed', room)
-      // }
     });
     socket.on('handleRemoveToggle', (value, callBackString, id) => {
       console.log('here')
       handleChange(value, callBackString, id, true);
-      // if(showYouAccepted) {
-      //   console.log('now here')
-      //   setChanged(true)
-      //   setBothAcceptFilters(false)
-      //   setShowYouAccepted(false)
-      //   socket.emit('changed', room)
-      // }
     });
     socket.on('handleChangeStreamingProvied', (providerId) => {
       handleStreamingSwitch(providerId, true)
-      // if(showYouAccepted) {
-      //   setChanged(true)
-      //   setBothAcceptFilters(false)
-      //   setShowYouAccepted(false)
-      //   socket.emit('changed', room)
-      // }
     });
     socket.on('handleAddActor', (id, name) =>{
       setCast((oldCast) => [...oldCast, {id, name}])
-      // if(showYouAccepted) {
-      //   setChanged(true)
-      //   setBothAcceptFilters(false)
-      //   setShowYouAccepted(false)
-      //   socket.emit('changed', room)
-      // }
     });
     socket.on('handleRemoveActor', (id) =>{
       setCast((oldCast) => oldCast.filter(actor => actor.id != id))
-      // if(showYouAccepted) {
-      //   setChanged(true)
-      //   setBothAcceptFilters(false)
-      //   setShowYouAccepted(false)
-      //   socket.emit('changed', room)
-      // }
     });
     socket.on('oneUserAccepted', (otherUsername) => {
       setShowOtherFriendAccepts(true)
@@ -398,11 +361,11 @@ const FilterForm = () => {
                       }
                   </div>
               </Flex>
-              <Flex justifyContent='space-between' margin="10px">
+              <Flex justifyContent='flex-end' margin="10px">
               { changed && <div style={{color:'red'}}>{`${otherUsername} has changed the filters`}</div>}
               { showOtherFriendAccepts && <div style={{color:'green'}}>{`${otherUsername} has accepted these filters`}</div>}
               { showYouAccepted && <div style={{color:'green'}}>{`You have accepted these filters, waiting for ${otherUsername}`}</div>}
-                <Button isDisabled={showYouAccepted} onClick={handleSubmit} >Apply Filters</Button>
+                <Button marginLeft='10px'  isDisabled={showYouAccepted} onClick={handleSubmit} >Apply Filters</Button>
               </Flex>
             </FormControl>
           </ModalBody>

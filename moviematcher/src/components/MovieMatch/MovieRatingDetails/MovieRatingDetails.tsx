@@ -111,7 +111,7 @@ function daysSince(date: string) {
                 </div>
                 <div className='movie-details-description'>{currentMovie.overview}</div>
                 <div className='movie-details-genres'>
-                        {movieDetails.genres.length && movieDetails.genres.map((genre:any) => <div key={genre.id}> {genre.name}</div>)}
+                        {movieDetails.genres! ?  movieDetails.genres.map((genre:any) => <div key={genre.id}> {genre.name}</div>) : <></>}
                 </div>
 
                 {streamProviders.flatrate.length &&
