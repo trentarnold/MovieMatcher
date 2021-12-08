@@ -58,20 +58,23 @@ const {
   getStreamProviders,
   getSimilarMovies,
   getActorsDetails,
-  getCombinedCredits
+  getCombinedCredits,
+  getIndividualMovie
 
 } = require('./Controllers/MovieController');
 router.post('/user/watched', authMiddleware, getWatchedMovie) 
 router.post('/user/addWatched', authMiddleware, addWatchedMovie)
 router.post('/user/movieCount', authMiddleware, movieWatchCount)
 router.post('/movies/APIservice?:params', getFileredMovies )
-router.get('/movies/Popular', getPopularMovies); //
-router.get('/movies/Upcoming', getUpcomingMovies); //
-router.get('/movies/ActorList?:params', getActorsList); //
-router.get('/movies/Providers', getStreamProviders); //
-router.get('/movies/Similar', getSimilarMovies); //
-router.get('/movies/ActorDetails?:params', getActorsDetails);//
-router.get('/movies/CombinedCredits', getCombinedCredits);
+router.get('/movies/Popular', getPopularMovies);
+router.get('/movies/Upcoming', getUpcomingMovies);
+router.get('/movies/ActorList?:params', getActorsList);
+router.get('/movies/Providers?:params', getStreamProviders);
+router.get('/movies/Similar?:params', getSimilarMovies);
+router.get('/movies/ActorDetails?:params', getActorsDetails);
+router.get('/movies/CombinedCredits?:params', getCombinedCredits);
+router.get('/movies/Specific?:params', getIndividualMovie)
+
 //Action Controller Routes
 const {
   getActivity,

@@ -82,10 +82,12 @@ function App() {
       dispatch(setBlackListIds(ids));
     }
     const fetchRatings = async() => {
+      console.log('hit fetch ratings')
       let ratingsFull = await ServerApiService.getUserRatings(accessToken);
       let ratings = ratingsFull.map(rating => {
         return {rating: rating.rating, movieid: rating.movieid}
       })
+      console.log(ratings);
       dispatch(setRatings(ratings))
     }
     const fetchActivities = async() => {
@@ -106,7 +108,7 @@ function App() {
       getUsername();
     }
   }, [accessToken])
- 
+
   return (
     <div className="App">
       <Navbar />
@@ -127,7 +129,7 @@ function App() {
       </div>
       <LoginForm />
       <CreateAccountForm />
-      <ToastContainer 
+      <ToastContainer
         position ='top-center'
         autoClose={30000}
         closeOnClick={false}

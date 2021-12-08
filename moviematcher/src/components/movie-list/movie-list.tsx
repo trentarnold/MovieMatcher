@@ -19,7 +19,7 @@ const MovieList: React.FC<Props> = ({movieList, criteria}) => {
 }
 
   const toggle = useAppSelector((state) => state.friendsList.value)
-  
+
   //shuffles list of movies so Venom isn't at the beginning of every genre list
   useEffect(()=>{
     shuffleArray(movieList)
@@ -31,7 +31,7 @@ const MovieList: React.FC<Props> = ({movieList, criteria}) => {
         <h1>{criteria}</h1>
         {/* pass individual movie to MovieThumb */}
         <div className="movie-list" style={{maxWidth: toggle? '83.5%' : '100%'}} >
-            {movieList.map(movie => <MovieThumb key={Number(movie.id)} movie={movie}/>)}
+            {movieList?.map(movie => <MovieThumb key={Number(movie.id)} movie={movie}/>)}
         </div>
     </div>
   )

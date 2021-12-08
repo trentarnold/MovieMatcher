@@ -21,7 +21,7 @@ interface ServerToClientEvents {
   loggedInUsers: (loggedInUsers:string[]) => void;
   invite: (room:string, otherUserName:string, username:string) => void;
   accepted: (room: string) => void;
-  movies: (movie: any[], room:string) => void;
+  movies: (movie: any, room:string) => void;
   foundMutualMovie: (room:string, movie:IMovie) => void;
   acceptMovie: (movie:IMovie) => void;
   bothUsersAccepted: (userName:string, movieId:string, room:string) => void;
@@ -56,7 +56,7 @@ interface actorData {
   username:string,
   id:string,
 }
-    
+
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());

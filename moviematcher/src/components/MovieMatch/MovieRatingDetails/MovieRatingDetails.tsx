@@ -65,7 +65,7 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
     }
   }, [currentMovie])
   const reduceToFiveStarRating = (averageVote:number):number => {
-    return (averageVote / 2);
+    return (averageVote / 2) ?? 1;
   }
   async function handleRatingSubmit() {
     ServerApiService.addRating(accessToken, currentMovie.id, newRating);
