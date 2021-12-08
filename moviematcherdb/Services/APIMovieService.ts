@@ -1,10 +1,14 @@
 const axios = require('axios');
 import { IMovie, IResults } from "../../interfaces/movieInterface";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { IMovieDetails} from '../../interfaces/MovieDetails'
 =======
 import {IMovieDetails} from '../../interfaces/MovieDetails'
 >>>>>>> 28d2cb58efb1efc6ce0b21c7370541c05d4a880f
+=======
+import {IMovieDetails} from '../../interfaces/MovieDetails'
+>>>>>>> d661287bacdc9b2949a2ceccd2af92c70b7dac3a
 import { movieDetailsPlaceHolder } from '../../moviematcher/src/moviePlaceholder'
 import { IActorList } from '../../interfaces/ActorList';
 import { actorListPlaceholder } from '../../moviematcher/src/actorListPlaceholder';
@@ -66,16 +70,20 @@ export const APIMovieService = {
     try{
     const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false')
     return movies.data;
-    } catch(err){
-      console.log(err);
-    }
+  } catch(err){
+    console.log(err);
+  }
   },
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   getIndividualMovie: async(id:string | number): Promise< IMovieDetails>  => {
 =======
   getIndividualMovie: async(id:string | number): Promise<IMovieDetails>  => {
 >>>>>>> 28d2cb58efb1efc6ce0b21c7370541c05d4a880f
+=======
+  getIndividualMovie: async(id:string | number): Promise<IMovieDetails>  => {
+>>>>>>> d661287bacdc9b2949a2ceccd2af92c70b7dac3a
     try {
       const movie  = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);
       return await movie//.json()
@@ -97,7 +105,7 @@ export const APIMovieService = {
     try {
       const streamProvider = await axios.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=66be68e2d9a8be7fee88a803b45d654b`)
       const data = streamProvider.data//.json();
-      return data.results;
+      return data;
     }catch(err) {
       console.log(err)
       return actorListPlaceholder

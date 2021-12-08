@@ -21,11 +21,7 @@ interface ServerToClientEvents {
   loggedInUsers: (loggedInUsers:string[]) => void;
   invite: (room:string, otherUserName:string, username:string) => void;
   accepted: (room: string) => void;
-<<<<<<< HEAD
-  movies: (movie: IMovie[], room:string) => void;
-=======
   movies: (movie: any, room:string) => void;
->>>>>>> 28d2cb58efb1efc6ce0b21c7370541c05d4a880f
   foundMutualMovie: (room:string, movie:IMovie) => void;
   acceptMovie: (movie:IMovie) => void;
   bothUsersAccepted: (userName:string, movieId:string, room:string) => void;
@@ -122,14 +118,6 @@ io.on("connection", (socket: Socket) => {
   socket.on('join', async (filters, room) => {
     const withGenres = `&with_genres=${filters.genres}`;
     const withoutGenres = `&without_genres=${filters.avoidGenres}`;
-<<<<<<< HEAD
-    const cast = `&with_cast=${filters.cast.map((actor:any) =>actor.id)}`;
-    const watchProviders = `&with_watch_providers=${filters.providers}`;
-    const response = await APIMovieService.getFilteredMoviesQuery(withGenres + withoutGenres + cast + watchProviders);
-    const movieArray = response.results;
-    io.in(room).emit('movies', movieArray, room)
-    console.log('emitted movies')
-=======
     const cast = `&with_cast=${filters.cast.map((actor:any, index:number) =>{
         return actor.id
     })}`;
@@ -158,7 +146,6 @@ io.on("connection", (socket: Socket) => {
     // const movieArray = response.results;
     // console.log(filteredMovies.flat());
     io.in(room).emit('movies', filteredMovies.flat(), room)
->>>>>>> 28d2cb58efb1efc6ce0b21c7370541c05d4a880f
   })
   socket.on('foundMutualMovie', (room:string, movie:IMovie)=>{
     io.in(room).emit('foundMutualMovie', room, movie)
