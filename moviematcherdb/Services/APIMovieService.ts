@@ -76,7 +76,7 @@ export const APIMovieService = {
       return movieDetailsPlaceHolder
     }
   },
-  
+
   getActorListQuery: async(id:number): Promise<IActorList> => {
     try {
         const actorList = await axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=66be68e2d9a8be7fee88a803b45d654b`)
@@ -90,7 +90,7 @@ export const APIMovieService = {
     try {
       const streamProvider = await axios.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=66be68e2d9a8be7fee88a803b45d654b`)
       const data = streamProvider.data//.json();
-      return data.results;
+      return data;
     }catch(err) {
       console.log(err)
       return actorListPlaceholder
