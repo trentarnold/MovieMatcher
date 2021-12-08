@@ -110,11 +110,6 @@ io.on("connection", (socket: Socket) => {
   socket.on('declineWatchMovie', (userName, room, title) => {
     socket.to(room).emit('declineWatchMovie', userName, title)
   })
-  // socket.on('join',async(room) =>{
-  //   const response =  await axios.get('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US');
-  //   const movieArray = response.data.results
-  //   io.in(room).emit('movies', movieArray, room)
-  // })
   socket.on('join', async (filters, room) => {
     const withGenres = `&with_genres=${filters.genres}`;
     const withoutGenres = `&without_genres=${filters.avoidGenres}`;
@@ -130,21 +125,6 @@ io.on("connection", (socket: Socket) => {
     const filteredMovies = newMovies.filter((movie:any, index, self:any) => 
         index === self.findIndex((selfMovie:any) => selfMovie.id === movie.id)
     )
-  //   const filteredActorList = actorListIDS.cast.filter((actor, index, self) =>
-  //   index === self.findIndex((selfActor) => selfActor.id === actor.id)
-  // );
-    // const watchProviders = `&with_watch_providers=${filters.providers.join(',')}`;
-    // Promise.all(
-    //   products.map(async (product) => {
-    //     const productId = await getProductId(product);
-    //     console.log(productId);
-  
-    //     const capitalizedId = await capitalizeId(productId)
-    //     console.log(capitalizedId);
-    //   })
-    // )
-    // const movieArray = response.results;
-    // console.log(filteredMovies.flat());
     io.in(room).emit('movies', filteredMovies.flat(), room)
   })
   socket.on('foundMutualMovie', (room:string, movie:IMovie)=>{
@@ -190,7 +170,6 @@ io.on("connection", (socket: Socket) => {
     io.in(room).emit('movies', movieArray, room)
   })
   socket.on('changed', (room) => {
-    console.log('changed')
     socket.to(room).emit('changed')
   })
 });
