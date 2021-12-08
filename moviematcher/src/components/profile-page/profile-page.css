@@ -1,3 +1,8 @@
 .profile {
-    margin: 15px;
+    margin: 1rem;
+}
+
+.profile-container {
+    display: flex;
+    margin-bottom: 2rem;
 }
