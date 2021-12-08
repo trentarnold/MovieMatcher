@@ -6,6 +6,7 @@ import { selectFriendsList, toggleFriendsList } from '../../redux/features/modal
 import { clearToken, selectAuth } from '../../redux/features/modals/authSlice';
 import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
 import { useNavigate } from 'react-router';
+import SearchBar from '../movie-search/movie-search';
 import './nav-bar.css';
 
 const Navbar = () => {
@@ -44,6 +45,7 @@ const Navbar = () => {
       }
       </div>
       <div className="buttons">
+        <SearchBar />
         {auth && <Button className='enlarge-on-hover margin-right' onClick={() => dispatch(toggleFriendsList())}> Friends </Button>}
         {!auth && <Button className='enlarge-on-hover' onClick={() => dispatch(turnOnLogin())}> Login </Button>}
         {auth && <Button className='enlarge-on-hover' onClick={handleLogOut}>Log Out</Button>}

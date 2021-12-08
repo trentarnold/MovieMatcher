@@ -1,8 +1,8 @@
 const axios = require('axios');
-import { Movie, Results } from "../../interfaces/movieInterface";
-import {MovieDetailsInterface} from '../../interfaces/MovieDetails'
+import { IMovie, IResults } from "../../interfaces/movieInterface";
+import { IMovieDetails} from '../../interfaces/MovieDetails'
 import { movieDetailsPlaceHolder } from '../../moviematcher/src/moviePlaceholder'
-import { ActorListInterface } from '../../interfaces/ActorList';
+import { IActorList } from '../../interfaces/ActorList';
 import { actorListPlaceholder } from '../../moviematcher/src/actorListPlaceholder';
 import  ActorDetailsInterface  from '../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../../moviematcher/src/actorDetailsPlaceholder';
@@ -18,7 +18,7 @@ export const APIMovieService = {
     }
   },
 
-  getPopularMovies: async(): Promise<Results> => {
+  getPopularMovies: async(): Promise<IResults> => {
     try {
       const popularMovies = await axios.get('https://api.themoviedb.org/3/discover/movie/?api_key=66be68e2d9a8be7fee88a803b45d654b&watch_region=US&with_watch_providers=10')
       return  popularMovies.data;//.json();
@@ -28,7 +28,7 @@ export const APIMovieService = {
     }
   },
 
-  getUpcomingMovies: async(): Promise<Results> => {
+  getUpcomingMovies: async(): Promise<IResults> => {
     try {
       const latestMovies = await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&page=1')
       return latestMovies.data.results;//.json();
@@ -58,7 +58,7 @@ export const APIMovieService = {
     return movies.data;
   },
 
-  getIndividualMovie: async(id:string | number): Promise<MovieDetailsInterface>  => {
+  getIndividualMovie: async(id:string | number): Promise< IMovieDetails>  => {
     try {
       const movie  = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);
       return await movie//.json()
@@ -67,7 +67,7 @@ export const APIMovieService = {
       return movieDetailsPlaceHolder
     }
   },
-  getActorListQuery: async(id:number): Promise<ActorListInterface> => {
+  getActorListQuery: async(id:number): Promise<IActorList> => {
     try {
         const actorList = await axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=66be68e2d9a8be7fee88a803b45d654b`)
         return actorList.data.cast//.json()
@@ -86,7 +86,7 @@ export const APIMovieService = {
       return actorListPlaceholder
     }
   },
-  getSimilarMoviesQuery: async(id:number): Promise<Results> => {
+  getSimilarMoviesQuery: async(id:number): Promise<IResults> => {
     try {
       const similarMovies = await axios.get(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=66be68e2d9a8be7fee88a803b45d654b&with_watch_providers=10&watch_region=US`)
       console.log(similarMovies.data);
@@ -106,7 +106,7 @@ export const APIMovieService = {
       return actorDetailsPlaceholder;
     }
   },
-  getCombinedCreditsQuery: async(actorId:number): Promise<Movie[]> => {
+  getCombinedCreditsQuery: async(actorId:number): Promise<IMovie[]> => {
     try {
       const similarMovies = await axios.get(`https://api.themoviedb.org/3/person/${actorId}/combined_credits?api_key=66be68e2d9a8be7fee88a803b45d654b`)
       let data = await similarMovies//.json();
