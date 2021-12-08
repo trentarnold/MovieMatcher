@@ -31,6 +31,7 @@ import {socket} from './socket'
 import {IFilterData} from '../../interfaces/filterFormInterface';
 import { setUserStreaming } from './redux/features/user/userStreaming';
 import StreamingServiceList from './components/streaming-services/StreamingServiceList';
+import StreamingMovies from './components/streaming-services/StreamingMovies';
 
 
 function App() {
@@ -120,6 +121,7 @@ function App() {
           <Route path='/profile/:id' element = {<ProfilePage />} />
           <Route path ='/movieMatch/:room' element = {<MovieMatch />} />
           <Route path ='/streaming' element = {<StreamingServiceList />} />
+          <Route path ='/movies/:provider/:id' element = {<StreamingMovies />} />
       </Routes>
       <div className="outlet">
         <Outlet />

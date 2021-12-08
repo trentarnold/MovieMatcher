@@ -86,7 +86,6 @@ const MovieDetails = () => {
         const sorted = watchedMovies.sort((a, b) => {
             return Number(new Date(b.createdAt)) - Number(new Date(a.createdAt));
         })
-        console.log(sorted)
         return sorted;
     }
     return (
