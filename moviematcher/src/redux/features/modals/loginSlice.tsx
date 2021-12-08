@@ -4,10 +4,10 @@ import { RootState } from '../../app/store';
 export interface LoginState {
   value: boolean;
 }
+
 const initialState: LoginState = {
   value: false,
 };
-
 
 export const loginSlice = createSlice({
   name: 'login',

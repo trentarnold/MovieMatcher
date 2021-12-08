@@ -22,9 +22,11 @@ color:grey;
     align-items: center;
     font-size: 1.6rem;
 }
+
 .navlink-item {
     margin: 2vw;
 }
+
 .buttons {
     margin: 15px;
     display: flex;
@@ -34,9 +36,11 @@ color:grey;
     margin:5px;
     background-color: rgb(59, 59, 143);
 }
+
 .buttons button:hover {
     background-color:rgb(26, 26, 212) ;
 }
+
 .enlarge-on-hover.margin-right {
     margin-right: 40px;
 }

@@ -5,7 +5,6 @@ import { IActorList } from '../../../interfaces/ActorList'
 import { actorListPlaceholder } from '../actorListPlaceholder';
 import ActorDetailsInterface from '../../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
-import ActorsList from '../components/actors-list/ActorsList';
 import { IStreamProvider } from '../../../interfaces/StreamProviders';
 const BASE_URL = 'http://localhost:3001'
 

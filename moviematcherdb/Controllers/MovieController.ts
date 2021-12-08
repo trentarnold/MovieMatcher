@@ -2,8 +2,7 @@ import { RequestInstance } from '../middleware/authMiddleware'
 import {Request, Response} from 'express';
 import { addWatchedMovieQuery, fetchWatchedMoviesQuery, timesWatchedMovieQuery } from '../models/queries/movieQueries';
 import {APIMovieService} from '../Services/APIMovieService';
-import { createSemanticDiagnosticsBuilderProgram } from 'typescript';
-const axios = require('axios')
+
 require('dotenv').config();
 
 async function getWatchedMovie (req:RequestInstance,res:Response) {
@@ -11,9 +10,8 @@ async function getWatchedMovie (req:RequestInstance,res:Response) {
     if(req.user && req.body) {
       const watchedMovies = await fetchWatchedMoviesQuery(req.body.id || req.user.id);
       if(watchedMovies === 'no movies'){
-        res.status(200).send('User has not added any watched movies.')
-      }
-      res.status(200).send(watchedMovies); // returns all watched movies
+        res.status(200).send('User has not added any watched movies.');
+      } else res.status(200).send(watchedMovies); // returns all watched movies
     }
   }
   catch (err:any) {

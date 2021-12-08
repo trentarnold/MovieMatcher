@@ -18,7 +18,7 @@ const FavoriteMovieList: React.FC<Props> = ({movieList, criteria}) => {
         {movieList.map(movie => <MovieThumb key={Number(movie.id)} movie={movie}/>)}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FavoriteMovieList
+export default FavoriteMovieList;

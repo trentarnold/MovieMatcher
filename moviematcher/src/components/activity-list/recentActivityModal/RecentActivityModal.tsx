@@ -22,20 +22,22 @@ import { setActivities } from '../../../redux/features/user/activitiesSlice';
 import { addRating } from '../../../redux/features/user/ratingsSlice';
 import ButtonHolder from '../../movie-page/movie-details/ButtonHolder';
 import RateMovieModal from '../../movie-page/movie-details/RateMovieModal';
+
 type Props ={
   otherUserName: string,
   movieId:string
 }
 
 const RecentActivityModal:React.FC<Props> = ({otherUserName, movieId}) => {
-  const { onOpen, onClose } = useDisclosure();
+
   const [currentMovie, setCurrentMovie] = useState<IMovieDetails>(movieDetailsPlaceHolder);
-  const open = useAppSelector(selectActivityListModal);
-  const accessToken = useAppSelector(selectAuth);
   const [otherUserInformation, setOtherUserInformation] = useState<any>(UserPlaceholder);
   const [ratingModalToggle, setRatingModalToggle] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
   const [newRating, setNewRating] = useState<number>(0);
+  const open = useAppSelector(selectActivityListModal);
+  const accessToken = useAppSelector(selectAuth);
+  const { onOpen, onClose } = useDisclosure();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     let isCancelled = false;
@@ -71,12 +73,13 @@ const RecentActivityModal:React.FC<Props> = ({otherUserName, movieId}) => {
     return () => {
       isCancelled = true;
     };
-    
   }, [open])
+
   const handleClose = () => {
     dispatch(turnOffActivityListModal());
     onClose();
   }
+
   async function handleRatingSubmit() {
     try{
       ServerApiService.addRating(accessToken, currentMovie.id, newRating);
@@ -87,17 +90,18 @@ const RecentActivityModal:React.FC<Props> = ({otherUserName, movieId}) => {
     } catch (e) {
       console.error(e);
     }
-}
-const handleAddToWatched = async() => {
-  try{
-    let response = await ServerApiService.addWatchedMovie(accessToken, {movieID: Number(movieId), friendID: otherUserInformation.id});
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    handleClose();
-  } catch (e) {
-    console.error(e)
   }
-}
+
+  const handleAddToWatched = async() => {
+    try{
+      const activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
+      handleClose();
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
     <DarkMode>
       <Modal isOpen={open} onClose={handleClose} isCentered >
@@ -117,13 +121,14 @@ const handleAddToWatched = async() => {
           </ModalContent>
         </ModalOverlay>
       </Modal>
-                  {ratingModalToggle ? <RateMovieModal 
-                rating={newRating} 
-                setNewRating={setNewRating} 
-                setRatingModalToggle={setRatingModalToggle} 
-                submitRating={handleRatingSubmit}
-                movie={currentMovie}
-                /> : <div />}
+        {ratingModalToggle ? <RateMovieModal 
+          rating={newRating} 
+          setNewRating={setNewRating} 
+          setRatingModalToggle={setRatingModalToggle} 
+          submitRating={handleRatingSubmit}
+          movie={currentMovie}
+          /> : <div />
+        }
     </DarkMode>
   )
 }

@@ -17,34 +17,36 @@ const ActorsList:React.FC<Props>  = ({id}) => {
 
   useEffect(() => {
     let isCancelled = false;
-      async function fetchMovie () {
-        try {
-          setActorList(castArray)
-          const actorListIDS = await APIService.getActorList(id);
-          const filteredActorList = actorListIDS.cast.filter((actor, index, self) =>
-          index === self.findIndex((selfActor) => selfActor.id === actor.id)
-          );
-          if(!isCancelled) {
-            setActorList(filteredActorList);
-          }
-        } catch (e) {
-          console.error(e)
+    async function fetchMovie () {
+      try {
+        setActorList(castArray)
+        const actorListIDS = await APIService.getActorList(id);
+        const filteredActorList = actorListIDS.cast.filter((actor, index, self) =>
+        index === self.findIndex((selfActor) => selfActor.id === actor.id)
+        );
+        if(!isCancelled) {
+          setActorList(filteredActorList);
         }
+      } catch (e) {
+        console.error(e)
       }
-      fetchMovie()
-      return () => {
-        isCancelled = true;
-      }
+    }
 
-  }, [id])
+    fetchMovie();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [id]);
+
   return (
     <div className="actor-list-container">
-        <h1>Cast</h1>
-        <div className="movie-list" style={{maxWidth: toggle? '83.5%' : '100%'}}>
-            {actorList.map((actor:any) => <ActorThumb key={Number(actor.id)} actor={actor} role={actor.character}/>)}
-        </div>
+      <h1>Cast</h1>
+      <div className="movie-list" style={{maxWidth: toggle? '83.5%' : '100%'}}>
+        {actorList.map((actor:any) => <ActorThumb key={Number(actor.id)} actor={actor} role={actor.character}/>)}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ActorsList
+export default ActorsList;
