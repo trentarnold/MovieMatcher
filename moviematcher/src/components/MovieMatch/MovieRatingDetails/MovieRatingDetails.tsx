@@ -28,10 +28,10 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
   const accessToken = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const [newRating, setNewRating] = useState<number>(0)
-  console.log(movieDetails.genres)
   useEffect(() => {
     if(currentMovie.title === 'String') return
     let isCancelled = false;
+
     const getMovieDetails = async() => {
       const details = await APIService.getIndividualMovie(currentMovie.id)
       if(!isCancelled) {
@@ -65,6 +65,7 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
       isCancelled = true;
     }
   }, [currentMovie])
+
   const reduceToFiveStarRating = (averageVote:number):number => {
     return (averageVote / 2) ?? 1;
   }
@@ -79,7 +80,6 @@ function sortWatchedMoviesByDate() {
   const sorted = watchedMovies.sort((a, b) => {
       return Number(new Date(b.createdAt)) - Number(new Date(a.createdAt));
   })
-  console.log(sorted)
   return sorted;
 }
 function daysSince(date: string) {
@@ -111,11 +111,11 @@ function daysSince(date: string) {
                 <div style={{color:'white', marginLeft:'10px'}}>({currentMovie.vote_count})</div>
                 </div>
                 <div className='movie-details-description'>{currentMovie.overview}</div>
-                <div className='movie-details-genres'>
-                        {movieDetails.genres.length ?  movieDetails.genres.map((genre:any) => <div key={genre.id}> {genre.name}</div>) : <></>}
+                <div className='movie-details-genres' style={{margin: "0.5rem 0"}}>
+                                {movieDetails && movieDetails.genres && movieDetails.genres.length  == undefined ? <></> : movieDetails.genres?.map(genre => <div> {genre.name}</div>)}
                 </div>
 
-                {streamProviders.flatrate.length &&
+                {streamProviders.flatrate &&
                 <>
                   <div style ={{textAlign:'center'}}>Stream On:</div>
                   <div className='movie-details-stream-providers'>
