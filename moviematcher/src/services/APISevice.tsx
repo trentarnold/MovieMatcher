@@ -140,7 +140,6 @@ const APIService = {
         },
       });
       const data = await movie.json()
-      console.log(data, 'this is the data from inside gim');
       return data
     }catch(e) {
       console.log(e);

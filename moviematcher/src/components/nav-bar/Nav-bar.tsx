@@ -7,9 +7,11 @@ import { clearToken, selectAuth } from '../../redux/features/modals/authSlice';
 import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
 import { useNavigate } from 'react-router';
 import './nav-bar.css';
+import { selectUserId } from '../../redux/features/user/userIdSlice';
 
 const Navbar = () => {
   const auth = useAppSelector(selectAuth);
+  const userID = useAppSelector(selectUserId)
   const socket = useAppSelector(selectSocketRef);
   const dispatch = useAppDispatch();
   let listBool = useAppSelector(selectFriendsList);
@@ -40,7 +42,7 @@ const Navbar = () => {
            marginLeft: "6vw", boxShadow: isActive ? "0 3px 40px 3px rgb(26, 26, 212)" : '', fontSize : "1rem"})} className='navlink-item enlarge-on-hover'>
           Recent Activity
         </NavLink>
-        <NavLink to='/profile'
+        <NavLink to={`/profile/${userID}`}
           style={({ isActive }) => ({ padding:'10px', backgroundColor:isActive ? "rgb(26, 26, 200)" : "", borderRadius: isActive ? "1rem": "",
           marginLeft: "6vw", boxShadow: isActive ? "0 3px 40px 3px rgb(26, 26, 212)" : '', fontSize : "1rem"})} className='navlink-item enlarge-on-hover'>
           Profile

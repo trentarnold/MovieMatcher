@@ -98,7 +98,6 @@ io.on("connection", (socket: Socket) => {
     }
   })
   socket.on('providers', (alreadySelectedStreamingServices, room) => {
-    console.log('providers made it here')
     socket.to(room).emit('providers', alreadySelectedStreamingServices)
   })
   socket.on('accepted', async(room) => {
@@ -147,7 +146,6 @@ io.on("connection", (socket: Socket) => {
     // const movieArray = response.results;
     // console.log(filteredMovies.flat());
     io.in(room).emit('movies', filteredMovies.flat(), room)
-    console.log('emitted movies')
   })
   socket.on('foundMutualMovie', (room:string, movie:IMovie)=>{
     io.in(room).emit('foundMutualMovie', room, movie)

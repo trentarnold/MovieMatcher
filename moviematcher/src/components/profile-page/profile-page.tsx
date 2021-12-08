@@ -11,9 +11,12 @@ const ProfilePage = () => {
 
     return (
         <div className='profile'>
-            <ProfileInfo />
+            <div className='profile-container'>
+                <ProfileInfo />
+                <div style={{width: "5%"}}></div>
+                <RecentActivity profile={true}/>
+            </div>
             <BlackAndWatchList />
-            <RecentActivity />
         </div>
     );
 };

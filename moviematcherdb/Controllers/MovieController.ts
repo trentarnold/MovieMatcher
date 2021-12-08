@@ -56,9 +56,8 @@ async function getFileredMovies (req:RequestInstance,res:Response) {
   let params = '';
 
   if((req.originalUrl.split('?')[1]) !== undefined) {
-     params = '&' + (req.originalUrl.split('?')[1]);
+    params = '&' + (req.originalUrl.split('?')[1]);
   }
-  console.log(params);
   if(req.body.cast){
     let cast = req.body.cast;
     let castIDStr = '';
@@ -87,7 +86,6 @@ catch (err:any) {
 async function getPopularMovies(req:RequestInstance,res:Response) {
   try{
     const movies = await APIMovieService.getPopularMovies();
-    // console.log(movies);
     res.status(200).send(movies);
   } catch (err: any) {
     console.log(err.message);
@@ -196,7 +194,6 @@ async function getIndividualMovie(req:RequestInstance,res:Response) {
   }
   params = Number(params);
     const Credits = await APIMovieService.getSpecificMovieQuery(params);
-    console.log(Credits, "individual movie");
     res.status(200).send(Credits);
   } catch (err: any) {
     console.log(err.message);

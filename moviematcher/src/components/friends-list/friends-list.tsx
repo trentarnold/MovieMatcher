@@ -11,15 +11,18 @@ const FriendsList = () => {
   const toggle = useAppSelector((state) => state.friendsList.value);
   const [friendsToggle, setFriendsToggle] = useState<boolean>(true);
   const [searchToggle, setSearchToggle] = useState<boolean>(false);
+  const [friendsBtn, setFriendsBtn] = useState<boolean>(true)
 
   function handleFriendsClick () {
     setSearchToggle(false);
     setFriendsToggle(true);
+    setFriendsBtn(true);
   };
 
   function handleSearchClick () {
     setFriendsToggle(false);
     setSearchToggle(true);
+    setFriendsBtn(false);
   };
 
   return (
@@ -28,6 +31,7 @@ const FriendsList = () => {
         <button onClick={handleFriendsClick}>Friends List</button>
         <button onClick={handleSearchClick}>Search Users</button>
       </div>
+      <div style={{textAlign: "center", fontWeight: "500", margin: "0.25rem 0"}}>{friendsBtn ? 'My Friends' : 'All Users'}</div>
       {friendsToggle && <FriendSearch />}
       {searchToggle && <UserSearch />}
     </div>
