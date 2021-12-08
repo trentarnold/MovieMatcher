@@ -46,29 +46,43 @@ const ProfileInfo= () => {
 
   useEffect(() => {
     async function getWatched() {
-      const watched = await ServerApiService.getWatchList(token);
-      if (watched.length === 1) setWatchedMovieCount('1 movie');
-      if (watched.length > 1) setWatchedMovieCount(`${watched.length} movies`);
+      try{
+        const watched = await ServerApiService.getWatchList(token);
+        if (watched.length === 1) setWatchedMovieCount('1 movie');
+        if (watched.length > 1) setWatchedMovieCount(`${watched.length} movies`);
+      }catch (e) {
+        console.error(e);
+      }
     }
+
     async function getRated() {
-      const rated = await ServerApiService.getUserRatings(token);
-      if (rated.length === 1) setRatingCount('1 movie');
-      if (rated.length > 1) setRatingCount(`${rated.length} movies`);
+      try{
+        const rated = await ServerApiService.getUserRatings(token);
+        if (rated.length === 1) setRatingCount('1 movie');
+        if (rated.length > 1) setRatingCount(`${rated.length} movies`);
+      } catch (e) {
+        console.error(e);
+      }
     }
+
     getWatched()
     getRated()
   }, [])
 
   useEffect(() => {
     async function getFriends() {
-      const res = await ServerApiService.getFriends(token);
-      res.map(friend => {
-        if (friend.id === Number(params.id)) {
-          setUserFriend(true)
+      try{
+        const res = await ServerApiService.getFriends(token);
+        res.map(friend => {
+          if (friend.id === Number(params.id)) {
+            setUserFriend(true)
+            return;
+          }
           return;
-        }
-        return;
-      })
+        })
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     async function getInfo() {
@@ -76,7 +90,7 @@ const ProfileInfo= () => {
         const info = await ServerApiService.getUser(token);
         setProfileInfo(info);
       } catch (e) {
-        console.log(e);
+        console.error(e);;
       }
     }
     
@@ -85,7 +99,7 @@ const ProfileInfo= () => {
         const info = await ServerApiService.getSpecificUser(token, id);
         setProfileInfo(info);
       } catch (e) {
-        console.log(e);
+        console.error(e);;
       }
     }
     

@@ -288,7 +288,7 @@ const FilterForm = () => {
         const res = await response.json()
         setQueryResults(res.results)
       } catch (e) {
-        console.log(e)
+        console.error(e);
       }
     };
     

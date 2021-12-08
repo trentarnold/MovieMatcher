@@ -15,10 +15,14 @@ const MoviePage = () => {
     let isCancelled = false;
 
     async function fetchPopular () {
+      try {
         const fetchedPopularMovies  = await APIService.getSimilarMovies(id);
         if(!isCancelled) {
-            setSimilarMovies(fetchedPopularMovies.results)
+          setSimilarMovies(fetchedPopularMovies.results)
         }
+      } catch (e) {
+        console.error(e)
+      }
     };
 
     fetchPopular();

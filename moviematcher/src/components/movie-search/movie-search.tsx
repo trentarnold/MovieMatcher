@@ -23,7 +23,7 @@ const SearchBar = () => {
             setQueryResults(() => res.results)
             console.log(queryResults, 'query results')
           } catch (e) {
-            console.log(e)
+            console.error(e);
           }
         };
         

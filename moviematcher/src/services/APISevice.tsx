@@ -14,7 +14,7 @@ const APIService = {
       const result = await fetch('')
       await result.json();
     } catch (e) {
-        console.log(e)
+        console.error(e);
     }
   },
 
@@ -28,7 +28,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]};
     }
   },
@@ -43,7 +43,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]};
     }
   },
@@ -59,7 +59,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -75,7 +75,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -91,7 +91,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -107,7 +107,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -123,7 +123,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -142,7 +142,7 @@ const APIService = {
       const data = await movie.json()
       return data
     }catch(e) {
-      console.log(e);
+      console.error(e);;
       return movieDetailsPlaceHolder
     }
   },
@@ -190,7 +190,7 @@ const APIService = {
       });
       return await similarMovies.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]};
     }
   },
@@ -207,7 +207,7 @@ const APIService = {
       });
       return await actorDetails.json()
     }catch(e) {
-      //console.log(e)
+      //console.error(e);
       return actorDetailsPlaceholder;
     }
   },
@@ -223,7 +223,7 @@ const APIService = {
       let data = await similarMovies.json();
       return data.cast;
     }catch(e) {
-      console.log(e)
+      console.error(e);
       return []
     }
   },

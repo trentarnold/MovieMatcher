@@ -29,9 +29,13 @@ const MovieDetails = () => {
         setWatchedMovies([]);
         let isCancelled = false;
         async function fetchMovie () {
-            const movieDetails = await APIService.getIndividualMovie(id);
-            if(!isCancelled) {
-                setCurrentMovie(movieDetails);
+            try {
+                const movieDetails = await APIService.getIndividualMovie(id);
+                if(!isCancelled) {
+                    setCurrentMovie(movieDetails);
+                }
+            } catch (e) {
+                console.error(e);;
             }
         }
         async function fetchStreamProviders () {
@@ -42,7 +46,7 @@ const MovieDetails = () => {
                     setStreamProviders(fetchedStreamProviders.results?.US?.flatrate);
                 }
             } catch (e) {
-                console.log(e);
+                console.error(e);;
             }
         }
         async function fetchWatchedMovie() {
@@ -60,7 +64,7 @@ const MovieDetails = () => {
                     setWatchedMovies(movieArr)
                 }
             } catch (e) {
-                console.log(e);
+                console.error(e);;
             }
         }
         fetchMovie();
@@ -86,7 +90,7 @@ const MovieDetails = () => {
             dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
             setNewRating(0);
         } catch (e) {
-            console.log(e)
+            console.error(e);
         }
     }
 

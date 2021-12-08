@@ -18,25 +18,26 @@ const Home = () => {
     const accessToken = useAppSelector(selectAuth);
 
     useEffect(() => {
-      console.log('hit home useEffect')
         async function fetchPopular () {
-            const popularMoviesRes = await APIService.getPopularMovies();
-            console.log(popularMoviesRes);
-            const upcomingMoviesRes = await APIService.getUpcomingMovies();
-            console.log(upcomingMoviesRes);
-            const horrorMoviesRes = await APIService.getHorrorMovies();
-            const actionMoviesRes = await APIService.getActionMovies();
-            const sciFiMoviesRes = await APIService.getSciFiMovies();
-            const dramaMoviesRes = await APIService.getDramaMovies();
-            const comedyMoviesRes = await APIService.getComedyMovies();
-            console.log(comedyMoviesRes);
-            setPopularMovies(popularMoviesRes.results);
-            setUpcomingMovies(upcomingMoviesRes.results);
-            setHorrorMovies(horrorMoviesRes.results);
-            setComedyMovies(comedyMoviesRes.results);
-            setDramaMovies(dramaMoviesRes.results);
-            setSciFiMovies(sciFiMoviesRes.results);
-            setActionMovies(actionMoviesRes.results);
+            try {
+
+                const popularMoviesRes = await APIService.getPopularMovies();
+                const upcomingMoviesRes = await APIService.getUpcomingMovies();
+                const horrorMoviesRes = await APIService.getHorrorMovies();
+                const actionMoviesRes = await APIService.getActionMovies();
+                const sciFiMoviesRes = await APIService.getSciFiMovies();
+                const dramaMoviesRes = await APIService.getDramaMovies();
+                const comedyMoviesRes = await APIService.getComedyMovies();
+                setPopularMovies(popularMoviesRes.results);
+                setUpcomingMovies(upcomingMoviesRes.results);
+                setHorrorMovies(horrorMoviesRes.results);
+                setComedyMovies(comedyMoviesRes.results);
+                setDramaMovies(dramaMoviesRes.results);
+                setSciFiMovies(sciFiMoviesRes.results);
+                setActionMovies(actionMoviesRes.results);
+            } catch (e) {
+                console.error(e);
+            }
         };
 
         fetchPopular();

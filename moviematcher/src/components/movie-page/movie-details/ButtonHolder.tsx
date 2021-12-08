@@ -66,22 +66,34 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
     return currMovieRating;
   }
   const handleDeleteRating = async () => {
-    ServerApiService.removeRating(accessToken, movie.id)
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(removeRating(movie.id));
+    try {
+      ServerApiService.removeRating(accessToken, movie.id)
+      const activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
+      dispatch(removeRating(movie.id));
+    } catch (e) {
+      console.error(e)
+    }
   }
   const updateWatchDate = async (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setWatchDate(new Date(e.target.value))
+    try {
+      e.preventDefault();
+      setWatchDate(new Date(e.target.value))
+    } catch (e) {
+      console.error(e)
+    }
   }
   const updateWatchedMovie = async () => {
-    console.log(watchDate)
-    const newestMovie = await ServerApiService.addWatchedMovie(accessToken, {movieID: movie.id, createdDate: watchDate});
-    setWatchedMovieToggle(false)
-    setWatchedMovieDateToggle(false)
-    setWatchedMovies([...watchedMovies, newestMovie]);
-    setWatchDate(new Date(Date.now()))
+    try{
+      console.log(watchDate)
+      const newestMovie = await ServerApiService.addWatchedMovie(accessToken, {movieID: movie.id, createdDate: watchDate});
+      setWatchedMovieToggle(false)
+      setWatchedMovieDateToggle(false)
+      setWatchedMovies([...watchedMovies, newestMovie]);
+      setWatchDate(new Date(Date.now()))
+    } catch (e) {
+      console.error(e);
+    }
   }
   return (
     <div className={`movie-details-button-holder ${flexColumn ? 'column': ''}`} style={{margin: "1.5rem 0"}}>

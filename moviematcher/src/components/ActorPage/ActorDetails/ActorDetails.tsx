@@ -11,10 +11,14 @@ const ActorDetails = () => {
   useEffect(() => {
     let isCancelled = false;
     async function fetchMovie () {
-      const actorDetails = await APIService.getActorDetails(id);
+      try{
+        const actorDetails = await APIService.getActorDetails(id);
         if(!isCancelled) {
-            setCurrentActor(actorDetails);
+          setCurrentActor(actorDetails);
         }
+      } catch (e) {
+        console.error(e);
+      }
     }
     fetchMovie();
     return () => {

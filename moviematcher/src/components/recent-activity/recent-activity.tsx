@@ -20,10 +20,14 @@ const RecentActivity = ({profile}: props) => {
     useEffect(() => {
         window.scrollTo(0, 0);
         async function getUser() {
-            if (Number(params.id) === userID) setUsername('Your');
-            else {
-                const user = await ServerApiService.getSpecificUser(accessToken, Number(params.id));
-                setUsername(user.username + '\'s');
+            try{
+                if (Number(params.id) === userID) setUsername('Your');
+                else {
+                    const user = await ServerApiService.getSpecificUser(accessToken, Number(params.id));
+                    setUsername(user.username + '\'s');
+                }
+            } catch (e) {
+                console.error(e);
             }
         }
         if (params.id) getUser();

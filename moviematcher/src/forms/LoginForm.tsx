@@ -52,7 +52,7 @@ const LoginForm = () => {
         setPassword('');
       }
     } catch (e) {
-      console.log(e)
+      console.error(e);
     }
   }
 

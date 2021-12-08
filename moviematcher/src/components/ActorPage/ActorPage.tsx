@@ -12,9 +12,13 @@ const ActorPage = () => {
   useEffect(() => {
     let isCancelled = false;
     async function fetchPopular () {
-        const fetchedCombinedMovies  = await APIService.getCombinedCredits(id);
-        if(!isCancelled) {
-            setCombinedMovies(fetchedCombinedMovies)
+        try {
+            const fetchedCombinedMovies  = await APIService.getCombinedCredits(id);
+            if(!isCancelled) {
+                setCombinedMovies(fetchedCombinedMovies)
+            }
+        } catch (e) {
+            console.error(e)
         }
     };
 

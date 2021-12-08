@@ -26,35 +26,45 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
     return (averageVote / 2);
   }
   const handleAddToWatchList = async() => {
-    let watchList;
-    if(favoriteMovieIds.includes(movie.id)){
-       watchList = await ServerApiService.deleteFromWatchList(accessToken, movie.id);
-    }else {
-      if(blackListIds.includes(movie.id)) {
-        dispatch(removeBlackListIds(movie.id))
+    try {
+
+      let watchList;
+      if(favoriteMovieIds.includes(movie.id)){
+        watchList = await ServerApiService.deleteFromWatchList(accessToken, movie.id);
+      }else {
+        if(blackListIds.includes(movie.id)) {
+          dispatch(removeBlackListIds(movie.id))
+        }
+        watchList = await ServerApiService.addToWatchList(accessToken, movie.id);
       }
-       watchList = await ServerApiService.addToWatchList(accessToken, movie.id);
+      let ids = watchList.map((movie) => movie.movieid)
+      const activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
+      dispatch(setFavoriteMovieIds(ids));
+    } catch (e) {
+      console.error(e);
     }
-    let ids = watchList.map((movie) => movie.movieid)
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(setFavoriteMovieIds(ids));
   }
   const handleBlackList = async() => {
-    let blackList;
-    if(blackListIds.includes(movie.id)){
-      blackList = await ServerApiService.deleteFromBlackList(accessToken, movie.id);
-    }else {
-      if(favoriteMovieIds.includes(movie.id)) {
-        dispatch(removeFavoriteMovieIds(movie.id))
+    try {
+      let blackList;
+      if(blackListIds.includes(movie.id)){
+        blackList = await ServerApiService.deleteFromBlackList(accessToken, movie.id);
+      }else {
+        if(favoriteMovieIds.includes(movie.id)) {
+          dispatch(removeFavoriteMovieIds(movie.id))
+        }
+        blackList = await ServerApiService.addToBlackList(accessToken, movie.id);
       }
-      blackList = await ServerApiService.addToBlackList(accessToken, movie.id);
+      let ids = blackList.map((movie) => movie.movieid)
+      const activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
+      dispatch(setBlackListIds(ids));
+    } catch (e) {
+      console.error(e)
     }
-    let ids = blackList.map((movie) => movie.movieid)
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(setBlackListIds(ids));
   }
+  
     return (
         <div className="movie-thumb">
             <div className='movie-thumb-img-background'>
