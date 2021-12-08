@@ -55,7 +55,7 @@ interface actorData {
   username:string,
   id:string,
 }
-    
+
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
