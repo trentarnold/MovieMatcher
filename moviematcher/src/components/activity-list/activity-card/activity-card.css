@@ -1,7 +1,8 @@
 .activity-card {
     display: flex;
     justify-content: flex-start;
-    background-color: grey;
+    /* background-color: grey; */
+    background: linear-gradient(rgb(0, 15, 31), rgb(0, 0, 92), rgb(0, 15, 31));
     width: 60vw;
     margin: 15px;
     border-radius: 10px;

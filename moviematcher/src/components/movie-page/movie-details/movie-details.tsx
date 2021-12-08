@@ -91,6 +91,7 @@ const MovieDetails = () => {
     }
     return (
         <div style={{marginTop: "1.5rem"}}>
+            
             {ratingModalToggle ? <RateMovieModal
                 rating={newRating}
                 setNewRating={setNewRating}
@@ -98,6 +99,7 @@ const MovieDetails = () => {
                 submitRating={handleRatingSubmit}
                 movie={currentMovie}
                 /> : <div />}
+
             <div className='movie-details-container'>
                     <div className='movie-details-information-container'>
                         <div className ='movie-details-title-container'>

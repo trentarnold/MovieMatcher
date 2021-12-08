@@ -139,7 +139,9 @@ const APIService = {
           'Content-Type': 'application/json',
         },
       });
-      return await movie.json()
+      const data = await movie.json()
+      console.log(data, 'this is the data from inside gim');
+      return data
     }catch(e) {
       console.log(e);
       return movieDetailsPlaceHolder
@@ -170,7 +172,8 @@ const APIService = {
         },
       });
       const data = await streamProvider.json();
-      return data.results;
+      console.log(data, 'this is the data from inside gsp')
+      return data;
 
     }catch(err) {
       console.log(err)
