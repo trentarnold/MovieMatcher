@@ -39,7 +39,8 @@ export const APIMovieService = {
   },
 
   getFilteredMoviesQuery: async(params: string)  => {
-    const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false' + params)
+    console.log(params);
+    const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false&watch_region=US' + params)
     return movies.data;
   },
 
@@ -67,7 +68,7 @@ export const APIMovieService = {
   }
   },
 
-  getIndividualMovie: async(id:string | number): Promise< IMovieDetails>  => {
+  getIndividualMovie: async(id:string | number): Promise<IMovieDetails>  => {
     try {
       const movie  = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en`);
       return await movie//.json()
@@ -76,7 +77,6 @@ export const APIMovieService = {
       return movieDetailsPlaceHolder
     }
   },
-
   getActorListQuery: async(id:number): Promise<IActorList> => {
     try {
         const actorList = await axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=66be68e2d9a8be7fee88a803b45d654b`)
