@@ -33,30 +33,41 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
     let isCancelled = false;
 
     const getMovieDetails = async() => {
-      const details = await APIService.getIndividualMovie(currentMovie.id)
-      if(!isCancelled) {
-        setMovieDetails(details)
+      try{
+        const details = await APIService.getIndividualMovie(currentMovie.id)
+        if(!isCancelled) {
+          setMovieDetails(details)
+        }
+      } catch (e) {
+        console.error(e);
       }
-
     }
     async function fetchStreamProviders () {
-      const fetchedStreamProviders = await APIService.getStreamProviders(currentMovie.id);
-      if(!isCancelled && fetchedStreamProviders.US) {
+      try { 
+        const fetchedStreamProviders = await APIService.getStreamProviders(currentMovie.id);
+        if(!isCancelled && fetchedStreamProviders.US) {
           setStreamProviders(fetchedStreamProviders.US);
+        }
+      } catch (e) {
+        console.error(e);
       }
    }
    async function fetchWatchedMovie() {
-    const movies = await ServerApiService.getWatchedMovies(accessToken);
-    if (Array.isArray(movies)) {
-        let movieArr:IFavoriteMovie[] = [];
-        movies.map(movie => {
-            if (movie.movieid === Number(currentMovie.id)) {
-                movieArr.push(movie);
+     try{
+       const movies = await ServerApiService.getWatchedMovies(accessToken);
+       if (Array.isArray(movies)) {
+         let movieArr:IFavoriteMovie[] = [];
+         movies.map(movie => {
+           if (movie.movieid === Number(currentMovie.id)) {
+             movieArr.push(movie);
             }
             return movie;
-        })
-        setWatchedMovies(movieArr)
-    }
+          })
+          setWatchedMovies(movieArr)
+        }
+      } catch (e) {
+        console.error(e);
+      }
 }
     getMovieDetails()
     fetchStreamProviders()
@@ -70,11 +81,15 @@ const MovieRatingDetails:React.FC<Props> = ({currentMovie, handleAccept, handleD
     return (averageVote / 2) ?? 1;
   }
   async function handleRatingSubmit() {
-    ServerApiService.addRating(accessToken, currentMovie.id, newRating);
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
-    setNewRating(0);
+    try {
+      ServerApiService.addRating(accessToken, currentMovie.id, newRating);
+      const activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
+      dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
+      setNewRating(0);
+    } catch (e) {
+      console.error(e);
+    }
 }
 function sortWatchedMoviesByDate() {
   const sorted = watchedMovies.sort((a, b) => {

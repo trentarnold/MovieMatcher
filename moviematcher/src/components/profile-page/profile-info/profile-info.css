@@ -1,19 +1,39 @@
 .profile-info {
     display: flex;
+    flex-direction: column;
+    margin: 1rem 1rem 2rem;
+    width: 20rem;
 }
 
-.profile-info-details {
+/* .profile-info-details {
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
-    width:40vw;
-    background: linear-gradient(rgb(0, 15, 31), rgb(29, 70, 110), rgb(0, 15, 31));
+    width: 20rem;
+    height: 10rem;
+    background: linear-gradient(rgb(0, 15, 31), rgb(14, 44, 73), rgb(0, 15, 31));
     padding:10px;
     justify-content: space-between;
+} */
+
+.profile-info-icons img {
+    border-radius: 10%;
+    max-width: 15rem;
 }
 
-.profile-info-details button {
-    margin: 5px;
+.username-text {
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.update-photo-btn {
+    width: auto;
+    margin: 0.5rem 0;
+    padding: 0.15rem 0.5rem;
+    background-color: rgb(233, 233, 233);
+    border-radius: 0.1rem;
+    color: black;
+    font-size: 0.9rem;
 }
 
 .profile-info-icons {
@@ -21,18 +41,7 @@
     flex-direction: column;
 }
 
-.profile-info-icons img {
-  max-width: 280px;
-}
-
 .profile-info-icons input {
-    margin: 5px
-  }
-
-.profile-info-buttons {
-    margin: 10px;
-}
-
-.profile-info-buttons button {
-margin: 5px;
+    margin: 0.5rem ;
+    width: 12rem;
 }

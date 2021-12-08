@@ -23,7 +23,7 @@ export const ServerApiService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return UserPlaceholder;
     }
   },
@@ -53,7 +53,7 @@ export const ServerApiService = {
       const {user, accessToken} = await response.json()
       return {user, accessToken};
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return {user: UserPlaceholder, accessToken:''};
     }
   },
@@ -151,7 +151,7 @@ export const ServerApiService = {
         },
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return {data: {fileName: "", filePath:""}};
     }
   },
@@ -219,7 +219,7 @@ export const ServerApiService = {
       })
       return await response.json();
     } catch (e) {
-      console.log(e)
+      console.error(e);
       return {id:0, username: '', password:'', email:'',profile_pic:'',streaming: [],createdAt:'', updatedAt:''}
     }
   },

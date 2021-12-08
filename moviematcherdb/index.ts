@@ -98,7 +98,6 @@ io.on("connection", (socket: Socket) => {
     }
   })
   socket.on('providers', (alreadySelectedStreamingServices, room) => {
-    console.log('providers made it here')
     socket.to(room).emit('providers', alreadySelectedStreamingServices)
   })
   socket.on('accepted', async(room) => {

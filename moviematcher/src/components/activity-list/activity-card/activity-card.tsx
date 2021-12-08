@@ -20,25 +20,32 @@ const ActivityCard = ({activity}: any) => {
 
     useEffect(() => {
         async function fetchData() {
-            const movie = await APIService.getIndividualMovie(activity.movieid);
-            setMovie(movie);
-            const doer = await ServerApiService.getSpecificUser(accessToken, activity.uid);
-            if (doer.id === userID) doer.username = 'You';
-            setDoer(doer);
-            if (activity.friendid) {
-                const friend = await ServerApiService.getSpecificUser(accessToken, activity.friendid);
-                if (friend.id === userID) {
-                    friend.username = doer.username;
-                    doer.username = 'You';
-                };
-                setFriend(friend);
+            try{
+
+                const movie = await APIService.getIndividualMovie(activity.movieid);
+                setMovie(movie);
+                const doer = await ServerApiService.getSpecificUser(accessToken, activity.uid);
+                if (doer.id === userID) doer.username = 'You';
+                setDoer(doer);
+                if (activity.friendid) {
+                    const friend = await ServerApiService.getSpecificUser(accessToken, activity.friendid);
+                    if (friend.id === userID) {
+                        friend.username = doer.username;
+                        doer.username = 'You';
+                    };
+                    setFriend(friend);
+                }
+            } catch (e) {
+                console.error(e)
             }
         };
         fetchData();
     }, [activity]);
+
     const reduceToFiveStarRating = (averageVote:number):number => {
         return (averageVote / 2);
     }
+    
     function outputActivity() {
         if (doer && movie) {
             switch (activity.type) {

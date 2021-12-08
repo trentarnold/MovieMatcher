@@ -41,17 +41,25 @@ const RecentActivityModal:React.FC<Props> = ({otherUserName, movieId}) => {
     let isCancelled = false;
 
     const getOtherUserInformation = async() => {
-      const otherUser = await ServerApiService.getOtherUserByUserName(accessToken, otherUserName);
-      if(!isCancelled) {
-        setOtherUserInformation(otherUser);
+      try {
+        const otherUser = await ServerApiService.getOtherUserByUserName(accessToken, otherUserName);
+        if(!isCancelled) {
+          setOtherUserInformation(otherUser);
+        }
+      } catch (e) {
+        console.error(e)
       }
     };
 
     async function fetchMovie () {
+      try {
         const movieDetails = await APIService.getIndividualMovie(movieId);
         if(!isCancelled) {
-            setCurrentMovie(movieDetails);
+          setCurrentMovie(movieDetails);
         }
+      } catch (e) {
+        console.error(e)
+      }
     };
 
     if(open) {
@@ -70,17 +78,25 @@ const RecentActivityModal:React.FC<Props> = ({otherUserName, movieId}) => {
     onClose();
   }
   async function handleRatingSubmit() {
-    ServerApiService.addRating(accessToken, currentMovie.id, newRating);
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
-    setNewRating(0);
+    try{
+      ServerApiService.addRating(accessToken, currentMovie.id, newRating);
+      const activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
+      dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
+      setNewRating(0);
+    } catch (e) {
+      console.error(e);
+    }
 }
 const handleAddToWatched = async() => {
-  let response = await ServerApiService.addWatchedMovie(accessToken, {movieID: Number(movieId), friendID: otherUserInformation.id});
-  const activities = await ServerApiService.getActivities(accessToken);
-  dispatch(setActivities(activities));
-  handleClose();
+  try{
+    let response = await ServerApiService.addWatchedMovie(accessToken, {movieID: Number(movieId), friendID: otherUserInformation.id});
+    const activities = await ServerApiService.getActivities(accessToken);
+    dispatch(setActivities(activities));
+    handleClose();
+  } catch (e) {
+    console.error(e)
+  }
 }
   return (
     <DarkMode>

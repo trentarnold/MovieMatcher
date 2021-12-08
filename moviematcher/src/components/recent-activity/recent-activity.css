@@ -1,7 +1,23 @@
+.recent-activity {
+  height: 90vh;
+  overflow-y: scroll;
+}
+
 .activity-header {
   text-align: center;
   font-size: 2rem;
   border-bottom: 3px solid grey;
   width: 40%;
   margin: auto;
+}
+
+.profile-page-true {
+  height: 55vh;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.profile-page-true .activity-header {
+  font-size: 1.25rem;
+  border-bottom: none;
 }

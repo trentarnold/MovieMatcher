@@ -31,6 +31,7 @@ import {socket} from './socket'
 import {IFilterData} from '../../interfaces/filterFormInterface';
 import { setUserStreaming } from './redux/features/user/userStreaming';
 import StreamingServiceList from './components/streaming-services/StreamingServiceList';
+import StreamingMovies from './components/streaming-services/StreamingMovies';
 
 
 function App() {
@@ -115,14 +116,14 @@ function App() {
       <FriendsList />
       <Routes>
           <Route path='/' element={<Home /> } />
-          <Route path='/recent' element={<RecentActivity />} />
-          <Route path='/recent/:movieId/:otherUserName' element={<RecentActivity />} />
-          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/recent' element={<RecentActivity profile={false}/>} />
+          <Route path='/recent/:movieId/:otherUserName' element={<RecentActivity profile={false}/>} />
           <Route path='/movieDetails/:id' element={<MoviePage />} />
           <Route path='/actorDetails/:id' element = {<ActorPage />} />
           <Route path='/profile/:id' element = {<ProfilePage />} />
           <Route path ='/movieMatch/:room' element = {<MovieMatch />} />
           <Route path ='/streaming' element = {<StreamingServiceList />} />
+          <Route path ='/movies/:provider/:id' element = {<StreamingMovies />} />
       </Routes>
       <div className="outlet">
         <Outlet />

@@ -63,9 +63,9 @@ export const APIMovieService = {
     try{
     const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false')
     return movies.data;
-    } catch(err){
-      console.log(err);
-    }
+  } catch(err){
+    console.log(err);
+  }
   },
 
   getIndividualMovie: async(id:string | number): Promise<IMovieDetails>  => {
@@ -90,7 +90,7 @@ export const APIMovieService = {
     try {
       const streamProvider = await axios.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=66be68e2d9a8be7fee88a803b45d654b`)
       const data = streamProvider.data//.json();
-      return data.results;
+      return data;
     }catch(err) {
       console.log(err)
       return actorListPlaceholder
@@ -120,7 +120,7 @@ export const APIMovieService = {
     try {
       const similarMovies = await axios.get(`https://api.themoviedb.org/3/person/${actorId}/combined_credits?api_key=66be68e2d9a8be7fee88a803b45d654b`)
       let data = await similarMovies//.json();
-      return data.cast
+      return data.data
     }catch(err) {
       console.log(err)
       return []
