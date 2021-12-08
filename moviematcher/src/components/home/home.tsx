@@ -9,7 +9,6 @@ import './home.css';
 
 const Home = () => {
     const [popularMovies, setPopularMovies] = useState<IMovie[]>([]);
-    const [upcomingMovies, setUpcomingMovies] = useState<IMovie[]>([]);
     const [horrorMovies, setHorrorMovies] = useState<IMovie[]>([]);
     const [comedyMovies, setComedyMovies] = useState<IMovie[]>([]);
     const [dramaMovies, setDramaMovies] = useState<IMovie[]>([]);
@@ -22,14 +21,12 @@ const Home = () => {
             try {
 
                 const popularMoviesRes = await APIService.getPopularMovies();
-                const upcomingMoviesRes = await APIService.getUpcomingMovies();
                 const horrorMoviesRes = await APIService.getHorrorMovies();
                 const actionMoviesRes = await APIService.getActionMovies();
                 const sciFiMoviesRes = await APIService.getSciFiMovies();
                 const dramaMoviesRes = await APIService.getDramaMovies();
                 const comedyMoviesRes = await APIService.getComedyMovies();
                 setPopularMovies(popularMoviesRes.results);
-                setUpcomingMovies(upcomingMoviesRes.results);
                 setHorrorMovies(horrorMoviesRes.results);
                 setComedyMovies(comedyMoviesRes.results);
                 setDramaMovies(dramaMoviesRes.results);
@@ -62,7 +59,6 @@ const Home = () => {
             accessToken && <BlackAndWatchList />
             }
             <MovieList criteria="Popular Movies" movieList={popularMovies}/>
-            <MovieList criteria="In Theatres" movieList={upcomingMovies}/>
             <MovieList criteria="Comedy Movies" movieList={comedyMovies}/>
             <MovieList criteria="Horror Movies" movieList={horrorMovies}/>
             <MovieList criteria="Action Movies" movieList={actionMovies}/>

@@ -59,7 +59,8 @@ const {
   getSimilarMovies,
   getActorsDetails,
   getCombinedCredits,
-  getIndividualMovie
+  getIndividualMovie,
+  getAllStreamProviders
 
 } = require('./Controllers/MovieController');
 router.post('/user/watched', authMiddleware, getWatchedMovie) 
@@ -74,6 +75,7 @@ router.get('/movies/Similar?:params', getSimilarMovies);
 router.get('/movies/ActorDetails?:params', getActorsDetails);
 router.get('/movies/CombinedCredits?:params', getCombinedCredits);
 router.get('/movies/Specific?:params', getIndividualMovie)
+router.get('/streamProviders', getAllStreamProviders)
 
 //Action Controller Routes
 const {
