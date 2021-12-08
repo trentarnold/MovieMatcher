@@ -27,18 +27,23 @@
 }
 
 .update-photo-btn {
-    width: auto;
-    margin: 0.5rem 0;
+    width: fit-content;
+    margin: 0.5rem 1rem;
     padding: 0.15rem 0.5rem;
-    background-color: rgb(233, 233, 233);
+    background-color: rgb(59, 59, 143);
     border-radius: 0.1rem;
-    color: black;
+    color: white;
     font-size: 0.9rem;
+}
+.update-photo-btn:hover {
+   background-color:  rgb(26, 26, 212);
 }
 
 .profile-info-icons {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .profile-info-icons input {
