@@ -1,6 +1,6 @@
-import { Movie } from '../../interfaces/MovieInterface';
-import { MovieDetailsInterface } from '../../interfaces/MovieDetails';
-export const moviePlaceholder:Movie = {
+import { IMovie } from '../../interfaces/movieInterface';
+import { IMovieDetails } from '../../interfaces/MovieDetails';
+export const moviePlaceholder:IMovie = {
   adult: true,
   backdrop_path: 'String',
   genre_ids: [1,2],
@@ -14,26 +14,27 @@ export const moviePlaceholder:Movie = {
   title: 'String',
   video: true,
   vote_average: 2,
-  vote_count: 1
+  vote_count: 1,
 }
+
 const productionCompany = {
   id: 1,
   logo_path: 'string',
   name: 'string',
   origin_country: 'string'
   }
-  
+
   const productionCountries = {
     iso_3166_1: 'string',
     name: 'string'
   }
-  
+
   const spokenLanguages = {
   english_name: 'string',
   iso_639_1: 'string',
   name: 'string'
   }
-export const movieDetailsPlaceHolder:MovieDetailsInterface = {
+export const movieDetailsPlaceHolder:IMovieDetails = {
   adult: true,
   backdrop_path: 'string',
   belongs_to_collection:'any',
@@ -60,5 +61,3 @@ export const movieDetailsPlaceHolder:MovieDetailsInterface = {
   vote_average: 1,
   vote_count: 1
 }
-
-  

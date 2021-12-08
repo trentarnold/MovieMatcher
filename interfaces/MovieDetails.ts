@@ -1,9 +1,9 @@
-export interface MovieDetailsInterface {
+export interface IMovieDetails {
   adult: boolean,
   backdrop_path: string,
   belongs_to_collection?:any,
   budget: number,
-  genres: Genre[],
+  genres: IGenre[],
   homepage: string,
   id: number,
   imdb_id: string,
@@ -12,12 +12,12 @@ export interface MovieDetailsInterface {
   overview: string,
   popularity: number,
   poster_path: string,
-  production_companies: ProductionCompany[],
-  production_countries: ProductionCountries[],
+  production_companies: IProductionCompany[],
+  production_countries: IProductionCountries[],
   release_date: string,
   revenue: number,
   runtime: number,
-  spoken_languages: SpokenLanguages[],
+  spoken_languages: ISpokenLanguages[],
   status: string,
   tagline: string,
   title: string,
@@ -27,28 +27,28 @@ export interface MovieDetailsInterface {
   genre_ids?: number[]
 }
 
-interface ProductionCompany {
+interface IProductionCompany {
 id: number,
 logo_path?: string,
 name: string,
 origin_country?: string
 }
 
-interface ProductionCountries {
+interface IProductionCountries {
   iso_3166_1: string,
   name: string
 }
-interface Genre {
+interface IGenre {
   id:number,
   name:string
 }
 
-interface SpokenLanguages {
+interface ISpokenLanguages {
 english_name: string,
 iso_639_1: string,
 name: string
 }
-export interface Cast {
-  cast: MovieDetailsInterface[]
+export interface ICast {
+  cast: IMovieDetails[]
 }
 

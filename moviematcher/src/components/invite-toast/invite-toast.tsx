@@ -4,6 +4,7 @@ import { selectSocketRef } from '../../redux/features/socket/socketRefSlice'
 import { Button } from '@chakra-ui/button';
 import './invite-toast.css';
 import { toast } from 'react-toastify'
+
 type Props = {
     room: string,
     toastRef: ReactText,
@@ -26,8 +27,10 @@ const InviteToast:React.FC<Props> = ({toastRef, room, otherUserName}) => {
     return (
         <div className="invite-toast">
             <p>{`${otherUserName} has invited you to match!`}</p>
-            <Button onClick={handleAcceptInvite}>Accept</Button>
-            <Button onClick={handleDenyInvite}>Deny</Button>
+            <div className='toast-button-container'>
+                <Button className='toast-button enlarge-on-hover' onClick={handleAcceptInvite}>Accept</Button>
+                <Button className='toast-button enlarge-on-hover' onClick={handleDenyInvite}>Deny</Button>
+            </div>
         </div>
     )
 }

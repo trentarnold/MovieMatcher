@@ -24,7 +24,12 @@ import ratingsReducer, { ratingsState } from './redux/features/user/ratingsSlice
 import movieFilterReducer, {MovieFilterState} from './redux/features/modals/movieFilterSlice'
 import matchedMovieReducer, {MatchedMovieState} from './redux/features/modals/matchedMovie'
 import activitiesReducer, { activitiesState } from './redux/features/user/activitiesSlice';
-import userNameReducer, { UserNameState} from './redux/features/user/yourUserName'
+import userNameReducer, { UserNameState} from './redux/features/user/yourUserName';
+import activityListModalReducer, {ActivityListModalState} from './redux/features/modals/activityListModal'
+import  roomNameReducer, {roomNameState}  from './redux/features/modals/roomNameSlice';
+import userStreamingReducer, {userStreamingState} from './redux/features/user/userStreaming';
+import { SocketContext, socket } from './socket';
+
 const persistConfig = {
   key: 'root',
   storage,
@@ -46,6 +51,9 @@ interface IAppState {
   activities: activitiesState;
   matchedMovie: MatchedMovieState;
   userName: UserNameState;
+  activityListModal: ActivityListModalState;
+  roomName: roomNameState;
+  userStreaming: userStreamingState;
 }
 
 const rootReducer = combineReducers<IAppState>({
@@ -64,6 +72,9 @@ const rootReducer = combineReducers<IAppState>({
   activities: activitiesReducer,
   matchedMovie: matchedMovieReducer,
   userName: userNameReducer,
+  activityListModal: activityListModalReducer,
+  roomName: roomNameReducer,
+  userStreaming: userStreamingReducer,
 });
 
 const persisted = persistReducer(persistConfig, rootReducer);
@@ -73,13 +84,15 @@ const persistor = persistStore(persistStorage);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={persistStorage}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ChakraProvider>
-          <BrowserRouter >
-            <App />
-          </BrowserRouter>
-        </ChakraProvider>
-      </PersistGate>
+    <SocketContext.Provider value={socket}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ChakraProvider>
+            <BrowserRouter >
+              <App />
+            </BrowserRouter>
+          </ChakraProvider>
+        </PersistGate>
+      </SocketContext.Provider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

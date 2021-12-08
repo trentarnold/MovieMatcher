@@ -12,6 +12,7 @@ export interface UserAttributes {
   email: string;
   password: string;
   profile_pic: string;
+  streaming?: number[];
   createdAt?: Date;
   updatedAt?: Date;
   watched_movies?: WatchedMovieInstance[];
@@ -57,6 +58,10 @@ const User = sequelize.define<UserInstance>('user', {
     type: DataTypes.TEXT,
     allowNull: true
   },
+  streaming: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true
+  }
 })
 
 // ASSOCIATIONS

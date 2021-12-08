@@ -1,4 +1,4 @@
-export interface Movie {
+export interface IMovie {
     adult: Boolean,
     backdrop_path: String,
     genre_ids: Array<Number>,
@@ -15,8 +15,9 @@ export interface Movie {
     vote_count: number
 }
 
-export interface Results {
-  results: Movie[],
+
+export interface IResults {
+  results: IMovie[],
   page?: Number,
   total_pages?:Number,
   total_results?:Number
