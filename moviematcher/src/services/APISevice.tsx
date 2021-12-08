@@ -193,7 +193,9 @@ const APIService = {
     }
   },
   getActorDetails: async(actorId:number): Promise<ActorDetailsInterface> => {
+    console.log('hit outside of try')
     try {
+      console.log("hit apiService")
       const actorDetails = await fetch((`${BASE_URL}/movies/ActorDetails?actor=${actorId}` ), {
         method: 'GET',
         mode: 'cors',
@@ -203,7 +205,7 @@ const APIService = {
       });
       return await actorDetails.json()
     }catch(e) {
-      console.log(e)
+      //console.log(e)
       return actorDetailsPlaceholder;
     }
   },

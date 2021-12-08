@@ -109,8 +109,8 @@ async function getActorsList(req:RequestInstance,res:Response) {
   try {
     let params;
 
-  if((req.originalUrl.split('?')[1]) !== undefined) {
-     params = (req.originalUrl.split('?')[1]);
+  if((req.originalUrl.split('=')[1]) !== undefined) {
+     params = (req.originalUrl.split('=')[1]);
   }
   params = Number(params);
     const actors =  await APIMovieService.getActorListQuery(params);
@@ -174,11 +174,11 @@ async function getCombinedCredits(req:RequestInstance,res:Response) {
   try {
     let params;
 
-  if((req.originalUrl.split('?')[1]) !== undefined) {
-     params = (req.originalUrl.split('?')[1]);
+  if((req.originalUrl.split('=')[1]) !== undefined) {
+     params = (req.originalUrl.split('=')[1]);
   }
   params = Number(params);
-    const Credits = await APIMovieService.getActorDetailsQuery(params);
+    const Credits = APIMovieService.getCombinedCreditsQuery(params);
     res.status(200).send(Credits);
   } catch (err: any) {
     console.log(err.message);
@@ -191,11 +191,12 @@ async function getIndividualMovie(req:RequestInstance,res:Response) {
   try {
     let params;
 
-  if((req.originalUrl.split('?')[1]) !== undefined) {
-     params = (req.originalUrl.split('?')[1]);
+  if((req.originalUrl.split('=')[1]) !== undefined) {
+     params = (req.originalUrl.split('=')[1]);
   }
   params = Number(params);
-    const Credits = await APIMovieService.getActorDetailsQuery(params);
+    const Credits = await APIMovieService.getSpecificMovieQuery(params);
+    console.log(Credits, "individual movie");
     res.status(200).send(Credits);
   } catch (err: any) {
     console.log(err.message);
