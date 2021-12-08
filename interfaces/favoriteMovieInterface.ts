@@ -1,13 +1,12 @@
-export interface IFavoriteMovie {
+export interface FavoriteMovieInterface {
   createdAt: string,
   id: number,
   movieid: number,
   uid: number
   updatedAt: string,
-  freindid?: number,
 }
 
-export interface IMovieWithRating {
+export interface MovieWithRatingInterface {
   createdAt: string,
   id: number,
   movieid: number,

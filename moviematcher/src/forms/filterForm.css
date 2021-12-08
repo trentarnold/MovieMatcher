@@ -6,7 +6,3 @@ border-radius: 20px;
 padding:7px;
 overflow-y: scroll;
 }
-
-.filter-search-results p:hover {
-  cursor:pointer;
-}

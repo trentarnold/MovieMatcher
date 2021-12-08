@@ -1,11 +1,11 @@
-export interface IActorList {
+export interface ActorListInterface {
   id:number,
-  cast: ICast[],
-  crew: ICrew[]
+  cast:Cast[],
+  crew: Crew[]
 }
 
 
-export interface ICast {
+export interface Cast {
 adult: boolean,
 cast_id: number,
 character: string,
@@ -20,7 +20,7 @@ popularity: number,
 profile_path?: string|null
 }
 
-export interface ICrew {
+export interface Crew {
 adult: boolean,
 credit_id: string,
 department: string,

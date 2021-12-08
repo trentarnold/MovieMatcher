@@ -1,6 +1,6 @@
 import React from 'react'
 import './movie-thumb.css'
-import { IMovie } from '../../../../../interfaces/movieInterface'
+import { Movie } from '../../../../../interfaces/MovieInterface'
 import {Button} from '@chakra-ui/react'
 import StarRatings from 'react-star-ratings';
 import {  useNavigate } from "react-router-dom";
@@ -10,11 +10,11 @@ import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } from '../../../redux/features/user/watchListIds'
 import { selectBlackListIds, setBlackListIds, removeBlackListIds } from '../../../redux/features/user/blackListids';
-import { IMovieDetails } from '../../../../../interfaces/MovieDetails'
+import { MovieDetailsInterface } from '../../../../../interfaces/MovieDetails'
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
 
 type Props = {
-  movie:IMovie | IMovieDetails;
+  movie:Movie | MovieDetailsInterface;
 }
 const MovieThumb:React.FC<Props> = ({movie}) => {
   const navigate = useNavigate();
@@ -82,10 +82,10 @@ const MovieThumb:React.FC<Props> = ({movie}) => {
                       className='enlarge-on-hover'
                       onClick={handleBlackList}>
                     { blackListIds.includes(movie.id) ? <FaMinus color='red'/> : <FaSkull color='red' /> }
-                    <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Blacklist It'}</span>
+                    <span style={{fontStyle:'italic', marginLeft:'5px'}}>{blackListIds.includes(movie.id) ? 'Remove Blacklist' : 'Add to BlackList'}</span>
               </Button>
-            </div>
-            <img className='movie-thumb-img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt='movie poster' />
+            </div>  
+            <img className='movie-thumb-img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt='movie poster' />   
         </div>
     )
 }

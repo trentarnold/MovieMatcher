@@ -47,7 +47,7 @@
 
 .user-icon-buttons button{
   max-width: fit-content;
-  font-size: .8rem;
+  font-size: 60%;
   border-radius: 5px;
   padding: 2px;
   margin: 2px;
@@ -56,14 +56,11 @@
   color: white;
   transition: 0.35s;
 }
-.user-icon-buttons button:hover {
-    background-color:rgb(26, 26, 212) ;
-}
 
-/* .user-icon-buttons button:hover {
+.user-icon-buttons button:hover {
     color: rgb(41, 41, 75);
     background-color: white;
-} */
+}
 
 .user-icon-buttons button:active {
     background-color: rgb(41, 41, 75);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import FriendIcon from '../friend-icon/friend-icon' 
-import { IUser } from '../../../../../interfaces/responses'
+import { User } from '../../../../../interfaces/responses'
 import { useAppSelector } from '../../../redux/app/hooks'
 import { selectAuth } from '../../../redux/features/modals/authSlice'
 import { selectFriendIds } from '../../../redux/features/user/friendsIdSlice'
@@ -10,7 +10,7 @@ import './user-search.css'
 import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers'
 
 const UserSearch = () => {
-    const [users, setUsers] = useState<IUser[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [query, setQuery] = useState('');
     const accessToken = useAppSelector(selectAuth);
     const friendIds = useAppSelector(selectFriendIds);
@@ -24,7 +24,7 @@ const UserSearch = () => {
       let isCancelled = false;
       const fetchUsers = async() => {
        let otherUsers = await ServerApiService.getAllUsers(accessToken);
-       let sortedArray:IUser[] = otherUsers.sort((a, b) => {
+       let sortedArray:User[] = otherUsers.sort((a, b) => {
         if(loggedInUsers.includes(a.username) && loggedInUsers.includes(b.username)) return 0
         return loggedInUsers.includes(a.username) ? -1 : 1
        })
@@ -52,7 +52,7 @@ const UserSearch = () => {
               <input className="search-bar" value={query} placeholder="Search..." onChange={handleChange}/>
             </div>
             <div className="user-icons"> 
-            {filterUsers().map((user:IUser) => {
+            {filterUsers().map((user:User) => {
                 if(user.id === yourId) return ''
                 return <FriendIcon key={user.id} user={user} friend={friendIds.includes(user.id)}/>
             })}

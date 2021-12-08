@@ -1,21 +1,19 @@
-export interface IAccessTokenResponse {
-  user:IUser
+export interface AccessTokenResponse {
+  user:User
   accessToken:string
 }
 
-
-export interface IUser {
+export interface  User {
     id: number,
     username: string,
     email: string,
     password: string,
     profile_pic: string,
-    streaming: number[] | null;
     createdAt: string,
     updatedAt: string
 }
 
-export interface IPictureChange {
+export interface PictureChange {
   data:{
     fileName:string,
     filePath:string
