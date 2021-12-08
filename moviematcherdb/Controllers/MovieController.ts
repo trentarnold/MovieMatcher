@@ -176,7 +176,7 @@ async function getCombinedCredits(req:RequestInstance,res:Response) {
      params = (req.originalUrl.split('=')[1]);
   }
   params = Number(params);
-    const Credits = APIMovieService.getCombinedCreditsQuery(params);
+    const Credits = await APIMovieService.getCombinedCreditsQuery(params);
     res.status(200).send(Credits);
   } catch (err: any) {
     console.log(err.message);

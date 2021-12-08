@@ -35,22 +35,32 @@ const MovieDetails = () => {
             }
         }
         async function fetchStreamProviders () {
-            const fetchedStreamProviders = await APIService.getStreamProviders(id);
-            if(!isCancelled && fetchedStreamProviders?.US) {
-                setStreamProviders(fetchedStreamProviders?.US?.flatrate);
+            try {
+                const fetchedStreamProviders = await APIService.getStreamProviders(id);
+                console.log(fetchedStreamProviders)
+                if(!isCancelled && fetchedStreamProviders.results?.US?.flatrate) {
+                    setStreamProviders(fetchedStreamProviders.results?.US?.flatrate);
+                }
+            } catch (e) {
+                console.log(e);
             }
         }
         async function fetchWatchedMovie() {
-            const movies = await ServerApiService.getWatchedMovies(accessToken);
-            if (Array.isArray(movies)) {
-                let movieArr:IFavoriteMovie[] = [];
-                movies.map(movie => {
-                    if (movie.movieid === Number(id)) {
-                        movieArr.push(movie);
-                    }
-                    return movie;
-                })
-                setWatchedMovies(movieArr)
+            try {
+
+                const movies = await ServerApiService.getWatchedMovies(accessToken);
+                if (Array.isArray(movies)) {
+                    let movieArr:IFavoriteMovie[] = [];
+                    movies.map(movie => {
+                        if (movie.movieid === Number(id)) {
+                            movieArr.push(movie);
+                        }
+                        return movie;
+                    })
+                    setWatchedMovies(movieArr)
+                }
+            } catch (e) {
+                console.log(e);
             }
         }
         fetchMovie();
@@ -69,12 +79,20 @@ const MovieDetails = () => {
         return (averageVote / 2);
     }
     async function handleRatingSubmit() {
-        ServerApiService.addRating(accessToken, currentMovie.id, newRating);
-        const activities = await ServerApiService.getActivities(accessToken);
-        dispatch(setActivities(activities));
-        dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
-        setNewRating(0);
+        try {
+            ServerApiService.addRating(accessToken, currentMovie.id, newRating);
+            const activities = await ServerApiService.getActivities(accessToken);
+            dispatch(setActivities(activities));
+            dispatch(addRating({movieid: currentMovie.id, rating: newRating}))
+            setNewRating(0);
+        } catch (e) {
+            console.log(e)
+        }
     }
+
+    useEffect(()=> {
+        console.log(streamProviders)
+    },[streamProviders])
     function daysSince(date: string) {
         const today = new Date().setHours(24, 0, 0, 0);
         const days = moment(today).diff(date, 'days');

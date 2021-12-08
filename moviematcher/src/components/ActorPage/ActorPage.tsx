@@ -19,6 +19,7 @@ const ActorPage = () => {
     };
 
     fetchPopular();
+    console.log(combinedMovies)
 
     return () => {
         isCancelled = true;

@@ -220,9 +220,8 @@ const APIService = {
           'Content-Type': 'application/json',
         },
       });
-      let data =await similarMovies.json();
+      let data = await similarMovies.json();
       return data.cast;
-
     }catch(e) {
       console.log(e)
       return []
