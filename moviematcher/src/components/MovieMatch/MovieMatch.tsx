@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import { setRoomName } from '../../redux/features/modals/roomNameSlice';
 import FilterForm from '../../forms/filterForm';
+import MovieList from '../movie-list/movie-list';
 
 const MovieMatch = () => {
   const { room } = useParams();
@@ -32,7 +33,7 @@ const MovieMatch = () => {
   const [titles, setTitles] = useState<string[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  console.log(acceptedMovies, 'these are the accepted movies')
   useEffect(()=>{
     if (room) {dispatch(setRoomName(room));
     dispatch(turnOnMovieFilter());
@@ -84,7 +85,7 @@ const MovieMatch = () => {
       socket.emit('foundMutualMovie', room, currentMovie);
     } else {
       socket.emit('acceptMovie', room, currentMovie);
-      const newList = movies;
+      const newList: IMovie[] = [...movies];
       newList.shift();
       if (newList) {
         setMovies(newList);
@@ -107,18 +108,27 @@ const MovieMatch = () => {
   }
 
   return (
+    <>
     <div className="movie-match-container">
       {currentMovie &&
       <div>
         <MovieRatingDetails currentMovie = {currentMovie} handleAccept = {handleAccept} handleDeny = {handleDeny}/>
         <div className="movie-match-buttons">
-          <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover' onClick={handleAccept}>
+          <Button
+          _focus ={{
+            boxShadow:
+            ""}}
+           style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover' onClick={handleAccept}>
             <div className='movie-rating-button'>
               <FaThumbsUp color='green' size='4em' />
               <span className='movie-rating-button-span'>I'll Watch it</span>
             </div>
           </Button>
-          <Button style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover'  onClick={handleDeny}>
+          <Button
+            _focus ={{
+              boxShadow:
+              ""}}
+           style ={{backgroundColor:'transparent', marginTop:'20px', height:'fit-content', width:'fit-content'}} className='enlarge-on-hover'  onClick={handleDeny}>
           <div className='movie-rating-button'>
             <FaThumbsDown color='red' size='4em'  />
             <span className='movie-rating-button-span'>Not a chance</span>
@@ -126,16 +136,13 @@ const MovieMatch = () => {
           </Button>
         </div>
       </div>}
-      <h1>Accepted Movies:</h1>
-      <div className="accepted-movie-array">
-        {acceptedMovies.length > 0 &&
-        acceptedMovies.map(movie => <MovieThumb key={movie.id} movie={movie}/>)
-        }
-      </div>
+
       <MatchedMovieModal  currentMovie = {matchedMovie} otherUserName = {otherUserName} showOtherFriendAccept = {showOtherFriendAccept}
                           declineWatchMovie = {declineWatchMovie} acceptWatchMovie = {acceptWatchMovie}/>
       <FilterForm />
     </div>
+    {acceptedMovies.length && <MovieList criteria='Accepted Movies:' movieList = {acceptedMovies} />}
+    </>
   )
 }
 

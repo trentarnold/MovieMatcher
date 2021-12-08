@@ -276,10 +276,13 @@ const FilterForm = () => {
       setBothAcceptFilters(false);
     })
     setProviders((oldProviders) => [...oldProviders, ...alreadySelectedStreamingServices])
+  }, []);
+  
+  useEffect(() => {
     let users = room.split('+');
     let otherUsername = users[0] === loggedInUser ? users[1] : users[0];
     setOtherUsername(otherUsername)
-  }, []);
+  }, [room])
 
   useEffect(() =>{
     async function searchActors () {

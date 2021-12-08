@@ -2,13 +2,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-height: 12vh;
+    /* max-height: 12vh; */
 }
 
 .accepted-movie-array {
     display: flex;
-    overflow: auto;
-    max-width: 80vw;
+    overflow-x:auto;
+    overflow-y: hidden;
+    height: 35vh;
 }
 .movie-match-buttons {
     display: flex;
