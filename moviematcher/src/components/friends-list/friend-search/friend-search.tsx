@@ -24,14 +24,19 @@ const FriendSearch = () => {
     let isCancelled = false;
 
     const fetchFriends = async() => {
-     let userFriends = await ServerApiService.getFriends(accessToken);
-     let sortedArray:IUser[] = userFriends.sort((a, b) => {
-       if(loggedInUsers.includes(a.username) && loggedInUsers.includes(b.username)) return 0
-       return loggedInUsers.includes(a.username) ? -1 : 1
-      })
-     if(!isCancelled) {
-       setFriends(sortedArray)
-     }
+      try{
+        
+        let userFriends = await ServerApiService.getFriends(accessToken);
+        let sortedArray:IUser[] = userFriends.sort((a, b) => {
+          if(loggedInUsers.includes(a.username) && loggedInUsers.includes(b.username)) return 0
+          return loggedInUsers.includes(a.username) ? -1 : 1
+        })
+        if(!isCancelled) {
+          setFriends(sortedArray)
+        }
+      } catch (e) {
+        console.error(e);
+      }
     };
     if(accessToken) {
       fetchFriends()

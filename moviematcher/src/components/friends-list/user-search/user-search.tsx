@@ -23,14 +23,19 @@ const UserSearch = () => {
     useEffect(() => {
       let isCancelled = false;
       const fetchUsers = async() => {
-       let otherUsers = await ServerApiService.getAllUsers(accessToken);
-       let sortedArray:IUser[] = otherUsers.sort((a, b) => {
-        if(loggedInUsers.includes(a.username) && loggedInUsers.includes(b.username)) return 0
-        return loggedInUsers.includes(a.username) ? -1 : 1
-       })
-       if(!isCancelled) {
-         setUsers(sortedArray)
-       }
+        try  {
+
+          let otherUsers = await ServerApiService.getAllUsers(accessToken);
+          let sortedArray:IUser[] = otherUsers.sort((a, b) => {
+            if(loggedInUsers.includes(a.username) && loggedInUsers.includes(b.username)) return 0
+            return loggedInUsers.includes(a.username) ? -1 : 1
+          })
+          if(!isCancelled) {
+            setUsers(sortedArray)
+          }
+        } catch (e) {
+          console.error(e);
+        }
       }
       if(accessToken) {
         fetchUsers()
