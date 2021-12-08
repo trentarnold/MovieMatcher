@@ -4,7 +4,7 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    top:13vh;
+    top:85px;
     right:0;
     z-index: 10;
     min-width: 250px;
@@ -30,7 +30,6 @@
     border-radius: 5px;
     padding: 5px;
     transition: 0.35s;
-    margin-top: 20px;
 }
 
 .friends-list-toggle button:hover {

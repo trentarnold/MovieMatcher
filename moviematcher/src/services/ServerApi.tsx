@@ -1,9 +1,9 @@
-import {IAccessTokenResponse, IPictureChange, IUser as UserInterface} from '../../../interfaces/responses'
+import {AccessTokenResponse, PictureChange, User as UserInterface} from '../../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
-import { IFavoriteMovie, IMovieWithRating } from '../../../interfaces/favoriteMovieInterface'
-import { IActivity } from '../../../interfaces/activityInterface';
-
+import { FavoriteMovieInterface, MovieWithRatingInterface } from '../../../interfaces/favoriteMovieInterface'
+import { activityInterface } from '../../../interfaces/activityInterface';
 import axios from 'axios';
+import { access } from 'fs';
 const BASE_URL = 'http://localhost:3001'
 interface User {
   username:string,
@@ -27,7 +27,7 @@ export const ServerApiService = {
       return UserPlaceholder;
     }
   },
-  createUser: async(user:User): Promise<IAccessTokenResponse> => {
+  createUser: async(user:User): Promise<AccessTokenResponse> => {
     try {
       let response = await fetch(`${BASE_URL}/user/create`, {
         method:'POST',
@@ -41,7 +41,7 @@ export const ServerApiService = {
       return {user: UserPlaceholder, accessToken:''}
     }
   },
-  userLogin: async(username:string, password:string): Promise<IAccessTokenResponse> => {
+  userLogin: async(username:string, password:string): Promise<AccessTokenResponse> => {
     try {
       const response = await fetch(`${BASE_URL}/user/login`, {
         method: 'POST',
@@ -140,7 +140,7 @@ export const ServerApiService = {
       return [UserPlaceholder]
     }
   },
-  changeProfilePicture: async(accessToken:string, image:File): Promise<IPictureChange> => {
+  changeProfilePicture: async(accessToken:string, image:File): Promise<PictureChange> => {
     try {
       const fd= new FormData();
       fd.append('image', image)
@@ -155,7 +155,7 @@ export const ServerApiService = {
       return {data: {fileName: "", filePath:""}};
     }
   },
-  addToWatchList: async(accessToken:string, movieID:number): Promise<IFavoriteMovie[]> => {
+  addToWatchList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/user/wants`, {
         method: 'POST',
@@ -172,7 +172,7 @@ export const ServerApiService = {
       return []
     }
   },
-  getWatchList: async(accessToken:string): Promise<IFavoriteMovie[]> => {
+  getWatchList: async(accessToken:string): Promise<FavoriteMovieInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/user/wants`, {
         method: 'GET',
@@ -189,7 +189,7 @@ export const ServerApiService = {
       return []
     }
   },
-  deleteFromWatchList: async(accessToken:string, movieID:number): Promise<IFavoriteMovie[]> => {
+  deleteFromWatchList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/user/wants`, {
         method: 'DELETE',
@@ -220,10 +220,10 @@ export const ServerApiService = {
       return await response.json();
     } catch (e) {
       console.log(e)
-      return {id:0, username: '', password:'', email:'',profile_pic:'',streaming: [],createdAt:'', updatedAt:''}
+      return {id:0, username: '', password:'', email:'',profile_pic:'',createdAt:'', updatedAt:''}
     }
   },
-  addToBlackList: async(accessToken:string, movieID:number): Promise<IFavoriteMovie[]> => {
+  addToBlackList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/user/blacklist`, {
         method: 'POST',
@@ -240,7 +240,7 @@ export const ServerApiService = {
       return []
     }
   },
-  getBlackList: async(accessToken:string): Promise<IFavoriteMovie[]> => {
+  getBlackList: async(accessToken:string): Promise<FavoriteMovieInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/user/blacklist`, {
         method: 'GET',
@@ -257,7 +257,7 @@ export const ServerApiService = {
       return []
     }
   },
-  deleteFromBlackList: async(accessToken:string, movieID:number): Promise<IFavoriteMovie[]> => {
+  deleteFromBlackList: async(accessToken:string, movieID:number): Promise<FavoriteMovieInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/user/blacklist`, {
         method: 'DELETE',
@@ -274,7 +274,7 @@ export const ServerApiService = {
       return []
     }
   },
-  getOtherUserWantList: async(id:number, accessToken:string): Promise<IFavoriteMovie[]> => {
+  getOtherUserWantList: async(id:number, accessToken:string): Promise<FavoriteMovieInterface[]> => {
     console.log('i got called')
     try {
       const response = await fetch(`${BASE_URL}/wants`, {
@@ -294,7 +294,7 @@ export const ServerApiService = {
       return []
     }
   },
-  getOtherUserBlackList: async(id:number, accessToken:string): Promise<IFavoriteMovie[]> => {
+  getOtherUserBlackList: async(id:number, accessToken:string): Promise<FavoriteMovieInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/blacklist`, {
         method: 'POST',
@@ -311,7 +311,7 @@ export const ServerApiService = {
       return []
     }
   },
-  getUserRatings: async(accessToken: string): Promise<IMovieWithRating[]> => {
+  getUserRatings: async(accessToken: string): Promise<MovieWithRatingInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/rating`, {
         method: 'GET',
@@ -327,7 +327,7 @@ export const ServerApiService = {
       return []
     }
   },
-  addRating: async(accessToken: string, movieID: number, rating: number): Promise<IMovieWithRating[]> => {
+  addRating: async(accessToken: string, movieID: number, rating: number): Promise<MovieWithRatingInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/rating`, {
         method: 'POST',
@@ -344,7 +344,7 @@ export const ServerApiService = {
       return []
     }
   },
-  removeRating: async(accessToken: string, movieID: number): Promise<IMovieWithRating[]> => {
+  removeRating: async(accessToken: string, movieID: number): Promise<MovieWithRatingInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/rating`, {
         method: 'DELETE',
@@ -361,7 +361,7 @@ export const ServerApiService = {
       return []
     }
   },
-  getActivities: async(accessToken: string, id?: number): Promise<IActivity[]> => {
+  getActivities: async(accessToken: string, id?: number): Promise<activityInterface[]> => {
     try {
       const response = await fetch(`${BASE_URL}/activity`, {
         method: 'POST',
@@ -377,75 +377,6 @@ export const ServerApiService = {
       console.log(err)
       return []
     }
-  },
-  getOtherUserByUserName: async(accessToken:string, otherUserName:string): Promise<User> => {
-    try {
-      const response = await fetch(`${BASE_URL}/user/getByUsername`, {
-        method: "POST",
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({username: otherUserName})
-      })
-      return await response.json();
-
-    }
-    catch (err) {
-      console.log(err)
-      return UserPlaceholder
-    }
-  },
-  getWatchedMovies: async(accessToken: string): Promise<IFavoriteMovie[]> => {
-    try {
-      const response = await fetch(`${BASE_URL}/user/watched`, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        }
-      })
-      return await response.json();
-    } catch (err) {
-      console.log(err)
-      return []
-    }
-  },
-  addWatchedMovie: async(accessToken: string, movie: {movieID: number, friendID?: number,  createdDate?: Date}) => {
-    try {
-      const response = await fetch(`${BASE_URL}/user/addWatched`, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(movie)
-      })
-      return await response.json();
-    } catch (err) {
-      console.log(err)
-      return []
-    }
-  },
-  toggleStreaming: async(accessToken: string, streamID: number): Promise<number[]> => {
-    try {
-      const response = await fetch(`${BASE_URL}/user/streaming/${streamID}`, {
-        method: 'PUT',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        }
-      })
-      return (await response.json()).streaming;
-    } catch (err) {
-      console.log(err)
-      return []
-    }
   }
 }
-
 

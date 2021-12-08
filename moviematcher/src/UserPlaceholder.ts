@@ -4,7 +4,6 @@ export const UserPlaceholder = {
     email: '',
     password: '',
     profile_pic: '',
-    streaming: [],
     createdAt: '',
     updatedAt: ''
 }

@@ -18,9 +18,9 @@ export async function fetchWatchedMoviesQuery(id: number): Promise<WatchedMovieA
   return movieArr
 }
 
-export async function addWatchedMovieQuery(id: number, movieID: number, friendID: number = 0, createdDate: Date = new Date(Date.now())): Promise<WatchedMovieAttributes | undefined> {
-  const movie = await WatchedMovie.create({ uid: id, movieid: movieID, friendid: friendID, createdAt: createdDate });
-  return movie.dataValues ? movie.dataValues : undefined;
+export async function addWatchedMovieQuery(id: number, movieID: number, friendID: number = 0, createdDate: Date = new Date(Date.now())): Promise<WatchedMovieAttributes[] | string> {
+  await WatchedMovie.create({ uid: id, movieid: movieID, friendid: friendID, createdAt: createdDate });
+  return await fetchWatchedMoviesQuery(id);
 }
 
 export async function timesWatchedMovieQuery(id: number, movieID: number): Promise<number> {

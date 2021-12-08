@@ -2,7 +2,7 @@
     z-index: 100;
     position: sticky;
     top: 0;
-    height: 'fit-content';
+    height: 85px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -23,19 +23,15 @@ color:grey;
     font-size: 1.6rem;
 }
 .navlink-item {
-    margin: 2vw;
+    margin: 5vw;
 }
 .buttons {
     margin: 15px;
-    display: flex;
 }
 
 .buttons button {
     margin:5px;
     background-color: rgb(59, 59, 143);
-}
-.buttons button:hover {
-    background-color:rgb(26, 26, 212) ;
 }
 .enlarge-on-hover.margin-right {
     margin-right: 40px;

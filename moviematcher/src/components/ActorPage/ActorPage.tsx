@@ -1,14 +1,12 @@
 import MovieList from '../movie-list/movie-list';
 import  {useState, useEffect} from 'react';
 import APIService from '../../services/APISevice';
-import { IMovie } from '../../../../interfaces/movieInterface';
+import { Movie } from '../../../../interfaces/MovieInterface';
 import { useParams } from 'react-router';
 import ActorDetails from './ActorDetails/ActorDetails'
-
 const ActorPage = () => {
   const { id } : any = useParams();
-  const [combinedMovies, setCombinedMovies] = useState<IMovie[]>([]);
-
+  const [combinedMovies, setCombinedMovies] = useState<Movie[]>([]);
   useEffect(() => {
     let isCancelled = false;
     async function fetchPopular () {
@@ -16,15 +14,12 @@ const ActorPage = () => {
         if(!isCancelled) {
             setCombinedMovies(fetchedCombinedMovies)
         }
-    };
-
-    fetchPopular();
-
+    }
+    fetchPopular()
     return () => {
         isCancelled = true;
-    };
+    }
   }, [id])
-  
     return (
         <div>
             <ActorDetails />

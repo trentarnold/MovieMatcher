@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '@chakra-ui/button';
 import './profile-info.css'
-import { IProfileInfo } from '../../../../../interfaces/userInterface';
+import { IUser, IProfileInfo } from '../../../../../interfaces/userInterface';
 import { ServerApiService } from '../../../services/ServerApi';
 import { useAppSelector } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 
 const ProfileInfo= () => {
 
-  const [profileInfo, setProfileInfo] = useState<IProfileInfo>({ id: 0, username: "", email: "", profile_pic: "", streaming: [], createdAt: "", updatedAt: "" })
+  const [profileInfo, setProfileInfo] = useState<IProfileInfo>({ id: 0, username: "", email: "", profile_pic: "", createdAt: "", updatedAt: "" })
   const [pic, setPic] = useState<File>();
   const token = useAppSelector(selectAuth);
   const params = useParams();
@@ -24,7 +24,7 @@ const ProfileInfo= () => {
       if(pic){
         await ServerApiService.changeProfilePicture(token, pic);
         window.location.reload();
-      };
+      }
     } catch (e) {
       console.log (e);
       alert('error uploading picture')

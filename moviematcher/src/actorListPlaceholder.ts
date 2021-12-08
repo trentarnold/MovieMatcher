@@ -1,6 +1,6 @@
-import { IActorList } from '../../interfaces/ActorList'
+import { ActorListInterface } from '../../interfaces/ActorList'
 
-export const actorListPlaceholder:IActorList = {
+export const actorListPlaceholder:ActorListInterface = {
   id:1,
   cast:[{
     adult: false,

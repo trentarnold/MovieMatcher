@@ -12,10 +12,10 @@ import {
   import { useDisclosure } from '@chakra-ui/hooks';
   import { useAppDispatch, useAppSelector } from '../../../redux/app/hooks';
   import { selectMatchedMovie, turnOffMatchedMovie } from '../../../redux/features/modals/matchedMovie';
-  import { IMovie } from '../../../../../interfaces/movieInterface';
+  import { Movie } from '../../../../../interfaces/MovieInterface';
   import StarRatings from 'react-star-ratings';
   type Props = {
-    currentMovie : IMovie,
+    currentMovie : Movie,
     otherUserName: string,
     showOtherFriendAccept: boolean,
     declineWatchMovie: () => void,
@@ -27,7 +27,7 @@ const MatchedMovieModal:React.FC<Props> = ( { currentMovie, otherUserName, decli
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
   const reduceToFiveStarRating = (averageVote:number):number => {
-    return (averageVote / 2) ?? 1;
+    return (averageVote / 2);
   }
   useEffect(() => {
     if(open) {
@@ -54,14 +54,14 @@ const MatchedMovieModal:React.FC<Props> = ( { currentMovie, otherUserName, decli
                       <ModalHeader bgColor='rgb(0, 0, 92)'>
                         <div>{`You and ${otherUserName} have matched!`}</div>
                       </ModalHeader>
-                      <ModalBody>
-                      <div className='modal-body-content'>
-                          <img style={{height:'200px'}} src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`}  alt='poster'  />
+                      <ModalBody> 
+                      <div className='modal-body-content'>  
+                          <img style={{height:'200px'}} src={`https://image.tmdb.org/t/p/w500${currentMovie.poster_path}`}  alt='poster'  />  
                           <div>
                             <div>  {currentMovie.title} </div>
-                            <div className='star-rating'>
+                            <div className='star-rating'>            
                                <StarRatings
-                                rating={reduceToFiveStarRating(currentMovie?.vote_average)}
+                                rating={reduceToFiveStarRating(currentMovie.vote_average)}
                                 starDimension="20px"
                                 starSpacing="1px"
                                 starRatedColor='gold' />
