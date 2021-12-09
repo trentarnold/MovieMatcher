@@ -9,7 +9,6 @@ const initialState: authState = {
   value: "",
 };
 
-
 export const authSlice = createSlice({
   name: 'auth',
   initialState,

@@ -1,14 +1,13 @@
-
 import StarRatings from 'react-star-ratings';
 require('./RateMovieModal.css');
 
 const RateMovieModal = (props: any) => {
-  function handleSubmit () {
+  const handleSubmit = () => {
     props.submitRating();
     props.setRatingModalToggle(false);
   };
 
-  function handleReset() {
+  const handleReset = () => {
     props.setNewRating(0);
     props.setRatingModalToggle(false);
   };

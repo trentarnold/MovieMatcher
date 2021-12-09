@@ -4,10 +4,10 @@ import { RootState } from '../../app/store';
 export interface favoriteMovieIdsState {
   value: number[];
 }
+
 const initialState: favoriteMovieIdsState = {
   value: [NaN],
 };
-
 
 export const favoriteMovieIdsSlice = createSlice({
   name: 'favoriteMovieIds',

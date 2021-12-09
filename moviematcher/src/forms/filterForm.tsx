@@ -24,6 +24,7 @@ import { IActorResult, IActorMini} from '../../../interfaces/filterFormInterface
 import ThreeWayToggle from './filter-components/three-way-toggle';
 import ActorMini from './filter-components/actor-mini';
 import { selectUserStreaming } from '../redux/features/user/userStreaming';
+
 const streamProviders = [
   {
     display_priority: 1,
@@ -101,6 +102,7 @@ const FilterForm = () => {
   const [providers, setProviders] = useState<number[]>([]);
   const [query, setQuery] = useState<string>('')
   const [queryResults, setQueryResults] = useState<IActorResult[]>([]);
+
   const handleClose = () => {
     dispatch(turnOffMovieFilter())
     onClose();
@@ -205,6 +207,7 @@ const FilterForm = () => {
   const handleQueryChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.currentTarget.value);
   };
+
   const handleActorClick = (id:number, name: string) => {
     const actorMiniObject:IActorMini = {id, name};
     setCast((oldCast) => [...oldCast, actorMiniObject])
@@ -237,58 +240,73 @@ const FilterForm = () => {
     socket.on('handleAddToggle', (value, callBackString, id) => {
       handleChange(value, callBackString, id, true);
     });
+    
     socket.on('handleResetToggle', (value, callBackString, id) => {
       handleChange(value, callBackString, id, true);
     });
+
     socket.on('handleRemoveToggle', (value, callBackString, id) => {
       console.log('here')
       handleChange(value, callBackString, id, true);
     });
+
     socket.on('handleChangeStreamingProvied', (providerId) => {
       handleStreamingSwitch(providerId, true)
     });
+
     socket.on('handleAddActor', (id, name) =>{
       setCast((oldCast) => [...oldCast, {id, name}])
     });
+
     socket.on('handleRemoveActor', (id) =>{
       setCast((oldCast) => oldCast.filter(actor => actor.id != id))
     });
+
     socket.on('oneUserAccepted', (otherUsername) => {
       setShowOtherFriendAccepts(true)
       setBothAcceptFilters(true);
       setChanged(false);
     });
+
     socket.on('movies', () => {
       handleClose();
-    })
+    });
+
     socket.emit('providers', alreadySelectedStreamingServices, room);
+
     socket.on('providers', (alreadySelectedStreamingServices) => {
       setProviders((oldProviders) => {
         let uniqueServices = alreadySelectedStreamingServices.map((service:any) => oldProviders.includes(service) ? '' : service);
         uniqueServices = uniqueServices.filter((serv:any) => serv !=='')
         return [...oldProviders, ...uniqueServices];
       })
-    })
+    });
+
     socket.on('changed', () => {
       setShowOtherFriendAccepts(false);
       setShowYouAccepted(false);
       setChanged(true);
       setBothAcceptFilters(false);
-    })
-    setProviders((oldProviders) => [...oldProviders, ...alreadySelectedStreamingServices])
+    });
+
+    setProviders((oldProviders) => [...oldProviders, ...alreadySelectedStreamingServices]);
+
+  }, []);
+  
+  useEffect(() => {
     let users = room.split('+');
     let otherUsername = users[0] === loggedInUser ? users[1] : users[0];
-    setOtherUsername(otherUsername)
-  }, []);
+    setOtherUsername(otherUsername);
+  }, [room]);
 
   useEffect(() =>{
-    async function searchActors () {
+    const searchActors = async () => {
       try {
         const response = await fetch(`https://api.themoviedb.org/3/search/person?api_key=66be68e2d9a8be7fee88a803b45d654b&language=en-US&query=${query}&page=1&include_adult=false`)
         const res = await response.json()
         setQueryResults(res.results)
       } catch (e) {
-        console.log(e)
+        console.error(e);
       }
     };
     
@@ -362,9 +380,9 @@ const FilterForm = () => {
                   </div>
               </Flex>
               <Flex justifyContent='flex-end' margin="10px">
-              { changed && <div style={{color:'red'}}>{`${otherUsername} has changed the filters`}</div>}
-              { showOtherFriendAccepts && <div style={{color:'green'}}>{`${otherUsername} has accepted these filters`}</div>}
-              { showYouAccepted && <div style={{color:'green'}}>{`You have accepted these filters, waiting for ${otherUsername}`}</div>}
+                {changed && <div style={{color:'red'}}>{`${otherUsername} has changed the filters`}</div>}
+                {showOtherFriendAccepts && <div style={{color:'green'}}>{`${otherUsername} has accepted these filters`}</div>}
+                {showYouAccepted && <div style={{color:'green'}}>{`You have accepted these filters, waiting for ${otherUsername}`}</div>}
                 <Button marginLeft='10px'  isDisabled={showYouAccepted} onClick={handleSubmit} >Apply Filters</Button>
               </Flex>
             </FormControl>

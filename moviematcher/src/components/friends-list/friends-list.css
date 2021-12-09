@@ -35,8 +35,8 @@
 
 .friends-list-toggle button:hover {
     border: 0;
-    color: rgb(41, 41, 75);
-    background-color: white;
+    color: white;
+    background-color: rgb(26, 26, 212);
 }
 
 .friends-list-toggle button:active {
@@ -49,3 +49,4 @@
     height: 100%;
     overflow-y: auto;
 }
+

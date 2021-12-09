@@ -5,7 +5,6 @@ import { IActorList } from '../../../interfaces/ActorList'
 import { actorListPlaceholder } from '../actorListPlaceholder';
 import ActorDetailsInterface from '../../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
-import ActorsList from '../components/actors-list/ActorsList';
 import { IStreamProvider } from '../../../interfaces/StreamProviders';
 const BASE_URL = 'http://localhost:3001'
 
@@ -15,7 +14,7 @@ const APIService = {
       const result = await fetch('')
       await result.json();
     } catch (e) {
-        console.log(e)
+        console.error(e);
     }
   },
 
@@ -29,7 +28,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]};
     }
   },
@@ -44,7 +43,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]};
     }
   },
@@ -60,7 +59,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -76,7 +75,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -92,7 +91,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -108,7 +107,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -124,7 +123,7 @@ const APIService = {
       });
       return await response.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]}
     }
   },
@@ -141,7 +140,7 @@ const APIService = {
       const data = await movie.json()
       return data
     }catch(e) {
-      console.log(e);
+      console.error(e);;
       return movieDetailsPlaceHolder
     }
   },
@@ -189,7 +188,7 @@ const APIService = {
       });
       return await similarMovies.json();
     } catch (e) {
-      console.log(e);
+      console.error(e);;
       return {results:[]};
     }
   },
@@ -206,7 +205,7 @@ const APIService = {
       });
       return await actorDetails.json()
     }catch(e) {
-      //console.log(e)
+      //console.error(e);
       return actorDetailsPlaceholder;
     }
   },
@@ -219,11 +218,10 @@ const APIService = {
           'Content-Type': 'application/json',
         },
       });
-      let data =await similarMovies.json();
+      let data = await similarMovies.json();
       return data.cast;
-
     }catch(e) {
-      console.log(e)
+      console.error(e);
       return []
     }
   },

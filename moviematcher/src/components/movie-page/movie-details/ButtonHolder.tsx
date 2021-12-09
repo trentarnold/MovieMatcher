@@ -18,8 +18,9 @@ type Props = {
   setNewRating?: any,
   flexColumn?: boolean,
 }
+
 const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMovies, watchedMovies, flexColumn }) => {
-  const dispatch = useAppDispatch();
+
   const accessToken = useAppSelector(selectAuth);
   const favoriteMovieIds = useAppSelector(selectFavoriteMovieIds);
   const blackListIds = useAppSelector(selectBlackListIds);
@@ -27,36 +28,50 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
   const [watchedMovieToggle, setWatchedMovieToggle] = useState<boolean>(false);
   const [watchedMovieDateToggle, setWatchedMovieDateToggle] = useState<boolean>(false);
   const [watchDate, setWatchDate] = useState<Date>(new Date(Date.now()))
+  const dispatch = useAppDispatch();
+
   const handleAddToWatchList = async() => {
-    let watchList;
-    if(favoriteMovieIds.includes(movie.id)){
-       watchList = await ServerApiService.deleteFromWatchList(accessToken, movie.id);
-    }else {
-      if(blackListIds.includes(movie.id)) {
-        dispatch(removeBlackListIds(movie.id))
-      }
-       watchList = await ServerApiService.addToWatchList(accessToken, movie.id);
+    try{
+      let watchList;
+      if(favoriteMovieIds.includes(movie.id)){
+        watchList = await ServerApiService.deleteFromWatchList(accessToken, movie.id);
+      } else {
+        if(blackListIds.includes(movie.id)) {
+          dispatch(removeBlackListIds(movie.id))
+        }
+        watchList = await ServerApiService.addToWatchList(accessToken, movie.id);
+      };
+      let ids = watchList.map((movie) => movie.movieid)
+      const activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
+      dispatch(setFavoriteMovieIds(ids));
+
+    } catch (e) {
+      console.error(e);
     }
-    let ids = watchList.map((movie) => movie.movieid)
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(setFavoriteMovieIds(ids));
-  }
+  };
+  
   const handleBlackList = async() => {
-    let blackList;
-    if(blackListIds.includes(movie.id)){
-      blackList = await ServerApiService.deleteFromBlackList(accessToken, movie.id);
-    }else {
-      if(favoriteMovieIds.includes(movie.id)) {
-        dispatch(removeFavoriteMovieIds(movie.id))
-      }
-      blackList = await ServerApiService.addToBlackList(accessToken, movie.id);
-    }
-    let ids = blackList.map((movie) => movie.movieid)
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(setBlackListIds(ids));
-  }
+    try{
+      let blackList;
+      if(blackListIds.includes(movie.id)) {
+        blackList = await ServerApiService.deleteFromBlackList(accessToken, movie.id);
+      } else {
+        if(favoriteMovieIds.includes(movie.id)) {
+          dispatch(removeFavoriteMovieIds(movie.id))
+        }
+        blackList = await ServerApiService.addToBlackList(accessToken, movie.id);
+      };
+      let ids = blackList.map((movie) => movie.movieid)
+      const activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
+      dispatch(setBlackListIds(ids));
+
+    } catch (e) {
+      console.error(e);
+    };
+  };
+
   const checkRatings = () => {
     let currMovieRating;
     userRatings.map((item: {rating: Number, movieid: number}) => {
@@ -64,25 +79,41 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
       return item.rating;
     })
     return currMovieRating;
-  }
+  };
+
   const handleDeleteRating = async () => {
-    ServerApiService.removeRating(accessToken, movie.id)
-    const activities = await ServerApiService.getActivities(accessToken);
-    dispatch(setActivities(activities));
-    dispatch(removeRating(movie.id));
-  }
+    try {
+      ServerApiService.removeRating(accessToken, movie.id)
+      const activities = await ServerApiService.getActivities(accessToken);
+      dispatch(setActivities(activities));
+      dispatch(removeRating(movie.id));
+    } catch (e) {
+      console.error(e)
+    };
+  };
+
   const updateWatchDate = async (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setWatchDate(new Date(e.target.value))
-  }
+    try {
+      e.preventDefault();
+      setWatchDate(new Date(e.target.value))
+    } catch (e) {
+      console.error(e)
+    };
+  };
+
   const updateWatchedMovie = async () => {
-    console.log(watchDate)
-    const newestMovie = await ServerApiService.addWatchedMovie(accessToken, {movieID: movie.id, createdDate: watchDate});
-    setWatchedMovieToggle(false)
-    setWatchedMovieDateToggle(false)
-    setWatchedMovies([...watchedMovies, newestMovie]);
-    setWatchDate(new Date(Date.now()))
-  }
+    try{
+      console.log(watchDate)
+      const newestMovie = await ServerApiService.addWatchedMovie(accessToken, {movieID: movie.id, createdDate: watchDate});
+      setWatchedMovieToggle(false)
+      setWatchedMovieDateToggle(false)
+      setWatchedMovies([...watchedMovies, newestMovie]);
+      setWatchDate(new Date(Date.now()))
+    } catch (e) {
+      console.error(e);
+    };
+  };
+
   return (
     <div className={`movie-details-button-holder ${flexColumn ? 'column': ''}`} style={{margin: "1.5rem 0"}}>
       <Button
@@ -126,7 +157,7 @@ const ButtonHolder: React.FC<any>  = ({movie, setRatingModalToggle, setWatchedMo
       : <Button style={{backgroundColor:'transparent'}} className='enlarge-on-hover' onClick={() => setWatchedMovieToggle(true)}>Watched It</Button>
       }
     </div>
-  )
-}
+  );
+};
 
-export default ButtonHolder
+export default ButtonHolder;

@@ -12,10 +12,14 @@ const ActorPage = () => {
   useEffect(() => {
     let isCancelled = false;
     async function fetchPopular () {
+      try {
         const fetchedCombinedMovies  = await APIService.getCombinedCredits(id);
         if(!isCancelled) {
-            setCombinedMovies(fetchedCombinedMovies)
+          setCombinedMovies(fetchedCombinedMovies)
         }
+      } catch (e) {
+        console.error(e)
+      };
     };
 
     fetchPopular();
@@ -23,14 +27,14 @@ const ActorPage = () => {
     return () => {
         isCancelled = true;
     };
-  }, [id])
+  }, [id]);
   
-    return (
-        <div>
-            <ActorDetails />
-            <MovieList criteria = 'Also Starred In' movieList = {combinedMovies} />
-        </div>
-    )
-}
+  return (
+    <div>
+      <ActorDetails />
+      <MovieList criteria = 'Also Starred In' movieList = {combinedMovies} />
+    </div>
+  );
+};
 
-export default ActorPage
+export default ActorPage;
