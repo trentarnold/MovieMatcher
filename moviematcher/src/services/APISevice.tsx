@@ -243,8 +243,9 @@ const APIService = {
   getMoviesByStreamProvider: async(id:number) : Promise<IMovieDetails[]> => {
     try {
       const movies = []
+      console.log(id, "ID")
       for (let i = 1; i < 6; i++) {
-        const res = await fetch(`${BASE_URL}/movies/APIService?stream_provider=${id}&page=${i}`, {
+        const res = await fetch(`${BASE_URL}/movies/APIService?with_watch_providers=${id}&page=${i}`, {
           method: 'POST',
           mode: 'cors',
           headers: {

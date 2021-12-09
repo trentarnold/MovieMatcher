@@ -39,7 +39,7 @@ export const APIMovieService = {
   },
 
   getFilteredMoviesQuery: async(params: string)  => {
-    const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false&watch_region=US' + params)
+    const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false&watch_region=US&with_watch_monetization_types=flatrate' + params)
     return movies.data;
   },
 
