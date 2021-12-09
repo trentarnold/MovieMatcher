@@ -12,7 +12,7 @@ import {
   import { useDisclosure } from '@chakra-ui/hooks';
   import { useAppDispatch, useAppSelector } from '../../../redux/app/hooks';
   import { selectMatchedMovie, turnOffMatchedMovie } from '../../../redux/features/modals/matchedMovie';
-  import { IMovie } from '../../../../../interfaces/movieInterface';
+  import { IMovie } from '../../../../interfaces/movieInterface';
   import StarRatings from 'react-star-ratings';
   type Props = {
     currentMovie : IMovie,

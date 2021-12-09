@@ -2,7 +2,7 @@ import './actorsList.css'
 import React, {useState, useEffect} from 'react'
 import  APIService  from '../../services/APISevice'
 import ActorThumb from './actor-thumb/ActorThumb'
-import {ICast} from '../../../../interfaces/ActorList'
+import {ICast} from '../../../interfaces/ActorList'
 import {useAppSelector} from '../../redux/app/hooks'
 
 type Props = {

@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import RecentActivityModal from './recentActivityModal/RecentActivityModal'
 import { useAppDispatch } from '../../redux/app/hooks';
 import { turnOnActivityListModal } from '../../redux/features/modals/activityListModal'
-import {IActivity} from '../../../../interfaces/activityInterface'
+import {IActivity} from '../../../interfaces/activityInterface'
 import moment from 'moment';
 import { selectUserId } from '../../redux/features/user/userIdSlice'
 require('./activity-list.css')

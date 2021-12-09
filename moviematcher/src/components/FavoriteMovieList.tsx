@@ -1,6 +1,6 @@
 import React from 'react';
 import MovieThumb from './movie-list/movie-thumb/movie-thumb';
-import { IMovieDetails } from '../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../interfaces/MovieDetails';
 import { useAppSelector } from '../redux/app/hooks';
 type Props  = {
   movieList: IMovieDetails[],

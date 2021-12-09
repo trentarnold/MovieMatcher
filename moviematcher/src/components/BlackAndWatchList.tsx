@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import { useAppSelector } from '../redux/app/hooks';
 import { selectFavoriteMovieIds } from '../redux/features/user/watchListIds';
 import { selectBlackListIds } from '../redux/features/user/blackListids';
-import { IMovieDetails } from '../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../interfaces/MovieDetails';
 import  APIService  from '../services/APISevice';
 import FavoriteMovieList from './FavoriteMovieList'
 import { useParams } from 'react-router';

@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import { IMovie } from '../../../../interfaces/movieInterface';
+import { IMovie } from '../../../interfaces/movieInterface';
 import MovieList from '../movie-list/movie-list';
 import APIService from '../../services/APISevice';
 import BlackAndWatchList from '../BlackAndWatchList';

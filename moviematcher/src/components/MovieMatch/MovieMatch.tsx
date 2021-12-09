@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import { useAppSelector, useAppDispatch } from '../../redux/app/hooks';
 import { selectSocketRef } from '../../redux/features/socket/socketRefSlice';
-import { IMovie } from '../../../../interfaces/movieInterface';
+import { IMovie } from '../../../interfaces/movieInterface';
 import { useParams } from 'react-router';
 import { Button } from '@chakra-ui/button';
 import { moviePlaceholder } from '../../moviePlaceholder';

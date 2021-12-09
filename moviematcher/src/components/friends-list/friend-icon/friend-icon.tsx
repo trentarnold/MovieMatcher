@@ -1,6 +1,6 @@
 import React from 'react';
 import './friend-icon.css';
-import { IUser } from '../../../../../interfaces/responses';
+import { IUser } from '../../../../interfaces/responses';
 import { useNavigate } from "react-router-dom";
 import { ServerApiService } from '../../../services/ServerApi';
 import { useAppSelector, useAppDispatch } from '../../../redux/app/hooks';

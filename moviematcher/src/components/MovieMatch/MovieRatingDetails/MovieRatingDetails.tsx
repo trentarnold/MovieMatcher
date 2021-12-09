@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import './MovieRatingDetails.css'
 import APIService from '../../../services/APISevice'
-import { IMovie } from '../../../../../interfaces/movieInterface'
-import { IMovieDetails } from '../../../../../interfaces/MovieDetails'
+import { IMovie } from '../../../../interfaces/movieInterface'
+import { IMovieDetails } from '../../../../interfaces/MovieDetails'
 import { movieDetailsPlaceHolder } from '../../../moviePlaceholder'
 import StarRatings from 'react-star-ratings';
 import ButtonHolder from '../../movie-page/movie-details/ButtonHolder'
@@ -12,7 +12,7 @@ import {useAppSelector, useAppDispatch} from '../../../redux/app/hooks';
 import {selectAuth} from '../../../redux/features/modals/authSlice'
 import {setActivities} from '../../../redux/features/user/activitiesSlice'
 import {addRating} from '../../../redux/features/user/ratingsSlice'
-import { IFavoriteMovie } from '../../../../../interfaces/favoriteMovieInterface'
+import { IFavoriteMovie } from '../../../../interfaces/favoriteMovieInterface'
 import moment from 'moment';
 
 type Props = {

@@ -16,7 +16,7 @@ import { ServerApiService } from '../../../services/ServerApi';
 import APIService from '../../../services/APISevice';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { UserPlaceholder } from '../../../UserPlaceholder';
-import { IMovieDetails } from '../../../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../../../interfaces/MovieDetails';
 import { movieDetailsPlaceHolder} from '../../../moviePlaceholder';
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
 import { addRating } from '../../../redux/features/user/ratingsSlice';

@@ -1,4 +1,4 @@
-import {IUser} from '../../interfaces/userInterface'
+import {IUser} from '../interfaces/userInterface'
 
 export const profilePlaceholder:IUser = {
     username: "PlaceholderUser123",

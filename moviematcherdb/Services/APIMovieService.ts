@@ -1,12 +1,12 @@
 const axios = require('axios');
-import { IMovie, IResults } from "../../interfaces/movieInterface";
-import {IMovieDetails} from '../../interfaces/MovieDetails'
-import { movieDetailsPlaceHolder } from '../../moviematcher/src/moviePlaceholder'
-import { IActorList } from '../../interfaces/ActorList';
-import { actorListPlaceholder } from '../../moviematcher/src/actorListPlaceholder';
-import  ActorDetailsInterface  from '../../interfaces/ActorDetails';
-import { actorDetailsPlaceholder } from '../../moviematcher/src/actorDetailsPlaceholder';
-import { IStreamProvider, IStreamProviders } from '../../interfaces/StreamProviders';
+import { IMovie, IResults } from "../interfaces/movieInterface";
+import {IMovieDetails} from '../interfaces/MovieDetails'
+import { movieDetailsPlaceHolder } from '../placeholder/moviePlaceholder'
+import { IActorList } from '../interfaces/ActorList';
+import { actorListPlaceholder } from '../placeholder/actorListPlaceholder';
+import  ActorDetailsInterface  from '../interfaces/ActorDetails';
+import { actorDetailsPlaceholder } from '../placeholder/actorDetailsPlaceholder';
+import { IStreamProvider, IStreamProviders } from '../interfaces/StreamProviders';
 
 export const APIMovieService = {
   fetchMovie: async (id: number) =>{

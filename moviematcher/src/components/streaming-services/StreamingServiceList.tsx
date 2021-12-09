@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { useAppSelector } from '../../redux/app/hooks'
 import { selectUserStreaming } from '../../redux/features/user/userStreaming'
 import StreamItem from './streaming-item/StreamItem';
-import {IStreamProvider} from '../../../../interfaces/StreamProviders';
+import {IStreamProvider} from '../../../interfaces/StreamProviders';
 import APIService from '../../services/APISevice';
 require('./StreamingServicesList.css');
 

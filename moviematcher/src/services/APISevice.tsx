@@ -1,11 +1,11 @@
-import { IMovie, IResults} from '../../../interfaces/movieInterface';
+import { IMovie, IResults} from '../../interfaces/movieInterface';
 import { movieDetailsPlaceHolder } from '../moviePlaceholder';
-import { IMovieDetails } from '../../../interfaces/MovieDetails'
-import { IActorList } from '../../../interfaces/ActorList'
+import { IMovieDetails } from '../../interfaces/MovieDetails'
+import { IActorList } from '../../interfaces/ActorList'
 import { actorListPlaceholder } from '../actorListPlaceholder';
-import ActorDetailsInterface from '../../../interfaces/ActorDetails';
+import ActorDetailsInterface from '../../interfaces/ActorDetails';
 import { actorDetailsPlaceholder } from '../actorDetailsPlaceholder';
-import { IStreamProvider } from '../../../interfaces/StreamProviders';
+import { IStreamProvider } from '../../interfaces/StreamProviders';
 const BASE_URL = 'http://localhost:3001'
 
 const APIService = {
