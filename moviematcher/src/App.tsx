@@ -74,8 +74,11 @@ function App() {
     }
     const fetchFavoriteMovies = async() => {
       let favoriteMovies  = await ServerApiService.getWatchList(accessToken);
-      let ids = favoriteMovies.map((movie) => movie.movieid)
-      dispatch(setFavoriteMovieIds(ids));
+      console.log(favoriteMovies, 'this is favorite movies')
+      if (favoriteMovies) {
+        let ids = favoriteMovies.map((movie) => movie.movieid)
+        dispatch(setFavoriteMovieIds(ids));
+      }
     }
     const fetchBlackListMovies = async() => {
       let blackListMovies = await ServerApiService.getBlackList(accessToken);

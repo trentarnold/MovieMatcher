@@ -166,15 +166,6 @@ const ProfileInfo= () => {
                  onClick={handleMatch} className="enlarge-on-hover">Match</Button>
             </div>
           }
-        <div className='profile-info-details'>
-          {Number(params.id) !== userID &&
-          <div className="profile-info-buttons">
-            <div className="username-text">{profileInfo.username}</div>
-            <Button onClick={handleToggleFriend} className="update-photo-btn" style={{marginRight: '0.5rem'}}>{userFriend ? 'Remove Friend' : 'Add Friend'}</Button>
-            <Button onClick={handleMatch} className="update-photo-btn">Match</Button>
-          </div>
-          }
-        </div>
     </div>
     </div>
   );
