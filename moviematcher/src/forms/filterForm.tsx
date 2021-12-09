@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react'
 import './filterForm.css'
 import { selectRoomName } from '../redux/features/modals/roomNameSlice';
 import { selectUserName } from '../redux/features/user/yourUserName';
-import { IActorResult, IActorMini} from '../../../interfaces/filterFormInterface';
+import { IActorResult, IActorMini} from '../../interfaces/filterFormInterface';
 import ThreeWayToggle from './filter-components/three-way-toggle';
 import ActorMini from './filter-components/actor-mini';
 import { selectUserStreaming } from '../redux/features/user/userStreaming';

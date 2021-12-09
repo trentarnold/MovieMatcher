@@ -2,7 +2,7 @@ import './movie-details.css'
 import {useEffect, useState} from 'react';
 import { useParams } from 'react-router';
 import APIService from '../../../services/APISevice';
-import { IMovieDetails } from '../../../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../../../interfaces/MovieDetails';
 import { movieDetailsPlaceHolder } from '../../../moviePlaceholder';
 import StarRatings from 'react-star-ratings';
 import ActorsList from '../../actors-list/ActorsList';
@@ -13,7 +13,7 @@ import RateMovieModal from './RateMovieModal';
 import { ServerApiService } from '../../../services/ServerApi';
 import { addRating } from '../../../redux/features/user/ratingsSlice';
 import { setActivities } from '../../../redux/features/user/activitiesSlice';
-import { IFavoriteMovie } from '../../../../../interfaces/favoriteMovieInterface';
+import { IFavoriteMovie } from '../../../../interfaces/favoriteMovieInterface';
 import moment from 'moment';
 
 const MovieDetails = () => {

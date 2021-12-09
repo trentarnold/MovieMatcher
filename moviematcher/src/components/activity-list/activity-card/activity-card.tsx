@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
-import { IMovieDetails } from '../../../../../interfaces/MovieDetails';
-import {IProfileInfo} from '../../../../../interfaces/userInterface';
+import { IMovieDetails } from '../../../../interfaces/MovieDetails';
+import {IProfileInfo} from '../../../../interfaces/userInterface';
 import { ServerApiService } from '../../../services/ServerApi';
 import APIService from '../../../services/APISevice';
 import { useAppSelector } from '../../../redux/app/hooks';

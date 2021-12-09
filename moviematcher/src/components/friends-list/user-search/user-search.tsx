@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import FriendIcon from '../friend-icon/friend-icon' 
-import { IUser } from '../../../../../interfaces/responses'
+import { IUser } from '../../../../interfaces/responses'
 import { useAppSelector } from '../../../redux/app/hooks'
 import { selectAuth } from '../../../redux/features/modals/authSlice'
 import { selectFriendIds } from '../../../redux/features/user/friendsIdSlice'

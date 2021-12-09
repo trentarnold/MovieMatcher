@@ -33,7 +33,6 @@ node_modules
 # Custom
 private
 build
-dist
 .env
 .env.local
 .env.development.local

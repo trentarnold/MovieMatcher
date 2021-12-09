@@ -3,7 +3,7 @@ import FriendIcon from '../friend-icon/friend-icon';
 import { ServerApiService } from '../../../services/ServerApi';
 import { useAppSelector} from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
-import { IUser } from '../../../../../interfaces/responses';
+import { IUser } from '../../../../interfaces/responses';
 import { selectFriendIds } from '../../../redux/features/user/friendsIdSlice';
 import { selectLoggedInUser } from '../../../redux/features/user/loggedInUsers';
 import './friend-search.css';

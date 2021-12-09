@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { IActivity } from '../../../../../interfaces/activityInterface';
+import { IActivity } from '../../../../interfaces/activityInterface';
 
 export interface activitiesState {
   value: IActivity[];

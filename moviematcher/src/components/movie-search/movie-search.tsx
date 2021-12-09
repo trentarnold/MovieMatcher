@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { IMovie } from '../../../../interfaces/movieInterface';
+import { IMovie } from '../../../interfaces/movieInterface';
 import './movie-search.css'
 
 
