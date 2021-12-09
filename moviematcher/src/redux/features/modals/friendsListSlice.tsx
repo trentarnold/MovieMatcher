@@ -4,10 +4,10 @@ import { RootState } from '../../app/store';
 export interface FriendsListState {
   value: boolean;
 }
+
 const initialState: FriendsListState = {
   value: false,
 };
-
 
 export const friendsListSlice = createSlice({
   name: 'friendsList',

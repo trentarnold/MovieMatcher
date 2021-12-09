@@ -4,10 +4,10 @@ import { RootState } from '../../app/store';
 export interface MovieFilterState {
   value: boolean;
 }
+
 const initialState: MovieFilterState = {
   value: false,
 };
-
 
 export const movieFilterSlice = createSlice({
   name: 'movieFilter',

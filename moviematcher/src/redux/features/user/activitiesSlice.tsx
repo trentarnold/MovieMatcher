@@ -5,10 +5,10 @@ import { IActivity } from '../../../../../interfaces/activityInterface';
 export interface activitiesState {
   value: IActivity[];
 }
+
 const initialState: activitiesState = {
   value: [],
 };
-
 
 export const activitiesSlice = createSlice({
   name: 'friendIds',

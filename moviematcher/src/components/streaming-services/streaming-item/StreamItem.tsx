@@ -12,7 +12,7 @@ const StreamItem = ({provider, userSaved}: any) => {
   const navigate = useNavigate();
   const [savedStream, setSavedStream] = useState<boolean>(userSaved);
 
-  async function handleStreamingClick() {
+  const handleStreamingClick = async () => {
     ServerApiService.toggleStreaming(accessToken, provider.provider_id);
     if (!savedStream) {
       dispatch(addUserStreaming(provider.provider_id));
@@ -20,10 +20,10 @@ const StreamItem = ({provider, userSaved}: any) => {
     } else {
       dispatch(removeUserStreaming(provider.provider_id));
       setSavedStream(false);
-    }
-  }
+    };
+  };
 
-  async function handleStreamingMovies() {
+  const handleStreamingMovies = async () => {
     //call API for movies
     navigate(`/movies/${provider.provider_name}/${provider.provider_id}`)
   }

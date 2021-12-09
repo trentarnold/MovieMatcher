@@ -35,7 +35,7 @@ const FriendsList = () => {
       {friendsToggle && <FriendSearch />}
       {searchToggle && <UserSearch />}
     </div>
-  )
-}
+  );
+};
 
-export default FriendsList
+export default FriendsList;

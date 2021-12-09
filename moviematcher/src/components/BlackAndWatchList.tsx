@@ -41,12 +41,14 @@ const BlackAndWatchList = () => {
 useEffect(() => {
   if(id) return;
   let isCancelled = false;
+
   const getBlackListedMovies = async() => {
     let blackListedMovies = await Promise.all(blackListIds.map(async(id) => {
-          return await APIService.getIndividualMovie(id.toString())
-      }))
+        return await APIService.getIndividualMovie(id.toString())
+      }));
+
       if(!isCancelled) {
-          setBlackListedMovies(blackListedMovies);
+        setBlackListedMovies(blackListedMovies);
       }
   };
 
@@ -65,6 +67,7 @@ useEffect(() => {
   const getOtherUserFavMovies = async() => {
     const otherUserFavoriteMovies = await ServerApiService.getOtherUserWantList(id, accessToken);
     const ids = otherUserFavoriteMovies.map((movie) => movie.movieid);
+
     let favoriteMovies = await Promise.all(ids.map(async(id) => {
       return await APIService.getIndividualMovie(id.toString())
     }))
@@ -76,7 +79,7 @@ useEffect(() => {
   getOtherUserFavMovies();
   
   return () => {
-      isCancelled = true;
+    isCancelled = true;
   }
 
 }, [id]);
@@ -91,6 +94,7 @@ useEffect(() => {
     let favoriteMovies = await Promise.all(ids.map(async(id) => {
       return await APIService.getIndividualMovie(id.toString())
     }));
+
     if(!isCancelled) {
       setBlackListedMovies(favoriteMovies);
     };
@@ -100,17 +104,17 @@ useEffect(() => {
     const info = await ServerApiService.getSpecificUser(accessToken, id);
     if(!isCancelled) {
       setProfileName(info.username);
-    }  
+    };
   };
 
   getOtherUserBlackListMovies();
   getOtherUserInfo();
+
   return () => {
-      isCancelled = true;
+    isCancelled = true;
   };
 
 }, [id]);
-
 
   return (
     <>
@@ -123,7 +127,7 @@ useEffect(() => {
         : <div />
       }
     </>
-  )
-}
+  );
+};
 
-export default BlackAndWatchList
+export default BlackAndWatchList;

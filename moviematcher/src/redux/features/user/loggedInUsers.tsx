@@ -4,10 +4,10 @@ import { RootState } from '../../app/store';
 export interface loggedInUserState {
   value: string[];
 }
+
 const initialState: loggedInUserState = {
   value: [''],
 };
-
 
 export const loggedInUserSlice = createSlice({
   name: 'loggedInUser',

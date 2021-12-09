@@ -4,10 +4,10 @@ import { RootState } from '../../app/store';
 export interface userStreamingState {
   value: number[];
 }
+
 const initialState: userStreamingState = {
   value: [],
 };
-
 
 export const userStreamingSlice = createSlice({
   name: 'userStreaming',

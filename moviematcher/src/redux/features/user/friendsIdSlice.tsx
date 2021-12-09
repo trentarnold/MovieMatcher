@@ -4,10 +4,10 @@ import { RootState } from '../../app/store';
 export interface friendIdsState {
   value: number[];
 }
+
 const initialState: friendIdsState = {
   value: [NaN],
 };
-
 
 export const friendIdsSlice = createSlice({
   name: 'friendIds',

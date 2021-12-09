@@ -4,10 +4,10 @@ import { RootState } from '../../app/store';
 export interface ActivityListModalState {
   value: boolean;
 }
+
 const initialState: ActivityListModalState = {
   value: false,
 };
-
 
 export const activityListModalSlice = createSlice({
   name: 'activityListModal',

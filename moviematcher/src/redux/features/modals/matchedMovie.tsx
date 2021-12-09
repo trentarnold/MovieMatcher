@@ -4,10 +4,10 @@ import { RootState } from '../../app/store';
 export interface MatchedMovieState {
   value: boolean;
 }
+
 const initialState: MatchedMovieState = {
   value: false,
 };
-
 
 export const matchedMovieSlice = createSlice({
   name: 'matchedMovie',
