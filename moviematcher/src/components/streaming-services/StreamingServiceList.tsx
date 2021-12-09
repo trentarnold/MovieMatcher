@@ -7,7 +7,7 @@ import APIService from '../../services/APISevice';
 require('./StreamingServicesList.css');
 
 const StreamingServiceList = () => {
-  const userStreaming = useAppSelector(selectUserStreaming);
+  const userStreaming = (useAppSelector(selectUserStreaming)).map(u => Number(u));
   const [providers, setProviders] = useState<IStreamProvider[]>([]);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const StreamingServiceList = () => {
           return <StreamItem provider={p} userSaved={true} key={p.provider_id}/>
         }
       })}
-      <div style={{width: "90%", borderBottom: "2px solid grey"}}/>
+      <div style={{width: "100vw", borderBottom: "2px solid grey"}}/>
       {sortedProviders.map((p:IStreamProvider) => {
         if (!userStreaming.includes(p.provider_id)) {
           return <StreamItem provider={p} userSaved={false} key={p.provider_id}/>

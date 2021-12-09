@@ -98,6 +98,7 @@ function App() {
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
+      console.log(info.streaming, 'USER SAVED');
       dispatch(setUserStreaming(info.streaming));
     }
     if(accessToken) {

@@ -40,7 +40,11 @@ export async function updateUserQuery(id: number, fields:{ username?: string, em
 
 export async function toggleStreamingService(id: number, streamID: number) {
   const services = await User.findOne({ where: { id }, attributes: ['streaming']});
-  if (services?.dataValues?.streaming?.includes(streamID)) {
+  let cleanServices;
+  if (services?.dataValues?.streaming) {
+    cleanServices = services?.dataValues?.streaming.map(s => Number(s));
+  } 
+  if (cleanServices?.includes(streamID)) {
     await deleteStreamingService(id, streamID);
   } else {
     await addStreamingService(id, streamID);
