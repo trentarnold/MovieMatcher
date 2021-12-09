@@ -139,7 +139,7 @@ function daysSince(date: string) {
                                 </div>
                             </div>
                             : <div style ={{textAlign:'center', marginBottom: "0.75rem", color: "red"}}>Not Found on Any Streaming Services</div>
-                        }
+                  }
                 
                 <div className='movie-details-production-company'>
                     <div className='movie-details-company-logo-container'>
