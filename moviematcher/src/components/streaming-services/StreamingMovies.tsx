@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import MovieThumb from '../movie-list/movie-thumb/movie-thumb'
-import { IMovieDetails } from '../../../../interfaces/MovieDetails'
+import { IMovieDetails } from '../../../interfaces/MovieDetails'
 import APIService from '../../services/APISevice'
 import { useParams } from 'react-router'
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '@chakra-ui/button';
 import './profile-info.css'
-import { IProfileInfo } from '../../../../../interfaces/userInterface';
+import { IProfileInfo } from '../../../../interfaces/userInterface';
 import { ServerApiService } from '../../../services/ServerApi';
 import { useAppDispatch, useAppSelector } from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
@@ -88,6 +88,7 @@ const ProfileInfo= () => {
     const getInfo = async () => {
       try {
         const info = await ServerApiService.getUser(token);
+        console.log(info.profile_pic, 'INFO')
         setProfileInfo(info);
       } catch (e) {
         console.error(e);;

@@ -1,7 +1,7 @@
-import {IAccessTokenResponse, IPictureChange, IUser as UserInterface} from '../../../interfaces/responses'
+import {IAccessTokenResponse, IPictureChange, IUser as UserInterface} from '../../interfaces/responses'
 import { UserPlaceholder } from '../UserPlaceholder'
-import { IFavoriteMovie, IMovieWithRating } from '../../../interfaces/favoriteMovieInterface'
-import { IActivity } from '../../../interfaces/activityInterface';
+import { IFavoriteMovie, IMovieWithRating } from '../../interfaces/favoriteMovieInterface'
+import { IActivity } from '../../interfaces/activityInterface';
 
 import axios from 'axios';
 const BASE_URL = 'http://localhost:3001'

@@ -8,7 +8,7 @@ const fileUpload = require('express-fileupload');
 import { connectDB } from './models';
 import { Request, Response } from 'express';
 import { Server, Socket } from "socket.io";
-import { IMovie } from '../interfaces/movieInterface';
+import { IMovie } from './interfaces/movieInterface';
 import { APIMovieService } from './Services/APIMovieService';
 const { createServer } = require("http");
 const httpServer = createServer(app);

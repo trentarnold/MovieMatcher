@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import { Button } from '@chakra-ui/button';
-import { IMovieDetails } from '../../../../../interfaces/MovieDetails';
+import { IMovieDetails } from '../../../../interfaces/MovieDetails';
 import {useAppDispatch, useAppSelector} from '../../../redux/app/hooks';
 import { selectAuth } from '../../../redux/features/modals/authSlice';
 import { selectFavoriteMovieIds, setFavoriteMovieIds, removeFavoriteMovieIds } from '../../../redux/features/user/watchListIds';

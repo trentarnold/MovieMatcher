@@ -1,12 +1,12 @@
 const axios = require('axios');
-import { IMovie, IResults } from "../../interfaces/movieInterface";
-import {IMovieDetails} from '../../interfaces/MovieDetails'
-import { movieDetailsPlaceHolder } from '../../moviematcher/src/moviePlaceholder'
-import { IActorList } from '../../interfaces/ActorList';
-import { actorListPlaceholder } from '../../moviematcher/src/actorListPlaceholder';
-import  ActorDetailsInterface  from '../../interfaces/ActorDetails';
-import { actorDetailsPlaceholder } from '../../moviematcher/src/actorDetailsPlaceholder';
-import { IStreamProvider, IStreamProviders } from '../../interfaces/StreamProviders';
+import { IMovie, IResults } from "../interfaces/movieInterface";
+import {IMovieDetails} from '../interfaces/MovieDetails'
+import { movieDetailsPlaceHolder } from '../placeholder/moviePlaceholder'
+import { IActorList } from '../interfaces/ActorList';
+import { actorListPlaceholder } from '../placeholder/actorListPlaceholder';
+import  ActorDetailsInterface  from '../interfaces/ActorDetails';
+import { actorDetailsPlaceholder } from '../placeholder/actorDetailsPlaceholder';
+import { IStreamProvider, IStreamProviders } from '../interfaces/StreamProviders';
 
 export const APIMovieService = {
   fetchMovie: async (id: number) =>{
@@ -39,7 +39,7 @@ export const APIMovieService = {
   },
 
   getFilteredMoviesQuery: async(params: string)  => {
-    const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false&watch_region=US' + params)
+    const movies = await axios.get('https://api.themoviedb.org/3/discover/movie?api_key=48343d08ec9aa87fbbfecd658bbc7ba9&language=en-US&include_adult=true&include_video=false&watch_region=US&with_watch_monetization_types=flatrate' + params)
     return movies.data;
   },
 

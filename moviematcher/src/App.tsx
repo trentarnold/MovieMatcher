@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from './redux/app/hooks';
 import { ServerApiService } from './services/ServerApi';
 import { selectAuth } from './redux/features/modals/authSlice';
 import { setFriendIds } from './redux/features/user/friendsIdSlice';
-import { IUser } from '../../interfaces/responses';
+import { IUser } from '../interfaces/responses';
 import { setFavoriteMovieIds } from './redux/features/user/watchListIds';
 import { setBlackListIds } from './redux/features/user/blackListids';
 import { setLoggedInUser} from './redux/features/user/loggedInUsers';
@@ -28,7 +28,7 @@ import { setRatings } from './redux/features/user/ratingsSlice';
 import { setActivities } from './redux/features/user/activitiesSlice';
 import { setUserName } from './redux/features/user/yourUserName';
 import {socket} from './socket'
-import {IFilterData} from '../../interfaces/filterFormInterface';
+import {IFilterData} from '../interfaces/filterFormInterface';
 import { setUserStreaming } from './redux/features/user/userStreaming';
 import StreamingServiceList from './components/streaming-services/StreamingServiceList';
 import StreamingMovies from './components/streaming-services/StreamingMovies';
@@ -97,6 +97,7 @@ function App() {
     async function getUsername () {
       const info = await ServerApiService.getUser(accessToken);
       dispatch(setUserName(info.username));
+      console.log(info.streaming, 'USER SAVED');
       dispatch(setUserStreaming(info.streaming));
     }
     if(accessToken) {
