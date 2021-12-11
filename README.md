@@ -30,11 +30,31 @@ Start development server   `npm run dev`
 To start this app you will need to connect to your own sql database and you will need your own tmdb api key. Setup your own .env file in  the moviematcherdb directory. Follow .env.default as a guide on how to set it up.
 
 ## Tech Stack
-On the back-end we used Node, Express, PostgreSQL and Sequelize. On the front-end we used React, Redux, socket.io, and Chakra UI. The entire application was written in Typescript.
+#### Back-end
+[Node](https://nodejs.dev/)
+
+[Express](https://expressjs.com/)
+
+[PostgreSQL](https://www.postgresql.org/)
+
+[Typescript](https://www.typescriptlang.org/)
+#### Front-end
+[React](https://reactjs.org/)
+
+[Redux Toolkit](https://redux-toolkit.js.org/)
+
+[Socket.io](https://socket.io/)
+
+[Chakra UI](https://chakra-ui.com/)
+
+[Typescript](https://www.typescriptlang.org/)
 
 # Contributors
 Trent Arnold - Front-end developer [Github](https://github.com/trentarnold) [linkedin](https://www.linkedin.com/in/-trentarnold/)
+
 Marshal Fisher - Front-end developer [Github](https://github.com/marshalfisher) 
 [linkedin](https://www.linkedin.com/in/marshal-fisher-1b1664228/)
+
 Sam Welch - Back-end developer [Github](https://github.com/swelch1) [linkedin](https://www.linkedin.com/in/samuel-welch/)
+
 Caleb McGaha - Back-end developer [Github](https://github.com/cm44-4) [linkedin](https://www.linkedin.com/in/caleb-mcgaha-895674188/)
