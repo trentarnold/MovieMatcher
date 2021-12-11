@@ -12,7 +12,7 @@ Happy hunting.
 ![Stream Providers](/ScreenShots/StreamProviders.png)  ![Successful Match](/ScreenShots/SuccessfulMatch.png)
 
 ## Getting Started 
-`git clone https://github.com/trentarnold/indecisive-eater.git`
+`git clone https://github.com/cm44-4/MovieMatcher.git`
 
 `cd moviematcher`
 
